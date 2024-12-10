@@ -1,14 +1,11 @@
-import { LoginLink, RegisterLink } from "@kinde-oss/kinde-auth-nextjs/components";
+import React from 'react'
 
-export default function Home() {
+const page = () => {
   return (
-    
-      <main> <LoginLink>LOGIN</LoginLink>
-
-      
-
-<RegisterLink>Sign up</RegisterLink>
-              </main>
-         
-  );
+    <div className='bg-red-500 text-white'>
+      Hi its renters hub
+    </div>
+  )
 }
+
+export default page
