@@ -46,7 +46,7 @@ const AddPropertyForm: React.FC = () => {
   
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-md">
+    <form onSubmit={handleSubmit(onSubmit)} className=" mx-auto p-6 bg-white rounded-lg shadow-md">
       <h2 className="text-2xl font-bold mb-6 text-center text-green-600">Add New Property</h2>
 
       <InputField
