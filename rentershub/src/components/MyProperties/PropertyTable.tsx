@@ -40,7 +40,7 @@ export default function PropertyTable({
                   {property.status}
                 </span>
               </td>
-              <td className="px-6 py-4 whitespace-nowrap">${property.monthlyRent}</td>
+              <td className="px-6 py-4 whitespace-nowrap">KES {property.monthlyRent}</td>
               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                 <button onClick={() => editProperty(property.id)} className="text-blue-600 hover:text-blue-900 mr-2">
                   <Edit size={18} />

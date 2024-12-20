@@ -10,10 +10,10 @@ import PropertyCard from './MyProperties/PropertyCard';
 
 // Mock data for demonstration
 const mockProperties: Property[] = [
-  { id: '1', name: 'Greenwood Apartments', location: 'Downtown, NYC', status: 'Occupied', monthlyRent: 2500 },
-  { id: '2', name: 'Sunnyvale Condos', location: 'Suburb, LA', status: 'Vacant', monthlyRent: 1800 },
-  { id: '3', name: 'Riverside Townhouses', location: 'Riverside, Chicago', status: 'Pending', monthlyRent: 2200 },
-  { id: '4', name: 'Mountain View Homes', location: 'Boulder, CO', status: 'Approved', monthlyRent: 3000 },
+  { id: '1', name: 'Greenwood Apartments', location: 'Kilimani, Nairobi', status: 'Occupied', monthlyRent: 22500 },
+  { id: '2', name: 'Sunnyvale Condos', location: 'Nderi, Kikuyu', status: 'Vacant', monthlyRent: 18000 },
+  { id: '3', name: 'Riverside Townhouses', location: 'Riverside, Kamiti', status: 'Pending', monthlyRent: 26800 },
+  { id: '4', name: 'Mountain View Homes', location: 'Landless, Thika', status: 'Approved', monthlyRent: 30007 },
 ];
 
 export default function MyProperties() {
