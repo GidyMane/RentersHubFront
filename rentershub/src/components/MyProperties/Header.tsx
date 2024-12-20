@@ -1,7 +1,7 @@
 import { Plus, Search } from 'lucide-react';
 
 interface HeaderProps {
-  addNewProperty: () => void;
+  addNewProperty: () => void;   
   searchTerm: string;
   setSearchTerm: (term: string) => void;
   statusFilter: string;
@@ -53,4 +53,3 @@ export default function Header({
     </div>
   );
 }
-

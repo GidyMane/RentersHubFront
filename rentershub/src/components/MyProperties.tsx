@@ -1,9 +1,10 @@
-"use client"
+"use client";
+
 import { useState } from 'react';
+import { useRouter } from 'next/navigation'; // Import useRouter
 import { Property } from '../types/dashboard';
 
 import PropertyTable from './MyProperties/PropertyTable';
-
 import EmptyState from './MyProperties/EmptyState';
 import Header from './MyProperties/Header';
 import PropertyCard from './MyProperties/PropertyCard';
@@ -20,6 +21,9 @@ export default function MyProperties() {
   const [properties, setProperties] = useState<Property[]>(mockProperties);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('All');
+  
+  // Use useRouter for navigation
+  const router = useRouter();
 
   const filteredProperties = properties.filter(property => 
     property.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
@@ -27,8 +31,8 @@ export default function MyProperties() {
   );
 
   const addNewProperty = () => {
-    // Placeholder function for adding a new property
-    console.log('Add new property clicked');
+    // Navigate to the '/add-property' page
+    router.push('/add-property');
   };
 
   const editProperty = (id: string) => {
@@ -85,4 +89,3 @@ export default function MyProperties() {
     </div>
   );
 }
-
