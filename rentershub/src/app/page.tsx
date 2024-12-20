@@ -1,6 +1,5 @@
 import DashboardContent from '@/components/Dashboard';
-import Navbar from '@/components/Navbar';
-import Sidebar from '@/components/Sidebar';
+
 import { PropertyMetrics } from '@/types/dashboard';
 import React from 'react';
 
