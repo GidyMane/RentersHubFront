@@ -6,7 +6,7 @@ import { Home, Building, PlusSquare, User, Settings } from 'lucide-react'
 import { NavItem, LandlordProfile } from '../types/dashboard'
 
 const navItems: NavItem[] = [
-  { href: '/dashboard', label: 'Dashboard', icon: Home },
+  { href: '/', label: 'Dashboard', icon: Home },
   { href: '/myproperties', label: 'My Properties', icon: Building },
   { href: '/add-property', label: 'Add Property', icon: PlusSquare },
   { href: '/profile', label: 'Profile', icon: User },
