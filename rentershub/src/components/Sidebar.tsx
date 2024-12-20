@@ -7,7 +7,7 @@ import { NavItem, LandlordProfile } from '../types/dashboard'
 
 const navItems: NavItem[] = [
   { href: '/', label: 'Dashboard', icon: Home },
-  { href: '/myproperties', label: 'My Properties', icon: Building },
+  { href: '/my-properties', label: 'My Properties', icon: Building },
   { href: '/add-property', label: 'Add Property', icon: PlusSquare },
   { href: '/profile', label: 'Profile', icon: User },
   { href: '/settings', label: 'Settings', icon: Settings },
