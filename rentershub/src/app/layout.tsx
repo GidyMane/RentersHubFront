@@ -2,8 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import { AuthProvider } from "@/providers/KindeAuthProvider";
-import Navbar from "@/components/Navbar";
-import Sidebar from "@/components/Sidebar";
+import ClientLayout from "@/components/ClientLayout";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -23,34 +22,19 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <AuthProvider>
       <html lang="en">
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
-          <div className="flex h-screen bg-gray-100 text-gray-800">
-            {/* Sidebar */}
-            <div className="w-64 bg-green-500 text-white">
-              <Sidebar />
-            </div>
-
-            {/* Main Content */}
-            <div className="flex-1 flex flex-col">
-              {/* Navbar */}
-              <div className="bg-white shadow">
-                <Navbar />
-              </div>
-
-              {/* Page Content */}
-              <div className="flex-1 overflow-y-auto p-6">{children}</div>
-            </div>
-          </div>
+          <ClientLayout>{children}</ClientLayout>
         </body>
       </html>
     </AuthProvider>
   );
 }
+

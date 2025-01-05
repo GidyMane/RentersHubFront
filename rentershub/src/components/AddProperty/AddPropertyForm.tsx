@@ -45,7 +45,7 @@ const AddPropertyForm: React.FC = () => {
   const handleFileUpload = (uploadedFiles: File[]) => {
     setFiles(uploadedFiles);
 
-    const fileNames = uploadedFiles.map((file) => file.name); // Convert File[] to string[]
+    const fileNames = uploadedFiles.map((file) => file.name); 
     setValue("photos", fileNames);
   };
 
@@ -69,7 +69,7 @@ const AddPropertyForm: React.FC = () => {
           error={errors.postTitle}
         />
       </div>
-
+   
       <SelectField
         label="House Type"
         name="houseType"

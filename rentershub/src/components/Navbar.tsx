@@ -38,12 +38,10 @@ export default function Navbar() {
             <span>Terms and Conditions</span>
           </Link>
 
-          {/* Logout Button */}
-          <LogoutLink>
+          {/* Logout Button */}          
             <button className="text-red-500 hover:text-red-600">
               <LogOut className="h-6 w-6" />
-            </button>
-          </LogoutLink>
+            </button>          
         </div>
       </div>
     </nav>
