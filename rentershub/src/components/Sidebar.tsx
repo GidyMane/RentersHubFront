@@ -7,6 +7,7 @@ import { Home, Building, PlusSquare, User, LogOut } from "lucide-react";
 import { NavItem, LandlordProfile } from "../types/dashboard";
 import { LogoutLink } from "@kinde-oss/kinde-auth-nextjs/components";
 import { usePathname } from "next/navigation"; // Import usePathname hook
+import { signOut } from "next-auth/react";
 
 const navItems: NavItem[] = [
   { href: "/", label: "Dashboard", icon: Home },
@@ -74,8 +75,11 @@ export default function Sidebar({ profile = {} as LandlordProfile }: SidebarProp
             <LogoutLink>
               <button
                 className="flex items-center w-full p-2 rounded-lg transition-colors hover:bg-red-500"
-                onClick={() => setActiveItem("logout")}
+                onClick= {async()=>{
+                  await signOut()
+                  }}
               >
+                
                 <LogOut className="mr-3 h-5 w-5" />
                 Log out
               </button>

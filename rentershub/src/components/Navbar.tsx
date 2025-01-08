@@ -4,6 +4,7 @@ import { Bell, Search, LogOut, FileText } from "lucide-react";
 import { LogoutLink } from "@kinde-oss/kinde-auth-nextjs/components";
 import Link from "next/link";
 import { usePathname } from "next/navigation"; // Import usePathname hook
+import { signOut } from "next-auth/react";
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -45,8 +46,11 @@ export default function Navbar() {
           </Link>
 
           {/* Logout Button */}          
-          <button className="text-red-500 hover:text-red-600">
-            <LogOut className="h-6 w-6" />
+          <button onClick= {async()=>{
+          await signOut()
+          }} className="text-red-500 hover:text-red-600">
+            <LogOut className="h-6 w-6" /> 
+            
           </button>          
         </div>
       </div>
