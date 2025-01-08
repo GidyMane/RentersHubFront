@@ -5,47 +5,44 @@ import { type DefaultSession } from "next-auth";
 import authConfig from "./auth.config";
 import axios from "axios";
 
+
+
+
+
+
 declare module "next-auth" {
+  interface CredentialsProvider<T extends Record<string, any> = Record<string, any>> {
+    credentials: {
+      username: { label: string; type: string; placeholder: string };
+      password: { label: string; type: string; placeholder: string };     
+      contact: { label: string; type: string; placeholder: string };
+    };
+  }
   interface Session {
     user: {
-      access_token: string;
-      refresh_token: string;
-      hascompany: boolean;
-      companyId: string;
-      role:string;
-      userId: string;
-      isSubscribed:boolean;
+      
+      accessToken: string;
+      refreshToken: string;      
     } & DefaultSession["user"];
   }
 
   interface User {
-    access_token: string;
-    refresh_token: string;
-    companyId: string;
-    hascompany: boolean;
-    userId: string;
-    isSubscribed:boolean;
+    accessToken: string;
+    refreshToken: string;
+
+    
   }
 
   interface Token {
-    access_token: string;
-    refresh_token: string;
-    hascompany: boolean;
-    companyId: string;
-    userId: string;
-    isSubscribed:boolean;
+    accessToken: string;
+    refreshToken: string;
   }
 }
 
 declare module "next-auth/jwt" {
   interface JWT {
-    access_token?: string;
-    refresh_token?: string;
-    id?: string;
-    hascompany?: boolean;
-    companyId?: string;
-    userId: string;
-    isSubscribed:boolean;
+    accessToken: string;
+    refreshToken: string;
   }
 }
 

@@ -114,81 +114,32 @@ export default {
     updateAge: 10 * 60
   },
   callbacks: {
-    // jwt: async ({ token, user, profile, session, account, trigger }) => {
-    //   if (trigger === "update") {
-    //     if (session?.hascompany) {
-    //       token.hascompany = session?.hascompany
+    jwt: async ({ token, user, profile, session, account, trigger }) => {
 
-    //     } else if (session?.company) {
-    //       token.companyId = session?.company;
+      if (user){
+        token.accessToken= user.accessToken,
+        token.refreshToken= user.refreshToken
+      }
+  
 
-    //     } else if (session?.isSubscribed) {
-    //       token.isSubscribed = session?.isSubscribed
-    //     }
+// console.log(token, "token",user, "user", profile , "profile", session , "     session", account, "account", trigger, "trigger")
+      return token;  
 
+      
+    },
+    session: async ({ session, token }) => {
+      // console.log(token)
+      return {
+        ...session,
+        user: {
+          ...session?.user, 
+          accessToken : token.accessToken,
+          refreshToken: token.refreshToken
 
-    //   } else {
-    //     if (!profile) {
-    //       if (user) {
-    //         token.userId = (user as any)?.userId;
-    //         token.access_token = (user as any)?.accessToken;
-    //         token.refresh_token = (user as any)?.refreshToken;
-    //         token.hascompany = (user as any)?.hascompany;
-    //         token.companyId = (user as any)?.companyId;
-    //         token.role = (user as any)?.role;
-    //         token.isSubscribed = (user as any)?.isSubscribed;
-
-    //       }
-
-    //     } else {
-    //       try {
-    //         const res = await axios.post(process.env.BASEURL! + "auth/google", {
-    //           firstname: profile?.given_name,
-    //           lastname: profile?.family_name,
-    //           email: profile?.email,
-    //           googleId: account?.providerAccountId,
-    //         });
-
-
-
-    //         if (res.status === 200 || res.status === 201) {
-    //           token.access_token = res.data?.data?.token?.accessToken;
-    //           token.refresh_token = res.data?.data?.token?.refreshToken;
-    //           token.hascompany = res.data?.data?.token?.hascompany;
-    //           token.companyId = res.data?.data?.token?.companyId;
-    //           token.role = res.data?.data?.token?.role;
-    //           token.userId = res.data?.data?.token?.userId;
-    //           token.isSubscribed = res.data?.data?.token?.isSubscribed;
-    //         } else {
-    //           return null
-    //         }
-
-    //       } catch (error) {
-    //         console.error("Error fetching tokens from your API:", error);
-    //         return null
-    //       }
-    //     }
-    //   }
-
-
-    //   return token;
-    // },
-    // session: async ({ session, token }) => {
-    //   console.log(token)
-    //   return {
-    //     ...session,
-    //     user: {
-    //       ...session?.user,
-    //       access_token: token?.access_token!,
-    //       refresh_token: token?.refresh_token!,
-    //       hascompany: token?.hascompany!,
-    //       companyId: token?.companyId!,
-    //       role: token?.role,
-    //       userId: token?.userId,
-    //       isSubscribed: token?.isSubscribed
-    //     }
-    //   }
-    // },
+          
+        }
+      }
+    },
   },
   secret: process.env.AUTH_SECRET!,
   pages: {

@@ -1,3 +1,4 @@
+import { auth } from '@/auth';
 import DashboardContent from '@/components/Dashboard';
 import Navbar from '@/components/Navbar';
 import Sidebar from '@/components/Sidebar';
@@ -12,7 +13,12 @@ const defaultMetrics: PropertyMetrics = {
   pendingApproval: 0,
 };
 
-const Page = () => {
+const Page = async () => {
+
+  const session = await auth();
+
+  console.log(session, "testing this session")
+  
   return (
     <div className="flex h-screen bg-gray-100 text-gray-800">
       {/* Sidebar */}

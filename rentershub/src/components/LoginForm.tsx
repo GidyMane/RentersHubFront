@@ -5,14 +5,56 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Phone, Key } from 'lucide-react';
+import { signIn } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import { toast } from 'react-toastify';
 
-const LoginForm = ({ onSubmit }: { onSubmit: (data: { contact: string; password: string }) => void }) => {
+const LoginForm = () => {
   const [contact, setContact] = useState('');
   const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    onSubmit({ contact, password });
+
+    const payload = {
+      contact,
+      password,
+    };
+
+    setIsLoading(true);
+
+    try {
+      const response = await signIn('credentials', {
+        contact: payload.contact,
+        password: payload.password,
+        redirect: false,
+      });
+
+      if (response?.ok) {
+        toast.success('Login successful!');
+        router.push('/'); // Redirect to the home page
+      } else {
+        // Check the error message and display appropriate toast
+        if (response?.error) {
+          if (response.error.includes('No active account')) {
+            toast.error('Account not found. Please sign up.');
+          } else if (response.error.includes('Invalid credentials')) {
+            toast.error('Wrong password or invalid credentials.');
+          } else {
+            toast.error(response.error);
+          }
+        } else {
+          toast.error('Login failed. Please try again.');
+        }
+      }
+    } catch (error: any) {
+      console.error('Login error:', error);
+      toast.error('An unexpected error occurred. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -47,8 +89,12 @@ const LoginForm = ({ onSubmit }: { onSubmit: (data: { contact: string; password:
           />
         </div>
       </div>
-      <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700 text-white py-6 text-lg mt-4">
-        Sign In
+      <Button
+        type="submit"
+        className="w-full bg-blue-600 hover:bg-blue-700 text-white py-6 text-lg mt-4"
+        disabled={isLoading}
+      >
+        {isLoading ? 'Signing In...' : 'Sign In'}
       </Button>
     </form>
   );
