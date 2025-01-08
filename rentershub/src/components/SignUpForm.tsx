@@ -54,7 +54,8 @@ const SignUpForm = ({ onSubmit }: { onSubmit: (data: any) => void }) => {
     }
     setIsLoading(true);
     try {
-      await axios.post(`${baseUrl}accounts/create/otp`, { contact: phone });
+      const response = await axios.post(`${baseUrl}accounts/create/otp`, { contact: phone });
+      console.log('OTP sent response:', response.data);  // Log the API response here
       toast.success(`An OTP has been sent to ${phone}`);
       setStep(3);
     } catch (error) {
@@ -64,6 +65,7 @@ const SignUpForm = ({ onSubmit }: { onSubmit: (data: any) => void }) => {
       setIsLoading(false);
     }
   };
+  
 
   const handleVerifyOtp = async () => {
     if (!otp) {
@@ -85,18 +87,18 @@ const SignUpForm = ({ onSubmit }: { onSubmit: (data: any) => void }) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
+  
     if (password !== confirmPassword) {
       toast.error('Passwords do not match!');
       return;
     }
-
+  
     const selectedRole = roles.find((role) => role.role.toLowerCase() === userType);
     if (!selectedRole) {
       toast.warning('Please select your role: Ground Agent or Landlord');
       return;
     }
-
+  
     const payload = {
       email,
       password,
@@ -106,10 +108,13 @@ const SignUpForm = ({ onSubmit }: { onSubmit: (data: any) => void }) => {
       contact: phone,
       username,
     };
-
+  
+    console.log('Payload being sent:', payload); 
+  
     setIsLoading(true);
     try {
       const response = await axios.post(`${baseUrl}accounts/create/user/`, payload);
+      console.log('Server response:', response.data);  // Log the server response for debugging
       toast.success('Sign-up completed successfully!');
       onSubmit(response.data);
     } catch (error) {
@@ -119,6 +124,7 @@ const SignUpForm = ({ onSubmit }: { onSubmit: (data: any) => void }) => {
       setIsLoading(false);
     }
   };
+  
 
   return (
     <div className="w-full max-w-md space-y-4">
