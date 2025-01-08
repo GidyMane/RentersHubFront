@@ -6,6 +6,7 @@ import Image from "next/image";
 import { Home, Building, PlusSquare, User, LogOut } from "lucide-react";
 import { NavItem, LandlordProfile } from "../types/dashboard";
 import { LogoutLink } from "@kinde-oss/kinde-auth-nextjs/components";
+import { usePathname } from "next/navigation"; // Import usePathname hook
 
 const navItems: NavItem[] = [
   { href: "/", label: "Dashboard", icon: Home },
@@ -20,6 +21,12 @@ interface SidebarProps {
 
 export default function Sidebar({ profile = {} as LandlordProfile }: SidebarProps) {
   const [activeItem, setActiveItem] = useState("/dashboard");
+  const pathname = usePathname();
+
+  // If the pathname is '/successmessage', return null to not render the Sidebar
+  if (pathname === "/successmessage") {
+    return null;
+  }
 
   return (
     <aside className="bg-green-600 text-white w-64 min-h-screen p-4">

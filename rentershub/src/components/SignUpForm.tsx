@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useRouter } from 'next/navigation';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Button } from '@/components/ui/button';
@@ -14,7 +15,7 @@ interface Role {
   role: string;
 }
 
-const SignUpForm = ({ onSubmit }: { onSubmit: (data: any) => void }) => {
+const SignUpForm = () => {
   const [step, setStep] = useState(1);
   const [roles, setRoles] = useState<Role[]>([]);
   const [userType, setUserType] = useState<string | null>(null);
@@ -28,8 +29,10 @@ const SignUpForm = ({ onSubmit }: { onSubmit: (data: any) => void }) => {
   const [otp, setOtp] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  const baseUrl = "https://varumar.pythonanywhere.com/api/v1/";
+  const router = useRouter();
+  const baseUrl = 'https://varumar.pythonanywhere.com/api/v1/';
 
+  // Fetch roles from the API
   const fetchRoles = async () => {
     try {
       const response = await axios.get(`${baseUrl}accounts/roles`);
@@ -37,15 +40,19 @@ const SignUpForm = ({ onSubmit }: { onSubmit: (data: any) => void }) => {
         (role: { role: string }) => role.role === 'LANDLORD' || role.role === 'GROUNDAGENT'
       );
       setRoles(filteredRoles);
-    } catch (error: any) {
+    } catch (error) {
       toast.error('Error fetching roles. Please try again.');
-      console.error('Error fetching roles:', error.response?.data || error.message);
     }
   };
 
   useEffect(() => {
     fetchRoles();
   }, []);
+
+  const handleRoleSelect = (role: string) => {
+    setUserType(role.toLowerCase());
+    setStep(2); // Move to phone number step
+  };
 
   const handleSendOtp = async () => {
     if (!phone) {
@@ -79,7 +86,6 @@ const SignUpForm = ({ onSubmit }: { onSubmit: (data: any) => void }) => {
       setStep(4);
     } catch (error) {
       toast.error('Invalid OTP. Please try again.');
-      console.error('Error verifying OTP:', error);
     } finally {
       setIsLoading(false);
     }
@@ -87,87 +93,79 @@ const SignUpForm = ({ onSubmit }: { onSubmit: (data: any) => void }) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-  
+
     if (password !== confirmPassword) {
       toast.error('Passwords do not match!');
       return;
     }
-  
+
     const selectedRole = roles.find((role) => role.role.toLowerCase() === userType);
     if (!selectedRole) {
       toast.warning('Please select your role: Ground Agent or Landlord');
       return;
     }
-  
+
     const payload = {
       email,
       password,
       first_name: firstName,
       last_name: lastName,
       role: selectedRole.pk,
-      contact: phone,
+      contact: `0${phone}`,
       username,
     };
-  
-    console.log('Payload being sent:', payload); 
-  
+
     setIsLoading(true);
     try {
-      const response = await axios.post(`${baseUrl}accounts/create/user/`, payload);
-      console.log('Server response:', response.data);  // Log the server response for debugging
+      await axios.post(`${baseUrl}accounts/create/user/`, payload);
       toast.success('Sign-up completed successfully!');
-      onSubmit(response.data);
+      router.push('/successmessage'); // Redirect to success page
     } catch (error) {
       toast.error('Failed to complete sign-up. Please try again.');
-      console.error('Error completing sign-up:', error);
     } finally {
       setIsLoading(false);
     }
   };
-  
 
   return (
     <div className="w-full max-w-md space-y-4">
       <ToastContainer />
-      {/* Role Selection */}
-      <div className="space-y-4">
-        <Label className="text-lg">I am a...</Label>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {roles.map((role) => (
-            <button
-              key={role.pk}
-              type="button"
-              onClick={() => setUserType(role.role.toLowerCase())}
-              className={`relative h-40 rounded-lg border-2 p-4 flex flex-col items-center justify-center hover:border-blue-600 transition-all ${
-                userType === role.role.toLowerCase()
-                  ? 'border-blue-600 bg-blue-50'
-                  : 'border-gray-300'
-              }`}
-            >
-              {role.role === 'GROUNDAGENT' ? (
-                <User className={`w-16 h-16 mb-2 ${userType === 'groundagent' ? 'text-blue-600' : 'text-gray-400'}`} />
-              ) : (
-                <Building
-                  className={`w-16 h-16 mb-2 ${userType === 'landlord' ? 'text-blue-600' : 'text-gray-400'}`}
-                />
-              )}
-              <span className="text-lg font-semibold">{role.role}</span>
-              {userType === role.role.toLowerCase() && (
-                <CheckCircle2 className="absolute top-2 right-2 w-6 h-6 text-blue-600" />
-              )}
-            </button>
-          ))}
-        </div>
-      </div>
-
       {step === 1 && (
-        <Button
-          type="button"
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white py-6 text-lg"
-          onClick={() => setStep(2)}
-        >
-          Next
-        </Button>
+        <div className="space-y-4">
+          <Label className="text-lg">I am a...</Label>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {roles.map((role) => (
+              <button
+                key={role.pk}
+                type="button"
+                onClick={() => handleRoleSelect(role.role)}
+                className={`relative h-40 rounded-lg border-2 p-4 flex flex-col items-center justify-center hover:border-blue-600 transition-all ${
+                  userType === role.role.toLowerCase()
+                    ? 'border-blue-600 bg-blue-50'
+                    : 'border-gray-300'
+                }`}
+              >
+                {role.role === 'GROUNDAGENT' ? (
+                  <User
+                    className={`w-16 h-16 mb-2 ${
+                      userType === 'groundagent' ? 'text-blue-600' : 'text-gray-400'
+                    }`}
+                  />
+                ) : (
+                  <Building
+                    className={`w-16 h-16 mb-2 ${
+                      userType === 'landlord' ? 'text-blue-600' : 'text-gray-400'
+                    }`}
+                  />
+                )}
+                <span className="text-lg font-semibold">{role.role}</span>
+                {userType === role.role.toLowerCase() && (
+                  <CheckCircle2 className="absolute top-2 right-2 w-6 h-6 text-blue-600" />
+                )}
+              </button>
+            ))}
+          </div>
+        </div>
       )}
 
       {step === 2 && (
@@ -176,15 +174,21 @@ const SignUpForm = ({ onSubmit }: { onSubmit: (data: any) => void }) => {
             <Label htmlFor="phone" className="text-lg">
               Phone Number
             </Label>
-            <Input
-              id="phone"
-              type="tel"
-              placeholder="Enter your phone number"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-              className="py-6 text-lg"
-              required
-            />
+            <div className="flex items-center space-x-2">
+              <div className="flex items-center bg-gray-100 px-4 py-2 rounded-l-lg">
+                <img src="/kenya-flag.svg" alt="Kenyan Flag" className="w-6 h-6 mr-2" />
+                <span>+254</span>
+              </div>
+              <Input
+                id="phone"
+                type="tel"
+                placeholder="Enter the remaining 9 digits"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value.replace(/[^0-9]/g, '').slice(0, 9))}
+                className="flex-grow py-6 text-lg"
+                required
+              />
+            </div>
           </div>
           <Button
             type="button"
@@ -236,7 +240,6 @@ const SignUpForm = ({ onSubmit }: { onSubmit: (data: any) => void }) => {
               placeholder="Enter your email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="py-6 text-lg"
               required
             />
           </div>
@@ -250,7 +253,6 @@ const SignUpForm = ({ onSubmit }: { onSubmit: (data: any) => void }) => {
               placeholder="Enter your first name"
               value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
-              className="py-6 text-lg"
               required
             />
           </div>
@@ -264,7 +266,6 @@ const SignUpForm = ({ onSubmit }: { onSubmit: (data: any) => void }) => {
               placeholder="Enter your last name"
               value={lastName}
               onChange={(e) => setLastName(e.target.value)}
-              className="py-6 text-lg"
               required
             />
           </div>
@@ -275,10 +276,9 @@ const SignUpForm = ({ onSubmit }: { onSubmit: (data: any) => void }) => {
             <Input
               id="username"
               type="text"
-              placeholder="Create a username"
+              placeholder="Enter a username"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              className="py-6 text-lg"
               required
             />
           </div>
@@ -289,10 +289,9 @@ const SignUpForm = ({ onSubmit }: { onSubmit: (data: any) => void }) => {
             <Input
               id="password"
               type="password"
-              placeholder="Create a password"
+              placeholder="Enter a password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="py-6 text-lg"
               required
             />
           </div>
@@ -306,7 +305,6 @@ const SignUpForm = ({ onSubmit }: { onSubmit: (data: any) => void }) => {
               placeholder="Confirm your password"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
-              className="py-6 text-lg"
               required
             />
           </div>
