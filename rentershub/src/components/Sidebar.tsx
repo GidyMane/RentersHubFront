@@ -72,18 +72,18 @@ export default function Sidebar({ profile = {} as LandlordProfile }: SidebarProp
 
           {/* Logout Link */}
           <li className="mb-2">
-            <LogoutLink>
+           
               <button
                 className="flex items-center w-full p-2 rounded-lg transition-colors hover:bg-red-500"
                 onClick= {async()=>{
                   await signOut()
                   }}
               >
-                
+
                 <LogOut className="mr-3 h-5 w-5" />
                 Log out
               </button>
-            </LogoutLink>
+            
           </li>
         </ul>
       </nav>
