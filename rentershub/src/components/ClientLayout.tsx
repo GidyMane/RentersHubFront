@@ -354,6 +354,20 @@ const SignUpForm = () => {
                 </Button>
               )}
             </div>
+
+            <div className="mt-6 text-center">
+              <p className="text-sm text-gray-500">
+                Already have an account?{' '}
+                <Button
+                  type="button"
+                  variant="link"
+                  className="text-[#1C4532] hover:underline"
+                  onClick={() => router.push('/login')}
+                >
+                  Back to Login
+                </Button>
+              </p>
+            </div>
           </CardContent>
         </Card>
       </div>
