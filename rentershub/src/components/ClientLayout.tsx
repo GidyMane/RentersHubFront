@@ -368,7 +368,7 @@ const SignUpForm = () => {
           </h2>
           <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 w-full aspect-video relative overflow-hidden">
             <Image
-              src="/placeholder.svg?height=400&width=600"
+              src="/exterior.webp?height=400&width=600"
               alt="RentersHub Dashboard Preview"
               layout="fill"
               objectFit="cover"
