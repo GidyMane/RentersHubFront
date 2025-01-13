@@ -357,7 +357,7 @@ const SignUpForm = () => {
           </CardContent>
         </Card>
       </div>
-      <div className="hidden lg:flex flex-1 bg-gradient-to-br from-[#1C4532] to-[#0F2419] items-center justify-center p-8">
+      <div className="hidden lg:flex flex-1 bg-gradient-to-br from-[#1C4532] to-[#0F2419] items-center justify-center p-2">
         <div className="max-w-lg text-white space-y-8">
           <h2 className="text-4xl font-serif italic">
             Streamline Your
@@ -368,7 +368,7 @@ const SignUpForm = () => {
           </h2>
           <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 w-full aspect-video relative overflow-hidden">
             <Image
-              src="/exterior.webp?height=400&width=600"
+              src="/interior3.jpg?height=400&width=600"
               alt="RentersHub Dashboard Preview"
               layout="fill"
               objectFit="cover"
