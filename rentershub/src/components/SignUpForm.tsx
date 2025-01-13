@@ -30,7 +30,7 @@ const SignUpForm = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const router = useRouter();
-  const baseUrl = 'https://varumar.pythonanywhere.com/api/v1/';
+  const baseUrl = 'https://rentershubservicev1.onrender.com/api/v1/';
 
   // Fetch roles from the API
   const fetchRoles = async () => {

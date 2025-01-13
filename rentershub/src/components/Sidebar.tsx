@@ -11,9 +11,9 @@ import { signOut } from "next-auth/react";
 
 const navItems: NavItem[] = [
   { href: "/", label: "Dashboard", icon: Home },
-  { href: "/my-properties", label: "My Properties", icon: Building },
-  { href: "/add-property", label: "Add Property", icon: PlusSquare },
-  { href: "/profile", label: "Profile", icon: User },
+  { href: "/rentershub/my-properties", label: "My Properties", icon: Building },
+  { href: "/rentershub/add-property", label: "Add Property", icon: PlusSquare },
+  { href: "//rentershub/profile", label: "Profile", icon: User },
 ];
 
 interface SidebarProps {
