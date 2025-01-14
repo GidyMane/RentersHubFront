@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import DashboardLayout from '@/components/Test/Rentershub/DashbordLayout'
+import { DashboardLayout } from '@/components/Test/Rentershub/DashbordLayout'
 import { AvatarUpload } from '@/components/Test/Rentershub/AvatarUpload'
 import { ChangePassword } from '@/components/Test/Rentershub/ChangePassword'
 import { Input } from "@/components/ui/input"

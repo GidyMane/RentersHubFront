@@ -1,4 +1,4 @@
-import DashboardLayout from '@/components/Test/Rentershub/DashbordLayout'
+import {DashboardLayout} from '@/components/Test/Rentershub/DashbordLayout'
 import LandlordDashboard from '@/components/Test/Rentershub/LandlordDashboard'
 import React from 'react'
 

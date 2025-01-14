@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import DashboardLayout from '@/components/Test/Rentershub/DashbordLayout'
+import {DashboardLayout} from '@/components/Test/Rentershub/DashbordLayout'
 import { FileUploadZone } from '@/components/Test/Rentershub/FileUploadZone'
 import { PropertyFeatures } from '@/components/Test/Rentershub/PropertyFeatures'
 import { SuccessModal } from '@/components/Test/Rentershub/SuccessModal'

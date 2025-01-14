@@ -1,6 +1,6 @@
 'use client'
 
-import DashboardLayout from '@/components/Test/Rentershub/DashbordLayout'
+import { DashboardLayout } from '@/components/Test/Rentershub/DashbordLayout'
 import { FilterBar } from '@/components/Test/Rentershub/FilterBar'
 import { PropertyCard } from '@/components/Test/Rentershub/PropertyCard'
 import { useState } from 'react'
