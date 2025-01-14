@@ -15,7 +15,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
   const pathname = usePathname()
   
   const menuItems = [
-    { icon: Home, label: 'Dashboard', href: '/' },
+    { icon: Home, label: 'Dashboard', href: '/Dashboard' },
     { icon: Building, label: 'My Properties', href: '/properties' },
     { icon: PlusSquare, label: 'Add Property', href: '/add-property' },
     { icon: User, label: 'Profile', href: '/profile' },
