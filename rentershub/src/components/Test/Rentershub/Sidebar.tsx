@@ -7,6 +7,7 @@ import { Home, Building, PlusSquare, User, Settings, HelpCircle, LogOut, Chevron
 import { Button } from "@/components/ui/button"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { cn } from "@/lib/utils"
+import { signOut } from 'next-auth/react'
 
 interface SidebarProps {
   isOpen: boolean
@@ -68,7 +69,9 @@ export function Sidebar({ isOpen, toggleSidebar }: SidebarProps) {
           <Button
             variant="ghost"
             className="w-full justify-start text-gray-300 hover:bg-[#2C7A51] hover:text-white"
-          >
+            onClick= {async()=>{
+              await signOut()
+              }} >
             <LogOut className="h-5 w-5 mr-3" />
             Log Out
           </Button>
