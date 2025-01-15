@@ -20,7 +20,7 @@ const menuItems = [
   { icon: PlusSquare, label: 'Add Property', href: '/add-property' },
   { icon: User, label: 'Profile', href: '/profile' },
   { icon: Settings, label: 'Settings', href: '#' },
-  { icon: HelpCircle, label: 'Help & Support', href: '#' },
+  { icon: HelpCircle, label: 'Help & Support', href: '/support' },
 ]
 
 export function Sidebar({ isOpen, toggleSidebar }: SidebarProps) {
