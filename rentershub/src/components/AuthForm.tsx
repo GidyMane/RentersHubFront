@@ -29,12 +29,12 @@ const AuthForm = () => {
             <TabsTrigger value="signin">Sign In</TabsTrigger>
             <TabsTrigger value="signup">Sign Up</TabsTrigger>
           </TabsList>
-          <TabsContent value="signin">
+          {/* <TabsContent value="signin">
             <LoginForm onSubmit={handleSignInSubmit} />
           </TabsContent>
           <TabsContent value="signup">
             <SignUpForm onSubmit={handleSignUpSubmit} />
-          </TabsContent>
+          </TabsContent> */}
         </Tabs>
       </CardContent>
     </Card>
