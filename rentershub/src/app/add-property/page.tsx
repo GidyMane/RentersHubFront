@@ -1,8 +1,9 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import {DashboardLayout} from '@/components/Test/Rentershub/DashbordLayout'
+import { useSession } from 'next-auth/react'
+import { DashboardLayout } from '@/components/Test/Rentershub/DashbordLayout'
 import { FileUploadZone } from '@/components/Test/Rentershub/FileUploadZone'
 import { PropertyFeatures } from '@/components/Test/Rentershub/PropertyFeatures'
 import { SuccessModal } from '@/components/Test/Rentershub/SuccessModal'
@@ -18,36 +19,68 @@ import {
 } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent } from "@/components/ui/card"
-
-const HOUSE_TYPES = [
-  'Bedsitters',
-  'One Bedroom apartments',
-  'Two Bedroom apartments',
-  'Three Bedroom apartments',
-  'Four Bedroom apartments',
-  'Five Bedroom apartments',
-  '2BR Own Compound',
-  '3BR Own Compound',
-  '4BR Own Compound',
-  '5+BR Own Compound',
-  'Singles',
-  'Doubles',
-  'Shops',
-  'Offices'
-]
-
-const COUNTIES = [
-  'Nairobi',
-  'Mombasa',
-  'Kisumu',
-  // Add all 47 counties
-]
+import { baseUrl } from '@/utils/constants'
 
 export default function AddPropertyPage() {
   const router = useRouter()
+  const { data: session } = useSession()
+  const [houseTypes, setHouseTypes] = useState<string[]>([])
+  const [counties, setCounties] = useState<string[]>([])
   const [selectedFeatures, setSelectedFeatures] = useState<string[]>([])
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false)
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([])
+
+  useEffect(() => {
+    if (!session?.user.accessToken) {
+      console.error('Session is not available.')
+      return
+    }
+
+    const fetchHouseTypes = async () => {
+      try {
+        const response = await fetch(`${baseUrl}listing/propertytype`, {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${session.user.accessToken}`,
+          },
+        })
+
+        if (!response.ok) {
+          const errorDetails = await response.text()
+          throw new Error(`Failed to fetch house types: ${response.status}, ${errorDetails}`)
+        }
+
+        const data = await response.json()
+        setHouseTypes(data.results.map((type: { name: string }) => type.name))
+      } catch (error) {
+        console.error('Error fetching house types:', error)
+      }
+    }
+
+    const fetchCounties = async () => {
+      try {
+        const response = await fetch(`${baseUrl}listing/counties`, {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${session.user.accessToken}`,
+          },
+        })
+
+        if (!response.ok) {
+          const errorDetails = await response.text()
+          throw new Error(`Failed to fetch counties: ${response.status}, ${errorDetails}`)
+        }
+
+        const data = await response.json()
+        setCounties(data.results.map((county: { name: string }) => county.name))
+      } catch (error) {
+        console.error('Error fetching counties:', error)
+      }
+    }
+
+    fetchHouseTypes()
+    fetchCounties()
+  }, [session?.user.accessToken])
 
   const handleFeatureToggle = (feature: string) => {
     setSelectedFeatures(prev =>
@@ -94,7 +127,7 @@ export default function AddPropertyPage() {
                             <SelectValue placeholder="Select house type" />
                           </SelectTrigger>
                           <SelectContent>
-                            {HOUSE_TYPES.map(type => (
+                            {houseTypes.map(type => (
                               <SelectItem key={type} value={type.toLowerCase()}>
                                 {type}
                               </SelectItem>
@@ -110,7 +143,7 @@ export default function AddPropertyPage() {
                             <SelectValue placeholder="Select county" />
                           </SelectTrigger>
                           <SelectContent>
-                            {COUNTIES.map(county => (
+                            {counties.map(county => (
                               <SelectItem key={county} value={county.toLowerCase()}>
                                 {county}
                               </SelectItem>
@@ -150,77 +183,6 @@ export default function AddPropertyPage() {
                         required
                       />
                     </div>
-                  </div>
-
-                  {/* Pricing Information */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    <div>
-                      <Label htmlFor="rent">Rent (per month)</Label>
-                      <Input
-                        id="rent"
-                        type="number"
-                        placeholder="KES"
-                        required
-                      />
-                    </div>
-
-                    <div>
-                      <Label htmlFor="deposit">Deposit</Label>
-                      <Input
-                        id="deposit"
-                        type="number"
-                        placeholder="KES"
-                        required
-                      />
-                    </div>
-
-                    <div>
-                      <Label htmlFor="garbage">Garbage Fees</Label>
-                      <Input
-                        id="garbage"
-                        type="number"
-                        placeholder="KES"
-                        required
-                      />
-                    </div>
-
-                    <div>
-                      <Label htmlFor="security">Security Fees</Label>
-                      <Input
-                        id="security"
-                        type="number"
-                        placeholder="KES"
-                        required
-                      />
-                    </div>
-
-                    <div>
-                      <Label htmlFor="water">Water Charges</Label>
-                      <Input
-                        id="water"
-                        type="number"
-                        placeholder="KES per unit/PM"
-                        required
-                      />
-                    </div>
-
-                    <div>
-                      <Label htmlFor="waterDeposit">Water Deposit</Label>
-                      <Input
-                        id="waterDeposit"
-                        type="number"
-                        placeholder="KES"
-                        required
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <Label htmlFor="otherFees">Other Fees</Label>
-                    <Input
-                      id="otherFees"
-                      placeholder="Specify any other fees"
-                    />
                   </div>
 
                   <div>
@@ -282,4 +244,3 @@ export default function AddPropertyPage() {
     </DashboardLayout>
   )
 }
-
