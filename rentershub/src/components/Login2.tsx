@@ -30,7 +30,7 @@ const LoginForm = () => {
 
       if (response?.ok) {
         toast.success('Login successful!');
-        router.push('/');
+        router.push('/Dashboard');
       } else {
         if (response?.error) {
           if (response.error.includes('No active account')) {

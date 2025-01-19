@@ -5,11 +5,6 @@ import { type DefaultSession } from "next-auth";
 import authConfig from "./auth.config";
 import axios from "axios";
 
-
-
-
-
-
 declare module "next-auth" {
   interface CredentialsProvider<T extends Record<string, any> = Record<string, any>> {
     credentials: {
