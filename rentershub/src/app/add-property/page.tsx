@@ -66,29 +66,10 @@ export default function AddPropertyPage() {
       }
     }
 
-    const fetchCounties = async () => {
-      try {
-        const response = await fetch(`${baseUrl}listing/counties`, {
-          method: 'GET',
-          headers: {
-            Authorization: `Bearer ${session.user.accessToken}`,
-          },
-        })
-
-        if (!response.ok) {
-          const errorDetails = await response.text()
-          throw new Error(`Failed to fetch counties: ${response.status}, ${errorDetails}`)
-        }
-
-        const data = await response.json()
-        setCounties(data.results.map((county: { name: string }) => county.name))
-      } catch (error) {
-        console.error('Error fetching counties:', error)
-      }
-    }
+   
 
     fetchHouseTypes()
-    fetchCounties()
+    
   }, [session?.user.accessToken])
 
   const handleFeatureToggle = (feature: string) => {
