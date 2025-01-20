@@ -17,10 +17,10 @@ interface SidebarProps {
 }
 
 const menuItems = [
-  { icon: Home, label: 'Dashboard', href: '/Dashboard' },
-  { icon: Building, label: 'My Properties', href: '/properties' },
-  { icon: PlusSquare, label: 'Add Property', href: '/add-property' },
-  { icon: User, label: 'Profile', href: '/profile' },
+  { icon: Home, label: 'Dashboard', href: '/rentershub/Dashboard' },
+  { icon: Building, label: 'My Properties', href: '/rentershub/properties' },
+  { icon: PlusSquare, label: 'Add Property', href: '/rentershub/add-property' },
+  { icon: User, label: 'Profile', href: '/rentershub/profile' },
   { icon: Settings, label: 'Settings', href: '#' },
   { icon: HelpCircle, label: 'Help & Support', href: '/support' },
 ]
