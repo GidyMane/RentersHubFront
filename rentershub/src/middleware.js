@@ -48,5 +48,5 @@ export default auth(async(req) => {
 });
 
 export const config = {
-  matcher: ["/(api|trpc)(.)", "/", "/successmessage", "/login", "/rentershub/:path*", "/Terms-and-conditions"],
+  matcher: ["/(api|trpc)(.)", "/", "/successmessage", "/login", "/properties","/rentershub/:path*", "/Terms-and-conditions"],
 };
