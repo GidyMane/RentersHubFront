@@ -22,21 +22,23 @@ const Page = async () => {
   return (
     <div className="flex h-screen bg-gray-100 text-gray-800">
       {/* Sidebar */}
-      <div className="w-64 bg-green-500 text-white">
+      {/* <div className="w-64 bg-green-500 text-white">
         <Sidebar />
-      </div>
+      </div> */}
+
+      THIS IS BLANK
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col">
         {/* Navbar */}
-        <div className="bg-white shadow">
+        {/* <div className="bg-white shadow">
           <Navbar />
-        </div>
+        </div> */}
 
         {/* Dashboard Content */}
-        <div className="flex-1 overflow-y-auto p-6">
+        {/* <div className="flex-1 overflow-y-auto p-6">
           <DashboardContent metrics={defaultMetrics} recentActivities={[]} />
-        </div>
+        </div> */}
       </div>
     </div>
   );
