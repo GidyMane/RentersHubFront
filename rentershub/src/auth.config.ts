@@ -3,8 +3,8 @@ import Credentials from "next-auth/providers/credentials";
 import axios from "axios";
 // Your own logic for dealing with plaintext password strings; be careful!
 import type { NextAuthConfig } from "next-auth";
-import { ZodError } from "zod"
-import { signInSchema } from "./lib/zod"
+// import { ZodError } from "zod"
+// import { signInSchema } from "./lib/zod"
 // import GoogleProvider from "next-auth/providers/google";
 // import { baseUrl } from "./utils/constants";
 
@@ -114,7 +114,8 @@ export default {
     updateAge: 10 * 60
   },
   callbacks: {
-    jwt: async ({ token, user, profile, session, account, trigger }) => {
+    // { token, user, profile, session, account, trigger }
+    jwt: async ({ token, user }) => {
 
       if (user){
         token.accessToken= user.accessToken,

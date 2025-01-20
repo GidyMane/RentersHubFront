@@ -13,7 +13,7 @@ import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
 export default function ProfilePage() {
-  const router = useRouter()
+  // const router = useRouter()
   const [isEditing, setIsEditing] = useState(false)
   const [profile, setProfile] = useState({
     firstName: 'John',

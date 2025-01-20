@@ -25,10 +25,10 @@ export default function AddPropertyPage() {
   const router = useRouter()
   const { data: session } = useSession()
   const [houseTypes, setHouseTypes] = useState<string[]>([])
-  const [counties, setCounties] = useState<string[]>([])
+  // const [counties, setCounties] = useState<string[]>([])
   const [selectedFeatures, setSelectedFeatures] = useState<string[]>([])
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false)
-  const [uploadedFiles, setUploadedFiles] = useState<File[]>([])
+  // const [uploadedFiles, setUploadedFiles] = useState<File[]>([])
   const COUNTIES = [
     "Baringo", "Bomet", "Bungoma", "Busia", "Elgeyo-Marakwet", "Embu", "Garissa", 
     "Homa Bay", "Isiolo", "Kajiado", "Kakamega", "Kericho", "Kiambu", "Kilifi", 
@@ -201,14 +201,14 @@ export default function AddPropertyPage() {
             </Card>
 
             <Card>
-              <CardContent className="p-6">
+              {/* <CardContent className="p-6">
                 <h3 className="text-lg font-semibold text-[#1C4532] mb-4">
                   Property Images
                 </h3>
                 <FileUploadZone
                   onFilesSelected={(files) => setUploadedFiles(prev => [...prev, ...files])}
                 />
-              </CardContent>
+              </CardContent> */}
             </Card>
 
             <div className="flex justify-end">
