@@ -5,53 +5,83 @@ import { FilterBar } from '@/components/Test/Rentershub/FilterBar'
 import { PropertyCard } from '@/components/Test/Rentershub/PropertyCard'
 import { useState } from 'react'
 
-// This would typically come from an API
+// Updated properties for Kenyan market
 const properties = [
   {
     id: 1,
-    name: "Ambarukmo Square",
-    address: "3650 E Ambarukmo St, Jogja 85032",
-    units: 120,
-    occupancyRate: 24,
+    name: "The Kilimani Haven",
+    address: "123 Kilimani Rd, Nairobi",
+    units: 45,
+    occupancyRate: 80,
     status: "Active" as const,
-    lastUpdated: "Dec 5",
+    lastUpdated: "Jan 12",
     metrics: {
-      views: 9257,
-      leads: 45,
-      applications: 9
+      views: 1200,
+      leads: 50,
+      applications: 15
     },
-    imageUrl: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-D98uVzNbCEUloUXSEVyM5YD7KJVsjv.png"
+    imageUrl: "/kilimani.jpg"
   },
   {
     id: 2,
-    name: "The Patang Puluhan",
-    address: "2450 B Patangpuluhan St, Jogja 84920",
-    units: 53,
-    occupancyRate: 38,
+    name: "Roysa Apartments",
+    address: "456 Roysambu St, Nairobi",
+    units: 60,
+    occupancyRate: 60,
     status: "Active" as const,
-    lastUpdated: "Nov 29",
+    lastUpdated: "Jan 8",
     metrics: {
-      views: 5340,
-      leads: 23,
-      applications: 7
+      views: 950,
+      leads: 30,
+      applications: 10
     },
-    imageUrl: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-0Jl0ffVryq4VUjIQg5UAQBj73VQzxD.png"
+    imageUrl: "/roysa.webp"
   },
   {
     id: 3,
-    name: "The Wetan Kali",
-    address: "3235 D Wetan Kali St, Jogja 85018",
-    units: 84,
-    occupancyRate: 55,
+    name: "Uthiru Residency",
+    address: "789 Uthiru Rd, Nairobi",
+    units: 35,
+    occupancyRate: 40,
     status: "Off Market" as const,
-    lastUpdated: "Nov 27",
+    lastUpdated: "Jan 2",
     metrics: {
-      views: 560,
-      leads: 0,
-      applications: 0
+      views: 200,
+      leads: 5,
+      applications: 1
     },
-    imageUrl: "/placeholder.svg?height=400&width=600"
+    imageUrl: "/uthiru.jpg"
   },
+  {
+    id: 4,
+    name: "Regen Apartments",
+    address: "101 Regen St, Nairobi",
+    units: 25,
+    occupancyRate: 90,
+    status: "Active" as const,
+    lastUpdated: "Jan 15",
+    metrics: {
+      views: 1800,
+      leads: 70,
+      applications: 25
+    },
+    imageUrl: "/regen.jpg"
+  },
+  {
+    id: 5,
+    name: "Kabiria Heights",
+    address: "202 Kabiria Rd, Nairobi",
+    units: 50,
+    occupancyRate: 50,
+    status: "Active" as const,
+    lastUpdated: "Jan 10",
+    metrics: {
+      views: 700,
+      leads: 20,
+      applications: 5
+    },
+    imageUrl: "/kabiria.jpg"
+  }
 ]
 
 export default function PropertiesPage() {
@@ -97,4 +127,3 @@ export default function PropertiesPage() {
     </DashboardLayout>
   )
 }
-
