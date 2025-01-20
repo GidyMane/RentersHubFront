@@ -21,8 +21,8 @@ const menuItems = [
   { icon: Building, label: 'My Properties', href: '/rentershub/properties' },
   { icon: PlusSquare, label: 'Add Property', href: '/rentershub/add-property' },
   { icon: User, label: 'Profile', href: '/rentershub/profile' },
-  { icon: Settings, label: 'Settings', href: '#' },
-  { icon: HelpCircle, label: 'Help & Support', href: '/support' },
+  { icon: Settings, label: 'Settings', href: '/rentershub/settings' },
+  { icon: HelpCircle, label: 'Help & Support', href: '/rentershub/support' },
 ]
 
 export function Sidebar({ isOpen, toggleSidebar }: SidebarProps) {
@@ -38,7 +38,7 @@ export function Sidebar({ isOpen, toggleSidebar }: SidebarProps) {
     >
       <div className="flex flex-col h-full">
         <div className="flex items-center justify-between h-16 px-4 bg-[#153726] dark:bg-[#0D2419]">
-          <Link href="/Dashboard" className="flex items-center space-x-4">
+          <Link href="/rentershub/Dashboard" className="flex items-center space-x-4">
             <Image
               src={theme === 'dark' ? '/RH1.png' : '/RH1.png'}
               alt="RentersHub Logo"
