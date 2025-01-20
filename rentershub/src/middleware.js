@@ -4,7 +4,7 @@ import NextAuth from "next-auth";
 
 const publicroutes = ["/successmessage","/Terms-and-Conditions"];
 
-export const authroutes = ["/auth"];
+export const authroutes = ["/login"];
 
 const apiAuthPrefix = "/api/auth";
 
@@ -38,7 +38,7 @@ export default auth(async(req) => {
   }
 
   if (!isLoggedIn && !isPublicRoute) {
-    return Response.redirect(new URL("/auth", nextUrl));
+    return Response.redirect(new URL("/login", nextUrl));
   }
 
 
@@ -48,5 +48,5 @@ export default auth(async(req) => {
 });
 
 export const config = {
-  matcher: ["/(api|trpc)(.)", "/", "/successmessage", "/auth", "/rentershub/:path*", "/Terms-and-conditions"],
+  matcher: ["/(api|trpc)(.)", "/", "/successmessage", "/login", "/rentershub/:path*", "/Terms-and-conditions"],
 };

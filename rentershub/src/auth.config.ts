@@ -144,7 +144,7 @@ export default {
   },
   secret: process.env.AUTH_SECRET!,
   pages: {
-    signIn: "/auth",
+    signIn: "/login",
     error: '/auth/error',
   },
 } satisfies NextAuthConfig;
