@@ -3,8 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { AuthProvider } from "@/providers/KindeAuthProvider";
 import { SessionProvider } from "@/context/SessionProvider";
-
-
+import { EdgeStoreProvider } from "../lib/edgestore";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -28,18 +27,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-
     <AuthProvider>
       <SessionProvider>
-      <html lang="en">
-        <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-        >
-          {children}
-        </body>
-      </html>
+        <EdgeStoreProvider>
+          <html lang="en">
+            <body
+              className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+            >
+              {children}
+            </body>
+          </html>
+        </EdgeStoreProvider>
       </SessionProvider>
     </AuthProvider>
   );
 }
-
