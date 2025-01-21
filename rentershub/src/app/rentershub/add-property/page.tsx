@@ -28,7 +28,12 @@ export default function AddPropertyPage() {
   const [houseTypes, setHouseTypes] = useState<string[]>([]);
   const [selectedFeatures, setSelectedFeatures] = useState<string[]>([]);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
-  const [uploadedFiles, setUploadedFiles] = useState<string[]>([]); // Store uploaded image URLs
+  const [uploadedFiles, setUploadedFiles] = useState<{
+    coverImage?: string;
+    otherMedia: string[];
+  }>({
+    otherMedia: [],
+  });
   const { edgestore } = useEdgeStore();
 
   const COUNTIES = [
@@ -77,9 +82,19 @@ export default function AddPropertyPage() {
     );
   };
 
-  const handleFilesSelected = async (files: File[]) => {
+  const handleFilesSelected = async (files: File[], isCoverImage: boolean) => {
+    const validTypes = isCoverImage
+      ? ['image/jpeg', 'image/png', 'image/jpg']
+      : ['image/jpeg', 'image/png', 'image/jpg', 'video/mp4', 'video/webm'];
+
+    const validFiles = files.filter((file) => validTypes.includes(file.type));
+
+    if (validFiles.length !== files.length) {
+      alert('Some files have invalid types and will not be uploaded.');
+    }
+
     const uploadedUrls: string[] = [];
-    for (const file of files) {
+    for (const file of validFiles) {
       try {
         const res = await edgestore.publicFiles.upload({
           file,
@@ -92,7 +107,15 @@ export default function AddPropertyPage() {
         console.error(`Error uploading ${file.name}:`, error);
       }
     }
-    setUploadedFiles((prev) => [...prev, ...uploadedUrls]);
+
+    if (isCoverImage) {
+      setUploadedFiles((prev) => ({ ...prev, coverImage: uploadedUrls[0] }));
+    } else {
+      setUploadedFiles((prev) => ({
+        ...prev,
+        otherMedia: [...prev.otherMedia, ...uploadedUrls],
+      }));
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -110,99 +133,88 @@ export default function AddPropertyPage() {
           </h1>
 
           <form onSubmit={handleSubmit} className="space-y-8">
+            {/* Basic Information */}
             <Card>
-              <CardContent className="p-6">
-                <div className="space-y-6">
-                  {/* Basic Information */}
-                  <div className="space-y-4">
-                    <div>
-                      <Label htmlFor="title">Post Title</Label>
-                      <Input
-                        id="title"
-                        placeholder="e.g., TWO BEDROOM APARTMENTS TO LET IN KARATINA TOWN"
-                        required
-                      />
-                    </div>
+              <CardContent className="p-6 space-y-6">
+                <div>
+                  <Label htmlFor="title">Post Title</Label>
+                  <Input id="title" placeholder="e.g., TWO BEDROOM APARTMENTS TO LET IN KARATINA TOWN" required />
+                </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div>
-                        <Label htmlFor="houseType">House Type</Label>
-                        <Select required>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select house type" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {houseTypes.map((type) => (
-                              <SelectItem key={type} value={type.toLowerCase()}>
-                                {type}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                      </div>
-
-                      <div>
-                        <Label htmlFor="county">County</Label>
-                        <Select required>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select county" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {COUNTIES.map((county) => (
-                              <SelectItem key={county} value={county.toLowerCase()}>
-                                {county}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                      </div>
-                    </div>
-
-                    <div>
-                      <Label htmlFor="location">Location</Label>
-                      <Input
-                        id="location"
-                        placeholder="e.g., Kabiria, Dagoretti near Fremo Hospital"
-                        required
-                      />
-                    </div>
-                  </div>
-
-                  {/* Management Information */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <Label htmlFor="managedBy">Managed By</Label>
-                      <Input
-                        id="managedBy"
-                        placeholder="Landlord's name or Agency's name"
-                        required
-                      />
-                    </div>
-
-                    <div>
-                      <Label htmlFor="phone">Phone Number</Label>
-                      <Input id="phone" type="tel" placeholder="+254" required />
-                    </div>
-                  </div>
-
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <Label htmlFor="description">Property Description</Label>
-                    <Textarea
-                      id="description"
-                      placeholder="Write something about the vacant house..."
-                      className="h-32"
-                      required
-                    />
+                    <Label htmlFor="houseType">House Type</Label>
+                    <Select required>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select house type" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {houseTypes.map((type) => (
+                          <SelectItem key={type} value={type.toLowerCase()}>
+                            {type}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                   </div>
+                  <div>
+                    <Label htmlFor="county">County</Label>
+                    <Select required>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select county" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {COUNTIES.map((county) => (
+                          <SelectItem key={county} value={county.toLowerCase()}>
+                            {county}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+
+                <div>
+                  <Label htmlFor="location">Location</Label>
+                  <Input
+                    id="location"
+                    placeholder="e.g., Kabiria, Dagoretti near Fremo Hospital"
+                    required
+                  />
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="managedBy">Managed By</Label>
+                    <Input id="managedBy" placeholder="Landlord's name or Agency's name" required />
+                  </div>
+                  <div>
+                    <Label htmlFor="phone">Phone Number</Label>
+                    <Input id="phone" type="tel" placeholder="+254" required />
+                  </div>
+                </div>
+
+                <div>
+                  <Label htmlFor="rent">Rent Amount</Label>
+                  <Input id="rent" placeholder="e.g., 15,000" type="number" required />
+                </div>
+
+                <div>
+                  <Label htmlFor="description">Property Description</Label>
+                  <Textarea
+                    id="description"
+                    placeholder="Write something about the vacant house..."
+                    className="h-32"
+                    required
+                  />
                 </div>
               </CardContent>
             </Card>
 
+            {/* Property Features */}
             <Card>
               <CardContent className="p-6">
-                <h3 className="text-lg font-semibold text-[#1C4532] mb-4">
-                  Property Features
-                </h3>
+                <h3 className="text-lg font-semibold text-[#1C4532] mb-4">Property Features</h3>
                 <PropertyFeatures
                   selectedFeatures={selectedFeatures}
                   onFeatureToggle={handleFeatureToggle}
@@ -210,21 +222,36 @@ export default function AddPropertyPage() {
               </CardContent>
             </Card>
 
+            {/* Cover Image */}
             <Card>
               <CardContent className="p-6">
-                <h3 className="text-lg font-semibold text-[#1C4532] mb-4">
-                  Property Images
-                </h3>
-                <FileUploadZone onFilesSelected={handleFilesSelected} />
+                <h3 className="text-lg font-semibold text-[#1C4532] mb-4">Cover Image</h3>
+                <FileUploadZone onFilesSelected={(files) => handleFilesSelected(files, true)} />
+                {uploadedFiles.coverImage && (
+                  <img src={uploadedFiles.coverImage} alt="Cover" className="mt-4 w-32 h-32 object-cover" />
+                )}
+              </CardContent>
+            </Card>
+
+            {/* Property Images & Videos */}
+            <Card>
+              <CardContent className="p-6">
+                <h3 className="text-lg font-semibold text-[#1C4532] mb-4">Property Images & Videos</h3>
+                <FileUploadZone onFilesSelected={(files) => handleFilesSelected(files, false)} />
+                {uploadedFiles.otherMedia.map((url, idx) => (
+                  <div key={idx}>
+                    {url.endsWith('.mp4') ? (
+                      <video src={url} controls className="w-32 h-32" />
+                    ) : (
+                      <img src={url} alt={`Media ${idx}`} className="w-32 h-32" />
+                    )}
+                  </div>
+                ))}
               </CardContent>
             </Card>
 
             <div className="flex justify-end">
-              <Button
-                type="submit"
-                size="lg"
-                className="bg-[#1C4532] hover:bg-[#153726]"
-              >
+              <Button type="submit" size="lg" className="bg-[#1C4532] hover:bg-[#153726]">
                 Upload Property
               </Button>
             </div>
