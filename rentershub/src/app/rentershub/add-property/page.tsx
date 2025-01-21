@@ -60,6 +60,7 @@ export default function AddPropertyPage() {
             Authorization: `Bearer ${session.user.accessToken}`,
           },
         });
+        console.log(response, "house features")
 
         if (!response.ok) {
           const errorDetails = await response.text();

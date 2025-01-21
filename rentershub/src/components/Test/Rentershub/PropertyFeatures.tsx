@@ -36,7 +36,7 @@ export function PropertyFeatures({ selectedFeatures, onFeatureToggle }: Property
 
       try {
         console.log('Fetching features from API:', `${baseUrl}listing/propertyfeature`)
-        const response = await fetch(`${baseUrl}listing/propertyfeature`, {
+        const response = await fetch(`${baseUrl}listing/propertyfeature?limit=62&offset=0`, {
           method: 'GET',
           headers: {
             Authorization: `Bearer ${session.user.accessToken}`,
