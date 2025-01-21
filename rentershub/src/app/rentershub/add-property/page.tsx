@@ -257,14 +257,47 @@ export default function AddPropertyPage() {
 
             {/* Cover Image */}
             <Card>
-              <CardContent className="p-6">
-                <h3 className="text-lg font-semibold text-[#1C4532] mb-4">Cover Image</h3>
-                <FileUploadZone onFilesSelected={(files) => handleFilesSelected(files, true)} />
-                {uploadedFiles.coverImage && (
-                  <img src={uploadedFiles.coverImage} alt="Cover" className="mt-4 w-32 h-32 object-cover" />
-                )}
-              </CardContent>
-            </Card>
+  <CardContent className="p-6">
+    <h3 className="text-lg font-semibold text-[#1C4532] mb-4">Cover Image</h3>
+    
+    {/* Conditionally render FileUploadZone based on whether the cover image is already selected */}
+    {!uploadedFiles.coverImage ? (
+      <FileUploadZone
+        onFilesSelected={(files) => {
+          // Allow only one file to be uploaded
+          if (files.length === 1) {
+            handleFilesSelected(files, true);
+          } else {
+            alert("You can only upload one cover image.");
+          }
+        }}
+      />
+    ) : (
+      <div className="border p-4 rounded-lg bg-gray-100">
+        <p className="text-sm text-gray-500">Cover image selected.</p>
+        <img
+          src={uploadedFiles.coverImage}
+          alt="Cover"
+          className="mt-2 w-32 h-32 object-cover"
+        />
+        
+        {/* Allow the user to remove the image and upload a new one */}
+        <button
+          onClick={() => {
+            setUploadedFiles(prev => ({
+              ...prev,
+              coverImage: ''
+            }));
+          }}
+          className="mt-2 text-sm text-red-600 hover:underline"
+        >
+          Remove Image
+        </button>
+      </div>
+    )}
+  </CardContent>
+</Card>
+
 
             {/* Property Images & Videos */}
             <Card>
