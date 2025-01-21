@@ -194,9 +194,42 @@ export default function AddPropertyPage() {
                   </div>
                 </div>
 
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="rent">Rent Price Per Month</Label>
+                    <Input id="rent" placeholder="e.g., 15,000" type="number" required />
+                  </div>
+                  <div>
+                    <Label htmlFor="deposit">Deposit Amount</Label>
+                    <Input id="deposit" placeholder="e.g., 10,000" type="number" required />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="garbageFees">Garbage Fees</Label>
+                    <Input id="garbageFees" placeholder="e.g., 500" type="number" />
+                  </div>
+                  <div>
+                    <Label htmlFor="securityFees">Security Fees</Label>
+                    <Input id="securityFees" placeholder="e.g., 1,000" type="number" />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="waterCharges">Water Charges/Unit/PM</Label>
+                    <Input id="waterCharges" placeholder="e.g., 200" type="number" />
+                  </div>
+                  <div>
+                    <Label htmlFor="waterDeposit">Water Deposit</Label>
+                    <Input id="waterDeposit" placeholder="e.g., 2,000" type="number" />
+                  </div>
+                </div>
+
                 <div>
-                  <Label htmlFor="rent">Rent Amount</Label>
-                  <Input id="rent" placeholder="e.g., 15,000" type="number" required />
+                  <Label htmlFor="otherFees">Specify Other Fees</Label>
+                  <Input id="otherFees" placeholder="Other fees..." />
                 </div>
 
                 <div>
