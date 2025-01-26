@@ -4,6 +4,7 @@ import "./globals.css";
 import { AuthProvider } from "@/providers/KindeAuthProvider";
 import { SessionProvider } from "@/context/SessionProvider";
 import { EdgeStoreProvider } from "../lib/edgestore";
+import { ToastContainer } from "react-toastify";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -27,8 +28,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <AuthProvider>
+    <AuthProvider>      
       <SessionProvider>
+      {/* <ToastContainer /> */}
         <EdgeStoreProvider>
           <html lang="en">
             <body

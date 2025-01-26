@@ -4,6 +4,9 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { useFormik } from 'formik';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import * as Yup from 'yup';
 import { DashboardLayout } from '@/components/Test/Rentershub/DashbordLayout';
 import { FileUploadZone } from '@/components/Test/Rentershub/FileUploadZone';
@@ -201,14 +204,14 @@ export default function AddPropertyPage() {
         }
   
         const responseData = await response.json();
-        console.log('Property created successfully:', responseData);
+        toast.success('Property created successfully:', responseData);
   
         setIsSuccessModalOpen(true);
         setIsSubmitting(false); // End loading
         router.push('/properties'); // Redirect after success
       }       
       catch (error) {
-        console.error('Error submitting property:', error);
+        toast.error('Error submitting property',);
         alert('Failed to submit property. Please try again.');
       }
     },
