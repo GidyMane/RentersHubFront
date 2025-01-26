@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { DashboardLayout } from '@/components/Test/Rentershub/DashbordLayout'
 import { AvatarUpload } from '@/components/Test/Rentershub/AvatarUpload'
@@ -11,34 +11,80 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import { baseUrl } from '@/utils/constants'
+import { getSession } from 'next-auth/react'
 
 export default function ProfilePage() {
-  // const router = useRouter()
+  const router = useRouter()
   const [isEditing, setIsEditing] = useState(false)
   const [profile, setProfile] = useState({
-    firstName: 'John',
-    lastName: 'Doe',
-    email: 'john.doe@example.com',
-    phone: '+254712345678',
-    role: 'Landlord',
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+    role: '',
   })
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target
-    setProfile(prev => ({ ...prev, [name]: value }))
+  // Function to fetch user data
+  const fetchUserData = async () => {
+    try {
+      const session = await getSession(); 
+      const userId = session?.user?.user_id;
+
+    console.log(session, "this is the session")
+      if (!userId) {
+        toast.error("User ID not found in session");
+        return;
+      }
+
+      const response = await fetch(`${baseUrl}/accounts/user/${userId}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch user data");
+      }
+
+      const data = await response.json();
+      const user = data.result;
+
+      setProfile({
+        firstName: user.first_name,
+        lastName: user.username, // Assuming the last name is the username if not provided
+        email: user.email,
+        phone: user.contact,
+        role: user.role_name.role,
+      });
+    } catch (error) {
+      console.error(error);
+      toast.error("An error occurred while fetching user data");
+    }
   }
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
+  // Fetch user data on component mount
+  useEffect(() => {
+    fetchUserData();
+  }, []);
+
+  const handleInputChange = (e: { target: { name: any; value: any } }) => {
+    const { name, value } = e.target;
+    setProfile((prev) => ({ ...prev, [name]: value }));
+  }
+
+  const handleSubmit = async (e: { preventDefault: () => void }) => {
+    e.preventDefault();
     // Here you would typically make an API call to update the profile
-    toast.success("Profile updated successfully")
-    setIsEditing(false)
+    toast.success("Profile updated successfully");
+    setIsEditing(false);
   }
 
-  const handleImageUpload = (file: File) => {
+  const handleImageUpload = (file: { name: any }) => {
     // Here you would typically upload the file to your server
-    console.log('Uploading file:', file.name)
-    toast.success("Profile picture updated successfully")
+    console.log('Uploading file:', file.name);
+    toast.success("Profile picture updated successfully");
   }
 
   return (
@@ -146,4 +192,5 @@ export default function ProfilePage() {
     </DashboardLayout>
   )
 }
+
 

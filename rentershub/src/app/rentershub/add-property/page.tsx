@@ -132,21 +132,21 @@ export default function AddPropertyPage() {
       otherFees: '',
       description: '',
     },
-    validationSchema: Yup.object({
-      title: Yup.string().required('Title is required'),
-      houseType: Yup.string().required('House type is required'),
-      county: Yup.string().required('County is required'),
-      location: Yup.string().required('Location is required'),
-      managedBy: Yup.string().required('Manager is required'),
-      phone: Yup.string().required('Phone number is required'),
-      rent: Yup.number()
-        .required('Rent price is required')
-        .positive('Rent must be a positive value'),
-      deposit: Yup.number()
-        .required('Deposit amount is required')
-        .positive('Deposit must be a positive value'),
-      description: Yup.string().required('Description is required'),
-    }),
+    // validationSchema: Yup.object({
+    //   title: Yup.string().required('Title is required'),
+    //   houseType: Yup.string().required('House type is required'),
+    //   county: Yup.string().required('County is required'),
+    //   location: Yup.string().required('Location is required'),
+    //   managedBy: Yup.string().required('Manager is required'),
+    //   phone: Yup.string().required('Phone number is required'),
+    //   rent: Yup.number()
+    //     .required('Rent price is required')
+    //     .positive('Rent must be a positive value'),
+    //   deposit: Yup.number()
+    //     .required('Deposit amount is required')
+    //     .positive('Deposit must be a positive value'),
+    //   description: Yup.string().required('Description is required'),
+    // }),
     onSubmit: async (values) => {
       setIsSubmitting(true);
       try {
@@ -154,15 +154,11 @@ export default function AddPropertyPage() {
           title: values.title,
           description: values.description,
           property_type: parseInt(values.houseType, 10),
-          price: parseFloat(values.rent) + parseFloat(values.deposit),
+          price: '0',
           city: values.city || 'Unknown City',
           state: values.county,
           country: 'Kenya',
-          postal_code: values.poBox || '00000',
-          location: {
-            type: 'Point',
-            coordinates: [32.5825, 0.3476], // Replace with dynamic coordinates if needed
-          },
+          postal_code: values.poBox || '00000',          
           address: values.location,
           features: (selectedFeatures || []).map(Number),
           water_charges: parseFloat(values.waterCharges || '0'), // Ensuring type consistency
@@ -182,10 +178,12 @@ export default function AddPropertyPage() {
             id: `img-${idx + 1}`,
             url,
           })),
-          posted_by: session?.user?.id,
+          posted_by: session?.user?.user_id,
           managed_by: values.managedBy,
         };
-  
+
+       console.log(formattedData, "formatted data")
+
         const response = await fetch(`${baseUrl}listing/property`, {
           method: 'POST',
           headers: {
@@ -194,6 +192,8 @@ export default function AddPropertyPage() {
           },
           body: JSON.stringify(formattedData),
         });
+
+        console.log(response,"this is a response from fetch")
   
         if (!response.ok) {
           const errorDetails = await response.text();
@@ -217,6 +217,7 @@ export default function AddPropertyPage() {
     },
   });
   
+
   
 
   const handleFeatureToggle = (feature: string) => {

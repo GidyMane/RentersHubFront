@@ -78,8 +78,9 @@ export default {
           user = res.data;
         }
         return {                      
-            accessToken: user.result.access,
-            refreshToken: user.result.refresh,
+            accessToken: user.result.tokens.access,
+            refreshToken: user.result.tokens.refresh,
+            user_id: user.result.user_id,
           };;
       
     } catch (error:any)
@@ -119,7 +120,8 @@ export default {
 
       if (user){
         token.accessToken= user.accessToken,
-        token.refreshToken= user.refreshToken
+        token.refreshToken= user.refreshToken,
+        token.user_id = user.user_id as unknown as number
       }
   
 
@@ -135,7 +137,8 @@ export default {
         user: {
           ...session?.user, 
           accessToken : token.accessToken,
-          refreshToken: token.refreshToken
+          refreshToken: token.refreshToken,
+          user_id: token.user_id as number
 
           
         }
