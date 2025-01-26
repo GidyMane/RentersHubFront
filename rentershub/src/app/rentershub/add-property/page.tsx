@@ -131,6 +131,7 @@ export default function AddPropertyPage() {
       waterDeposit: '',
       otherFees: '',
       description: '',
+      features:[],
     },
     // validationSchema: Yup.object({
     //   title: Yup.string().required('Title is required'),
@@ -156,7 +157,7 @@ export default function AddPropertyPage() {
           property_type: parseInt(values.houseType, 10),
           price: '0',
           city: values.city || 'Unknown City',
-          state: values.county,
+          state: values.county,          
           country: 'Kenya',
           postal_code: values.poBox || '00000',          
           address: values.location,
@@ -296,97 +297,211 @@ export default function AddPropertyPage() {
                     )}
                   </div>
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <Label htmlFor="location">Location</Label>
-                  <Input
-                    id="location"
-                    placeholder="e.g., Kabiria, Dagoretti near Fremo Hospital"
-                    required
-                  />
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <Label htmlFor="location">Location</Label>
+                <Input
+                  id="location"
+                  name="location"
+                  placeholder="e.g., Kabiria, Dagoretti near Fremo Hospital"
+                  value={formik.values.location}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  required
+                />
+                {formik.touched.location && formik.errors.location && (
+                  <p className="text-red-500 text-sm">{formik.errors.location}</p>
+                )}
+              </div>
+              <div>
+                <Label htmlFor="city">City</Label>
+                <Input
+                  id="city"
+                  name="city"
+                  placeholder="e.g., Nairobi"
+                  value={formik.values.city}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  required
+                />
+                {formik.touched.city && formik.errors.city && (
+                  <p className="text-red-500 text-sm">{formik.errors.city}</p>
+                )}
+              </div>
+              <div>
+                <Label htmlFor="postal_code">Po Box</Label>
+                <Input
+                  id="poBox"
+                  name="poBox"
+                  placeholder="e.g., 0100"
+                  value={formik.values.poBox}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  required
+                />
+                {formik.touched.poBox && formik.errors.poBox && (
+                  <p className="text-red-500 text-sm">{formik.errors.poBox}</p>
+                )}
+              </div>
+            </div>
 
-                </div>
 
-                <div>
-                  <Label htmlFor="city">City</Label>
-                  <Input
-                    id="City"
-                    placeholder="e.g., Nairobi"
-                    required
-                  />
-                </div><div>
-                  <Label htmlFor="po_box">Po Box</Label>
-                  <Input
-                    id="Box"
-                    placeholder="e.g., 0100"
-                    required
-                  />
-                </div>
-
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <Label htmlFor="managedBy">Managed By</Label>
-                    <Input id="managedBy" placeholder="Landlord's name or Agency's name" required />
-                  </div>
-                  <div>
-                    <Label htmlFor="phone">Phone Number</Label>
-                    <Input id="phone" type="tel" placeholder="+254" required />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <Label htmlFor="rent">Rent Price Per Month</Label>
-                    <Input id="rent" placeholder="e.g., 15,000" type="number" required />
-                  </div>
-                  <div>
-                    <Label htmlFor="deposit">Deposit Amount</Label>
-                    <Input id="deposit" placeholder="e.g., 10,000" type="number" required />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <Label htmlFor="garbageFees">Garbage Fees</Label>
-                    <Input id="garbageFees" placeholder="e.g., 500" type="number" />
-                  </div>
-                  <div>
-                    <Label htmlFor="securityFees">Security Fees</Label>
-                    <Input id="securityFees" placeholder="e.g., 1,000" type="number" />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <Label htmlFor="waterCharges">Water Charges/Unit/PM</Label>
-                    <Input id="waterCharges" placeholder="e.g., 200" type="number" />
-                  </div>
-                  <div>
-                    <Label htmlFor="waterDeposit">Water Deposit</Label>
-                    <Input id="waterDeposit" placeholder="e.g., 2,000" type="number" />
-                  </div>
-                </div>
-
-                <div>
-                  <Label htmlFor="otherFees">Specify Other Fees</Label>
-                  <Input id="otherFees" placeholder="Other fees..." />
-                </div>
                 
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="managedBy">Managed By</Label>
+                <Input
+                  id="managedBy"
+                  name="managedBy"
+                  placeholder="Landlord's name or Agency's name"
+                  value={formik.values.managedBy}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  required
+                />
+                {formik.touched.managedBy && formik.errors.managedBy && (
+                  <p className="text-red-500 text-sm">{formik.errors.managedBy}</p>
+                )}
+              </div>
+              <div>
+                <Label htmlFor="phone">Phone Number</Label>
+                <Input
+                  id="phone"
+                  name="phone"
+                  type="tel"
+                  placeholder="+254"
+                  value={formik.values.phone}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  required
+                />
+                {formik.touched.phone && formik.errors.phone && (
+                  <p className="text-red-500 text-sm">{formik.errors.phone}</p>
+                )}
+              </div>
+            </div>
 
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="rent">Rent Price Per Month</Label>
+                <Input
+                  id="rent"
+                  name="rent"
+                  placeholder="e.g., 15,000"
+                  type="number"
+                  value={formik.values.rent}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  required
+                />
+                {formik.touched.rent && formik.errors.rent && (
+                  <p className="text-red-500 text-sm">{formik.errors.rent}</p>
+                )}
+              </div>
+              <div>
+                <Label htmlFor="deposit">Deposit Amount</Label>
+                <Input
+                  id="deposit"
+                  name="deposit"
+                  placeholder="e.g., 10,000"
+                  type="number"
+                  value={formik.values.deposit}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  required
+                />
+                {formik.touched.deposit && formik.errors.deposit && (
+                  <p className="text-red-500 text-sm">{formik.errors.deposit}</p>
+                )}
+              </div>
+            </div>
 
-                <div>
-                  <Label htmlFor="description">Property Description</Label>
-                  <Textarea
-                    id="description"
-                    placeholder="Write something about the vacant house..."
-                    className="h-32"
-                    required
-                  />
-                </div>         
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="garbageFees">Garbage Fees</Label>
+                <Input
+                  id="garbageFees"
+                  name="garbageFees"
+                  placeholder="e.g., 500"
+                  type="number"
+                  value={formik.values.garbageFees}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                />
+                {formik.touched.garbageFees && formik.errors.garbageFees && (
+                  <p className="text-red-500 text-sm">{formik.errors.garbageFees}</p>
+                )}
+              </div>
+              <div>
+                <Label htmlFor="securityFees">Security Fees</Label>
+                <Input
+                  id="securityFees"
+                  name="securityFees"
+                  placeholder="e.g., 1,000"
+                  type="number"
+                  value={formik.values.securityFees}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                />
+                {formik.touched.securityFees && formik.errors.securityFees && (
+                  <p className="text-red-500 text-sm">{formik.errors.securityFees}</p>
+                )}
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="waterCharges">Water Charges/Unit/PM</Label>
+                <Input
+                  id="waterCharges"
+                  name="waterCharges"
+                  placeholder="e.g., 200"
+                  type="number"
+                  value={formik.values.waterCharges}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                />
+                {formik.touched.waterCharges && formik.errors.waterCharges && (
+                  <p className="text-red-500 text-sm">{formik.errors.waterCharges}</p>
+                )}
+              </div>
+              <div>
+                <Label htmlFor="waterDeposit">Water Deposit</Label>
+                <Input
+                  id="waterDeposit"
+                  name="waterDeposit"
+                  placeholder="e.g., 2,000"
+                  type="number"
+                  value={formik.values.waterDeposit}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                />
+                {formik.touched.waterDeposit && formik.errors.waterDeposit && (
+                  <p className="text-red-500 text-sm">{formik.errors.waterDeposit}</p>
+                )}
+              </div>
+            </div>
+
+            <div>
+              <Label htmlFor="description">Property Description</Label>
+              <Textarea
+                id="description"
+                name="description"
+                placeholder="Write something about the vacant house..."
+                className="h-32"
+                value={formik.values.description}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                required
+              />
+              {formik.touched.description && formik.errors.description && (
+                <p className="text-red-500 text-sm">{formik.errors.description}</p>
+              )}
+            </div>
+          </CardContent>
+        </Card>         
                            
-              </CardContent>
-            </Card>
+              
             {/* Property Features */}
             <Card>
               <CardContent className="p-6">
