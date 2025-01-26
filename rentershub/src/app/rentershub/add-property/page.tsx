@@ -3,6 +3,8 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
 import { DashboardLayout } from '@/components/Test/Rentershub/DashbordLayout';
 import { FileUploadZone } from '@/components/Test/Rentershub/FileUploadZone';
 import { PropertyFeatures } from '@/components/Test/Rentershub/PropertyFeatures';
@@ -24,6 +26,7 @@ import { useEdgeStore } from '@/lib/edgestore';
 
 export default function AddPropertyPage() {
   const router = useRouter();
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const { data: session } = useSession();
   const [houseTypes, setHouseTypes] = useState<string[]>([]);
   const [selectedFeatures, setSelectedFeatures] = useState<string[]>([]);
@@ -36,21 +39,16 @@ export default function AddPropertyPage() {
   });
   const { edgestore } = useEdgeStore();
 
-  const COUNTIES = [
-    'Baringo', 'Bomet', 'Bungoma', 'Busia', 'Elgeyo-Marakwet', 'Embu', 'Garissa',
-    'Homa Bay', 'Isiolo', 'Kajiado', 'Kakamega', 'Kericho', 'Kiambu', 'Kilifi',
-    'Kirinyaga', 'Kisii', 'Kisumu', 'Kitui', 'Kwale', 'Laikipia', 'Lamu', 'Machakos',
-    'Makueni', 'Mandera', 'Meru', 'Migori', 'Marsabit', 'Mombasa', 'Murang\'a',
-    'Nairobi', 'Nakuru', 'Nandi', 'Narok', 'Nyamira', 'Nyandarua', 'Nyeri',
-    'Samburu', 'Siaya', 'Taita-Taveta', 'Tana River', 'Tharaka-Nithi', 'Trans Nzoia',
-    'Turkana', 'Uasin Gishu', 'Vihiga', 'Wajir', 'West Pokot',
-  ];
+  const COUNTIES = ['Baringo'];
 
   useEffect(() => {
     if (!session?.user.accessToken) {
       console.error('Session is not available.');
       return;
     }
+
+  
+
 
     const fetchHouseTypes = async () => {
       try {
@@ -60,7 +58,6 @@ export default function AddPropertyPage() {
             Authorization: `Bearer ${session.user.accessToken}`,
           },
         });
-        console.log(response, "house features")
 
         if (!response.ok) {
           const errorDetails = await response.text();
@@ -76,12 +73,6 @@ export default function AddPropertyPage() {
 
     fetchHouseTypes();
   }, [session?.user.accessToken]);
-
-  const handleFeatureToggle = (feature: string) => {
-    setSelectedFeatures((prev) =>
-      prev.includes(feature) ? prev.filter((f) => f !== feature) : [...prev, feature]
-    );
-  };
 
   const handleFilesSelected = async (files: File[], isCoverImage: boolean) => {
     const validTypes = isCoverImage
@@ -119,62 +110,189 @@ export default function AddPropertyPage() {
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log('Form submitted with uploaded files:', uploadedFiles);
-    setIsSuccessModalOpen(true);
+  const formik = useFormik({
+    initialValues: {
+      title: '',
+      houseType: '',
+      county: '',
+      city:'',
+      poBox:'',
+      location: '',
+      managedBy: '',
+      phone: '',
+      rent: '',
+      deposit: '',
+      garbageFees: '',
+      securityFees: '',
+      waterCharges: '',
+      waterDeposit: '',
+      otherFees: '',
+      description: '',
+    },
+    validationSchema: Yup.object({
+      title: Yup.string().required('Title is required'),
+      houseType: Yup.string().required('House type is required'),
+      county: Yup.string().required('County is required'),
+      location: Yup.string().required('Location is required'),
+      managedBy: Yup.string().required('Manager is required'),
+      phone: Yup.string().required('Phone number is required'),
+      rent: Yup.number()
+        .required('Rent price is required')
+        .positive('Rent must be a positive value'),
+      deposit: Yup.number()
+        .required('Deposit amount is required')
+        .positive('Deposit must be a positive value'),
+      description: Yup.string().required('Description is required'),
+    }),
+    onSubmit: async (values) => {
+      setIsSubmitting(true);
+      try {
+        const formattedData = {
+          title: values.title,
+          description: values.description,
+          property_type: parseInt(values.houseType, 10),
+          price: parseFloat(values.rent) + parseFloat(values.deposit),
+          city: values.city || 'Unknown City',
+          state: values.county,
+          country: 'Kenya',
+          postal_code: values.poBox || '00000',
+          location: {
+            type: 'Point',
+            coordinates: [32.5825, 0.3476], // Replace with dynamic coordinates if needed
+          },
+          address: values.location,
+          features: (selectedFeatures || []).map(Number),
+          water_charges: parseFloat(values.waterCharges || '0'), // Ensuring type consistency
+          garbage_charges: parseFloat(values.garbageFees || '0'), // Consistently parse to float
+          security_charges: parseFloat(values.securityFees || '0'),
+          other_charges: parseFloat(values.otherFees || '0'),
+          water_deposit: parseFloat(values.waterDeposit || '0'),
+          is_available: true,
+          is_approved: true,
+          featured: true,
+          rent_price: parseFloat(values.rent),
+          deposit_amount: parseFloat(values.deposit),
+          main_image_url: uploadedFiles?.coverImage
+            ? { id: 'main-image', url: uploadedFiles.coverImage }
+            : null,
+          other_images: (uploadedFiles?.otherMedia || []).map((url, idx) => ({
+            id: `img-${idx + 1}`,
+            url,
+          })),
+          posted_by: session?.user?.id,
+          managed_by: values.managedBy,
+        };
+  
+        const response = await fetch(`${baseUrl}listing/property`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${session?.user?.accessToken}`,
+          },
+          body: JSON.stringify(formattedData),
+        });
+  
+        if (!response.ok) {
+          const errorDetails = await response.text();
+         
+          throw new Error(
+            `Failed to create property: ${response.status}, ${errorDetails}`
+          );
+        }
+  
+        const responseData = await response.json();
+        console.log('Property created successfully:', responseData);
+  
+        setIsSuccessModalOpen(true);
+        setIsSubmitting(false); // End loading
+        router.push('/properties'); // Redirect after success
+      }       
+      catch (error) {
+        console.error('Error submitting property:', error);
+        alert('Failed to submit property. Please try again.');
+      }
+    },
+  });
+  
+  
+
+  const handleFeatureToggle = (feature: string) => {
+    setSelectedFeatures((prev) =>
+      prev.includes(feature) ? prev.filter((f) => f !== feature) : [...prev, feature]
+    );
   };
 
   return (
     <DashboardLayout>
       <div className="p-4 sm:p-6 lg:p-8">
         <div className="max-w-4xl mx-auto">
-          <h1 className="text-2xl sm:text-3xl font-bold text-[#1C4532] mb-6">
-            Add New Property
-          </h1>
+          <h1 className="text-2xl sm:text-3xl font-bold text-[#1C4532] mb-6">Add New Property</h1>
 
-          <form onSubmit={handleSubmit} className="space-y-8">
+          <form onSubmit={formik.handleSubmit} className="space-y-8">
             {/* Basic Information */}
             <Card>
               <CardContent className="p-6 space-y-6">
                 <div>
                   <Label htmlFor="title">Post Title</Label>
-                  <Input id="title" placeholder="e.g., TWO BEDROOM APARTMENTS TO LET IN KARATINA TOWN" required />
+                  <Input
+                    id="title"
+                    name="title"
+                    placeholder="e.g., TWO BEDROOM APARTMENTS TO LET IN KARATINA TOWN"
+                    value={formik.values.title}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    required
+                  />
+                  {formik.touched.title && formik.errors.title && (
+                    <p className="text-red-500 text-sm">{formik.errors.title}</p>
+                  )}
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <Label htmlFor="houseType">House Type</Label>
-                    <Select required>
+                    <Select
+                      onValueChange={(value) => formik.setFieldValue('houseType', value)}
+                      required
+                    >
                       <SelectTrigger>
                         <SelectValue placeholder="Select house type" />
                       </SelectTrigger>
                       <SelectContent>
                         {houseTypes.map((type) => (
-                          <SelectItem key={type} value={type.toLowerCase()}>
+                          <SelectItem key={type} value={type}>
                             {type}
                           </SelectItem>
                         ))}
                       </SelectContent>
                     </Select>
+                    {formik.touched.houseType && formik.errors.houseType && (
+                      <p className="text-red-500 text-sm">{formik.errors.houseType}</p>
+                    )}
                   </div>
                   <div>
                     <Label htmlFor="county">County</Label>
-                    <Select required>
+                    <Select
+                      onValueChange={(value) => formik.setFieldValue('county', value)}
+                      required
+                    >
                       <SelectTrigger>
                         <SelectValue placeholder="Select county" />
                       </SelectTrigger>
                       <SelectContent>
                         {COUNTIES.map((county) => (
-                          <SelectItem key={county} value={county.toLowerCase()}>
+                          <SelectItem key={county} value={county}>
                             {county}
                           </SelectItem>
                         ))}
                       </SelectContent>
                     </Select>
+                    {formik.touched.county && formik.errors.county && (
+                      <p className="text-red-500 text-sm">{formik.errors.county}</p>
+                    )}
                   </div>
                 </div>
-
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <Label htmlFor="location">Location</Label>
                   <Input
@@ -182,8 +300,26 @@ export default function AddPropertyPage() {
                     placeholder="e.g., Kabiria, Dagoretti near Fremo Hospital"
                     required
                   />
+
                 </div>
 
+                <div>
+                  <Label htmlFor="city">City</Label>
+                  <Input
+                    id="City"
+                    placeholder="e.g., Nairobi"
+                    required
+                  />
+                </div><div>
+                  <Label htmlFor="po_box">Po Box</Label>
+                  <Input
+                    id="Box"
+                    placeholder="e.g., 0100"
+                    required
+                  />
+                </div>
+
+                </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <Label htmlFor="managedBy">Managed By</Label>
@@ -232,6 +368,8 @@ export default function AddPropertyPage() {
                   <Label htmlFor="otherFees">Specify Other Fees</Label>
                   <Input id="otherFees" placeholder="Other fees..." />
                 </div>
+                
+
 
                 <div>
                   <Label htmlFor="description">Property Description</Label>
@@ -241,10 +379,10 @@ export default function AddPropertyPage() {
                     className="h-32"
                     required
                   />
-                </div>
+                </div>         
+                           
               </CardContent>
             </Card>
-
             {/* Property Features */}
             <Card>
               <CardContent className="p-6">
@@ -318,10 +456,15 @@ export default function AddPropertyPage() {
             </Card>
 
             <div className="flex justify-end">
-              <Button type="submit" size="lg" className="bg-[#1C4532] hover:bg-[#153726]">
-                Upload Property
-              </Button>
-            </div>
+        <Button
+          type="submit"
+          size="lg"
+          className="bg-[#1C4532] hover:bg-[#153726]"
+          disabled={isSubmitting} // Disable during loading
+        >
+          {isSubmitting ? 'Uploading...' : 'Upload Property'} {/* Show loading state */}
+        </Button>
+      </div>
           </form>
 
           <SuccessModal
