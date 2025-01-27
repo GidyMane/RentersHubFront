@@ -37,7 +37,7 @@ export default function ProfilePage() {
         return;
       }
 
-      const response = await fetch(`${baseUrl}/accounts/user/${userId}`, {
+      const response = await fetch(`${baseUrl}accounts/user/${userId}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -56,7 +56,7 @@ export default function ProfilePage() {
 
       setProfile({
         firstName: user.first_name,
-        lastName: user.username, // Assuming the last name is the username if not provided
+        lastName: user.username, 
         email: user.email,
         phone: user.contact,
         role: user.role_name.role,
