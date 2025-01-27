@@ -50,6 +50,8 @@ export default function AddPropertyPage() {
       return;
     }
 
+
+    
   
 
 
@@ -113,9 +115,12 @@ export default function AddPropertyPage() {
     }
   };
 
+  type FeatureId = number
+  
   const formik = useFormik({
     initialValues: {
       title: '',
+      features: [] as FeatureId[],
       houseType: '',
       county: '',
       city:'',
@@ -131,7 +136,7 @@ export default function AddPropertyPage() {
       waterDeposit: '',
       otherFees: '',
       description: '',
-      features:[],
+      
     },
     // validationSchema: Yup.object({
     //   title: Yup.string().required('Title is required'),
@@ -161,7 +166,8 @@ export default function AddPropertyPage() {
           country: 'Kenya',
           postal_code: values.poBox || '00000',          
           address: values.location,
-          features: (selectedFeatures || []).map(Number),
+          features: values.features,
+          amenites:[],
           water_charges: parseFloat(values.waterCharges || '0'), // Ensuring type consistency
           garbage_charges: parseFloat(values.garbageFees || '0'), // Consistently parse to float
           security_charges: parseFloat(values.securityFees || '0'),
@@ -194,7 +200,7 @@ export default function AddPropertyPage() {
           body: JSON.stringify(formattedData),
         });
 
-        console.log(response,"this is a response from fetch")
+        console.log(response,"this is a response from post")
   
         if (!response.ok) {
           const errorDetails = await response.text();
@@ -221,11 +227,15 @@ export default function AddPropertyPage() {
 
   
 
-  const handleFeatureToggle = (feature: string) => {
-    setSelectedFeatures((prev) =>
-      prev.includes(feature) ? prev.filter((f) => f !== feature) : [...prev, feature]
-    );
-  };
+  const handleFeatureToggle = (featureId: FeatureId) => {
+    const updatedFeatures = formik.values.features.includes(featureId)
+      ? formik.values.features.filter((id) => id !== featureId) // Remove feature ID
+      : [...formik.values.features, featureId] // Add feature ID
+
+    formik.setFieldValue('features', updatedFeatures)
+
+    console.log(updatedFeatures, "Features to send to formik")
+  }
 
   return (
     <DashboardLayout>
@@ -504,14 +514,17 @@ export default function AddPropertyPage() {
               
             {/* Property Features */}
             <Card>
-              <CardContent className="p-6">
-                <h3 className="text-lg font-semibold text-[#1C4532] mb-4">Property Features</h3>
-                <PropertyFeatures
-                  selectedFeatures={selectedFeatures}
-                  onFeatureToggle={handleFeatureToggle}
-                />
-              </CardContent>
-            </Card>
+        <CardContent className="p-6">
+          <h3 className="text-lg font-semibold text-[#1C4532] mb-4">Property Features</h3>
+          <PropertyFeatures
+            selectedFeatures={formik.values.features} // Pass selected IDs
+            onFeatureToggle={handleFeatureToggle} // Pass toggle handler
+          />
+          {formik.touched.features && formik.errors.features && (
+            <p className="text-red-500 text-sm mt-2">{formik.errors.features}</p>
+          )}
+        </CardContent>
+      </Card>
 
             {/* Cover Image */}
             <Card>
