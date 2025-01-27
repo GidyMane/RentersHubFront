@@ -29,7 +29,7 @@ export function AvatarUpload({ initialImage, onImageUpload }: AvatarUploadProps)
     <div className="flex flex-col items-center space-y-4">
       <Avatar className="h-32 w-32">
         <AvatarImage src={avatarSrc} />
-        <AvatarFallback>CN</AvatarFallback>
+        <AvatarFallback>ME</AvatarFallback>
       </Avatar>
       <div className="relative">
         <input
