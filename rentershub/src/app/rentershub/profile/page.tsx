@@ -42,8 +42,11 @@ export default function ProfilePage() {
         headers: {
           'Content-Type': 'application/json',
         },
-      });
+      
 
+      
+      });
+       console.log(response, "jibu kutoka kwa server")
       if (!response.ok) {
         throw new Error("Failed to fetch user data");
       }

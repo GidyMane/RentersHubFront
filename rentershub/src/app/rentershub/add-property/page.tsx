@@ -167,7 +167,7 @@ export default function AddPropertyPage() {
           postal_code: values.poBox || '00000',          
           address: values.location,
           features: values.features,
-          amenites:[],
+          amenities:[],
           water_charges: parseFloat(values.waterCharges || '0'), // Ensuring type consistency
           garbage_charges: parseFloat(values.garbageFees || '0'), // Consistently parse to float
           security_charges: parseFloat(values.securityFees || '0'),
