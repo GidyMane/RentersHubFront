@@ -214,7 +214,7 @@ export default function AddPropertyPage() {
   
         setIsSuccessModalOpen(true);
         setIsSubmitting(false); // End loading
-        router.push('/properties'); // Redirect after success
+        router.push('/rentershub/properties'); // Redirect after success
       }       
       catch (error) {
         toast.error('Error submitting property',);
@@ -602,7 +602,7 @@ export default function AddPropertyPage() {
             isOpen={isSuccessModalOpen}
             onClose={() => {
               setIsSuccessModalOpen(false);
-              router.push('/properties');
+              router.push('/rentershub/properties');
             }}
           />
         </div>
