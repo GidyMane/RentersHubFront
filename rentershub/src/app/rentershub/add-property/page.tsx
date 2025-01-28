@@ -138,21 +138,20 @@ export default function AddPropertyPage() {
       description: '',
       
     },
-    // validationSchema: Yup.object({
-    //   title: Yup.string().required('Title is required'),
-    //   houseType: Yup.string().required('House type is required'),
-    //   county: Yup.string().required('County is required'),
-    //   location: Yup.string().required('Location is required'),
-    //   managedBy: Yup.string().required('Manager is required'),
-    //   phone: Yup.string().required('Phone number is required'),
-    //   rent: Yup.number()
-    //     .required('Rent price is required')
-    //     .positive('Rent must be a positive value'),
-    //   deposit: Yup.number()
-    //     .required('Deposit amount is required')
-    //     .positive('Deposit must be a positive value'),
-    //   description: Yup.string().required('Description is required'),
-    // }),
+    validationSchema: Yup.object({
+      title: Yup.string().required('Title is required'),
+      houseType: Yup.string().required('House type is required'),
+      county: Yup.string().required('County is required'),      
+      managedBy: Yup.string().required('Manager is required'),
+      phone: Yup.string().required('Phone number is required'),
+      rent: Yup.number()
+        .required('Rent price is required')
+        .positive('Rent must be a positive value'),
+      deposit: Yup.number()
+        .required('Deposit amount is required')
+        .positive('Deposit must be a positive value'),
+      description: Yup.string().required('Description is required'),
+    }),
     onSubmit: async (values) => {
       setIsSubmitting(true);
       try {
