@@ -29,24 +29,20 @@ const LoginForm = () => {
         redirect: false,
       });
 
-      console.log(response,"response login")
+      console.log(response, 'response login');
 
       if (response?.ok) {
-        // Check if the account is approved
-        if (response?.status === 400) {
+        // Handle configuration error case
+        if (response.error === 'Configuration') {
           toast.warning('Your account is awaiting admin approval. Please wait until it is approved.');
-          
         } else {
           toast.success('Login successful!');
-          console.log(response?.status, "res status")
           router.push('/rentershub/Dashboard');
         }
       } else {
-        // Handle errors
+        // Handle other error cases
         if (response?.error) {
-          if (response.error.includes('No active account')) {
-            toast.error('Your account is not yet approved by the admin. Please wait for approval.');
-          } else if (response.error.includes('Invalid credentials')) {
+          if (response.error.includes('Invalid credentials')) {
             toast.error('Wrong password or invalid credentials.');
           } else if (response.error.includes('Account not found')) {
             toast.error('Account not found. Please sign up.');
@@ -64,7 +60,6 @@ const LoginForm = () => {
       setIsLoading(false);
     }
   };
-
 
   return (
     <>

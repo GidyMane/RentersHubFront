@@ -54,45 +54,53 @@ export default {
       },
       authorize: async (credentials) => {
         let user = null;
-
-        try {
-        
-        // const { contact, password } = await signInSchema.parseAsync(credentials)
-
-        
-          
-        const res = await axios.post(
-          process.env.baseUrl! + "accounts/login/user/",
-          {
-            contact: credentials.contact,
-            password: credentials.password,
-          }
-        );
-
-
-        console.dir(res)
-
-
-
-        if (res.status === 200) {
-          user = res.data;
-        }
-        return {                      
-            accessToken: user.result.tokens.access,
-            refreshToken: user.result.tokens.refresh,
-            user_id: user.result.user_id,
-          };;
       
-    } catch (error:any)
-    {
-        console.error("Authorization error:", error);
-
-        // Handle invalid credentials or API errors
-        throw new Error(error.message);
+        try {
+          // Send the login request
+          const res = await axios.post(
+            `${process.env.baseUrl}accounts/login/user/`,
+            {
+              contact: credentials.contact,
+              password: credentials.password,
+            }
+          );
+      
+          console.dir(res);
+      
+          // Check if the response is successful
+          if (res.status === 200) {
+            // Check for an error object in the response body
+            if (res.data.error) {
+              throw new Error(res.data.error); // Throw the error message from the response
+            }
+      
+            // Extract user details if no error exists
+            user = res.data;
+            return {
+              accessToken: user.result.tokens.access,
+              refreshToken: user.result.tokens.refresh,
+              user_id: user.result.user_id,
+            };
+          }
+        } catch (error: any) {
+          console.error("Authorization error:", error);
+      
+          // Handle specific errors
+          if (error.response) {
+            const status = error.response.status;
+            if (status === 400) {
+              throw new Error('Bad request: Invalid credentials or input.');
+            }
+          }
+      
+          // Rethrow the error with the original message
+          throw new Error(error.message || 'An unknown error occurred.');
+        }
+      
+        // If no user is returned
+        return null;
       }
-
-      return null; // If no user is returned
-    },
+      
     }),
     // GoogleProvider({
     //   clientId: process.env.GOOGLE_CLIENT_ID!,
