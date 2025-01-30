@@ -44,7 +44,7 @@ export function PropertyCard({
           <div>
             <h3 className="font-semibold text-lg text-[#1C4532]">{title}</h3>
             <p className="text-sm text-gray-600">
-              {address}
+              {address},{state}
             </p>
           </div>
           <div className="flex gap-1">
