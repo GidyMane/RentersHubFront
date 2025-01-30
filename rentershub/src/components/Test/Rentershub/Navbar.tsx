@@ -1,8 +1,8 @@
 'use client'
 
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { Menu, Bell, Search, User, LogOut, Settings } from 'lucide-react'
+import { Menu, Bell, Search, User, LogOut } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import {
@@ -14,12 +14,61 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { getSession } from 'next-auth/react'
+import { toast } from 'react-toastify'
+import { baseUrl } from '@/utils/constants'
 
 interface NavbarProps {
   toggleSidebar: () => void
 }
 
 export function Navbar({ toggleSidebar }: NavbarProps) {
+  const [user, setUser] = useState<{ name: string, email: string, avatar?: string }>({
+    name: '',
+    email: '',
+    avatar: '',
+  });
+
+  const fetchUserData = async () => {
+    try {
+      const session = await getSession();
+      const userId = session?.user?.user_id;
+
+      if (!userId) {
+        toast.error("User ID not found in session");
+        return;
+      }
+
+      const response = await fetch(`${baseUrl}accounts/user/${userId}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${session?.user?.accessToken}`
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch user data");
+      }
+
+      const data = await response.json();
+      const userData = data.result;
+
+      setUser({
+        name: userData.first_name + ' ' + userData.username,
+        email: userData.email,
+        avatar: userData.avatar || "/placeholder.svg?height=32&width=32",
+      });
+    } catch (error) {
+      console.error(error);
+      toast.error("An error occurred while fetching user data");
+    }
+  }
+
+  useEffect(() => {
+    fetchUserData();
+  }, []);
+
   return (
     <header className="sticky top-0 z-40 bg-white border-b shadow-sm">
       <div className="container mx-auto px-4">
@@ -48,17 +97,17 @@ export function Navbar({ toggleSidebar }: NavbarProps) {
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="relative h-8 w-8 rounded-full">
                   <Avatar className="h-8 w-8">
-                    <AvatarImage src="/placeholder.svg?height=32&width=32" alt="@username" />
-                    <AvatarFallback>MB</AvatarFallback>
+                    <AvatarImage src={user.avatar} alt={user.name} />
+                    <AvatarFallback>{user.name?.charAt(0)}</AvatarFallback>
                   </Avatar>
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-56" align="end" forceMount>
                 <DropdownMenuLabel className="font-normal">
                   <div className="flex flex-col space-y-1">
-                    <p className="text-sm font-medium leading-none">Muchiri Bundi</p>
+                    <p className="text-sm font-medium leading-none">{user.name}</p>
                     <p className="text-xs leading-none text-muted-foreground">
-                      muchiri.ke@example.com
+                      {user.email}
                     </p>
                   </div>
                 </DropdownMenuLabel>
@@ -69,12 +118,6 @@ export function Navbar({ toggleSidebar }: NavbarProps) {
                     <span>Profile</span>
                   </Link>
                 </DropdownMenuItem>
-                {/* <DropdownMenuItem asChild>
-                  <Link href="/settings">
-                    <Settings className="mr-2 h-4 w-4" />
-                    <span>Settings</span>
-                  </Link>
-                </DropdownMenuItem> */}
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>
                   <LogOut className="mr-2 h-4 w-4" />
@@ -88,4 +131,3 @@ export function Navbar({ toggleSidebar }: NavbarProps) {
     </header>
   )
 }
-
