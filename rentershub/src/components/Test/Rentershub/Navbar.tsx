@@ -14,7 +14,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { getSession } from 'next-auth/react'
+import { getSession, signOut } from 'next-auth/react'
 import { toast } from 'react-toastify'
 import { baseUrl } from '@/utils/constants'
 
@@ -120,8 +120,16 @@ export function Navbar({ toggleSidebar }: NavbarProps) {
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>
-                  <LogOut className="mr-2 h-4 w-4" />
-                  <span>Log out</span>
+                <Button
+            variant="ghost"
+            className="w-full justify-start text-black-300 hover:bg-[#db3131] dark:hover:bg-[#df3535] hover:text-white"
+            onClick={async () => {
+              await signOut()
+            }}
+          >
+            <LogOut className="h-5 w-5 mr-3" aria-hidden="true" />
+            Log Out
+          </Button>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
