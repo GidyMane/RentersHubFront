@@ -16,6 +16,7 @@ interface PropertyCardProps {
   rent_price: string
   is_available: boolean
   is_approved: boolean
+  date: string
   featured: boolean
   main_image_url: string | null
 }
@@ -30,10 +31,19 @@ export function PropertyCard({
   parking_spaces,
   rent_price,
   is_available,
+  date,
   is_approved,
-  featured,
+  featured,  
   main_image_url,
 }: PropertyCardProps) {
+
+  const formattedDate = new Date(date).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+
+
   return (
     <Card className="overflow-hidden hover:shadow-lg transition-shadow">
       <div className="relative h-48 overflow-hidden">
@@ -56,6 +66,8 @@ export function PropertyCard({
       </CardHeader>
       <CardContent className="p-4 pt-0">
         <div className="text-sm text-gray-500">Rent: KeS  {rent_price}/month</div>
+        <div className="text-xs text-gray-500 mt-2">Last Updated: {formattedDate}</div>
+
         <div className="mt-4 grid grid-cols-3 gap-4 text-center border-t pt-4">
           <div>
             <div className="flex items-center justify-center gap-1 text-[#2C7BE5]">

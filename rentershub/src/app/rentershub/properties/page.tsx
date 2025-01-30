@@ -78,6 +78,7 @@ export default function PropertiesPage() {
                   is_available={property.is_available}
                   is_approved={property.is_approved}
                   featured={property.featured}
+                  date={property.updated_at}
                   main_image_url={property.main_image_url?.url || "/placeholder.svg"} id={0}                />
               ))
             ) : (
