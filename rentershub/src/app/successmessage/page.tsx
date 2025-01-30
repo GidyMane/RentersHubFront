@@ -3,7 +3,8 @@ import React from 'react'
 
 const page = () => {
   return (
-    <div>
+    <div className="min-h-screen flex items-center justify-center bg-cover bg-center"
+     style={{ backgroundImage: "url('/interior.jpg')" }}>
       <SuccessMessage/>
     </div>
   )

@@ -3,25 +3,28 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { CheckCircle } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+
 
 
 
 const SuccessMessage = () => {
+  const router = useRouter();
   return (
-    <Card className="w-full max-w-2xl bg-white rounded-xl shadow-2xl overflow-hidden">
+    <Card className="w-full justify-center max-w-2xl bg-white rounded-xl shadow-2xl overflow-hidden">
       <CardHeader className="bg-gradient-to-r from-[#2ba808] to-blue-600 text-white p-6 flex flex-col items-center">
         <CheckCircle className="w-16 h-16 mb-4" />
         <CardTitle className="text-3xl font-bold text-center">Welcome to RentersHub!</CardTitle>
       </CardHeader>
       <CardContent className="p-6 space-y-6">
-        <h2 className="text-2xl font-bold text-center text-[#2ba808]">🎉 Account Creation Successful! 🎉</h2>
+        <h2 className="text-2xl font-bold text-center text-[#235a14]">🎉 Account Creation Successful! 🎉</h2>
         <p className="text-center">
           Thank you for joining the RentersHub community! Your account has been successfully created, and we are thrilled to have you on board.
         </p>
         <div className="bg-blue-50 border-l-4 border-blue-500 p-4 rounded">
           <h3 className="font-bold mb-2">Next Steps:</h3>
           <p>
-            🔒 Your application is currently under review by our administrators. Once your application is approved, you will gain full access to our platform, where you can manage your listings, connect with potential renters, and much more!
+            🔒 Your application is currently under review by our administrators. Once your application is approved, you will gain full access to our platform, 
           </p>
         </div>
         <p>
@@ -39,13 +42,15 @@ const SuccessMessage = () => {
         <div className="flex flex-col sm:flex-row justify-center gap-4 mt-6">
           <Button 
             
-            className="bg-[#2ba808] hover:bg-[#228606] text-white py-6 px-8 text-lg"
+            className="bg-[#0f4e12] hover:bg-[#228606] text-white py-6 px-8 text-lg"
+            onClick={() => router.push('/login')}
           >
             Go to Login
           </Button>
           <Button 
              
             className="bg-blue-600 hover:bg-blue-700 text-white py-6 px-8 text-lg"
+            onClick={() => router.push('/')}
           >
             Explore Platform
           </Button>
