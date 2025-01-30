@@ -55,7 +55,7 @@ export function PropertyCard({
         </div>
       </CardHeader>
       <CardContent className="p-4 pt-0">
-        <div className="text-sm text-gray-500">Rent: ${rent_price}/month</div>
+        <div className="text-sm text-gray-500">Rent: KeS  {rent_price}/month</div>
         <div className="mt-4 grid grid-cols-3 gap-4 text-center border-t pt-4">
           <div>
             <div className="flex items-center justify-center gap-1 text-[#2C7BE5]">
