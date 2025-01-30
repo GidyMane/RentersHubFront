@@ -25,13 +25,11 @@ export default function ProfilePage() {
     role: '',
   })
 
-  // Function to fetch user data
   const fetchUserData = async () => {
     try {
       const session = await getSession(); 
       const userId = session?.user?.user_id;
-
-    console.log(session, "this is the session")
+      
       if (!userId) {
         toast.error("User ID not found in session");
         return;
@@ -41,12 +39,10 @@ export default function ProfilePage() {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${session?.user?.accessToken}`,
         },
-      
-
-      
       });
-       console.log(response, "jibu kutoka kwa server")
+
       if (!response.ok) {
         throw new Error("Failed to fetch user data");
       }
@@ -67,7 +63,6 @@ export default function ProfilePage() {
     }
   }
 
-  // Fetch user data on component mount
   useEffect(() => {
     fetchUserData();
   }, []);
@@ -79,15 +74,40 @@ export default function ProfilePage() {
 
   const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
-    // Here you would typically make an API call to update the profile
-    toast.success("Profile updated successfully");
-    setIsEditing(false);
-  }
+    try {
+      const session = await getSession();
+      const userId = session?.user?.user_id;
+      
+      if (!userId) {
+        toast.error("User ID not found in session");
+        return;
+      }
 
-  const handleImageUpload = (file: { name: any }) => {
-    // Here you would typically upload the file to your server
-    console.log('Uploading file:', file.name);
-    toast.success("Profile picture updated successfully");
+      const response = await fetch(`${baseUrl}accounts/update/user/${userId}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${session?.user?.accessToken}`,
+        },
+        body: JSON.stringify({
+          first_name: profile.firstName,
+          username: profile.lastName,
+          email: profile.email,
+          contact: profile.phone,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to update profile");
+      }
+
+      toast.success("Profile updated successfully");
+      setIsEditing(false);
+      fetchUserData();
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to update profile");
+    }
   }
 
   return (
@@ -103,86 +123,40 @@ export default function ProfilePage() {
             </CardHeader>
             <CardContent>
               <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="flex justify-center mb-6">
-                  <AvatarUpload
-                    initialImage="/placeholder.svg?height=128&width=128"
-                    onImageUpload={handleImageUpload}
-                  />
-                </div>
-
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   <div>
                     <Label htmlFor="firstName">First Name</Label>
-                    <Input
-                      id="firstName"
-                      name="firstName"
-                      value={profile.firstName}
-                      onChange={handleInputChange}
-                      disabled={!isEditing}
-                      required
-                    />
+                    <Input id="firstName" name="firstName" value={profile.firstName} onChange={handleInputChange} disabled={!isEditing} required />
                   </div>
                   <div>
                     <Label htmlFor="lastName">Last Name</Label>
-                    <Input
-                      id="lastName"
-                      name="lastName"
-                      value={profile.lastName}
-                      onChange={handleInputChange}
-                      disabled={!isEditing}
-                      required
-                    />
+                    <Input id="lastName" name="lastName" value={profile.lastName} onChange={handleInputChange} disabled={!isEditing} required />
                   </div>
                 </div>
 
                 <div>
                   <Label htmlFor="email">Email</Label>
-                  <Input
-                    id="email"
-                    name="email"
-                    type="email"
-                    value={profile.email}
-                    onChange={handleInputChange}
-                    disabled={!isEditing}
-                    required
-                  />
+                  <Input id="email" name="email" type="email" value={profile.email} onChange={handleInputChange} disabled={!isEditing} required />
                 </div>
 
                 <div>
                   <Label htmlFor="phone">Phone Number</Label>
-                  <Input
-                    id="phone"
-                    name="phone"
-                    type="tel"
-                    value={profile.phone}
-                    onChange={handleInputChange}
-                    disabled={!isEditing}
-                    required
-                  />
+                  <Input id="phone" name="phone" type="tel" value={profile.phone} onChange={handleInputChange} disabled={!isEditing} required />
                 </div>
 
                 <div>
                   <Label htmlFor="role">Role</Label>
-                  <Input
-                    id="role"
-                    name="role"
-                    value={profile.role}
-                    disabled
-                  />
+                  <Input id="role" name="role" value={profile.role} disabled />
                 </div>
 
                 {isEditing ? (
                   <div className="flex justify-end space-x-4">
-                    <Button type="button" variant="outline" onClick={() => setIsEditing(false)}>
-                      Cancel
-                    </Button>
+                    <Button type="button" variant="outline" onClick={() => setIsEditing(false)}>Cancel</Button>
                     <Button type="submit">Save Changes</Button>
                   </div>
                 ) : (
                   <div className="flex justify-end">
-                    <Button type="button" onClick={() => setIsEditing(true)}>
-                      Edit Profile
-                    </Button>
+                    <Button type="button" onClick={() => setIsEditing(true)}>Edit Profile</Button>
                   </div>
                 )}
               </form>
@@ -195,5 +169,3 @@ export default function ProfilePage() {
     </DashboardLayout>
   )
 }
-
-
