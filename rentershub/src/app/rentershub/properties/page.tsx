@@ -3,35 +3,43 @@
 import { DashboardLayout } from "@/components/Test/Rentershub/DashbordLayout"
 import { FilterBar } from "@/components/Test/Rentershub/FilterBar"
 import { PropertyCard } from "@/components/Test/Rentershub/PropertyCard"
-import { useState } from "react"
-
-// Updated properties for the new structure
-const properties = [
-  {
-    id: 1,
-    title: "The Kilimani Haven",
-    description: "A beautiful apartment in Kilimani",
-    address: "123 Kilimani Rd",
-    city: "Nairobi",
-    state: "Nairobi",
-    country: "Kenya",
-    postal_code: "00100",
-    bedrooms: 3,
-    bathrooms: 2,
-    parking_spaces: 1,
-    is_available: false,
-    is_approved: false,
-    featured: true,
-    rent_price: "150000.00",
-    deposit_amount: "150000.00",
-    main_image_url: "/kilimani.jpg",
-  },
-  
-]
+import { useEffect, useState } from "react"
+import { getSession } from "next-auth/react"
+import { baseUrl } from "@/utils/constants"
+import axios from "axios"
 
 export default function PropertiesPage() {
   const [view, setView] = useState<"grid" | "list">("grid")
   const [status, setStatus] = useState("all")
+  const [properties, setProperties] = useState<any[]>([])
+
+
+  useEffect(() => {
+    const fetchProperties = async () => {
+      try {
+        const session = await getSession()
+        const userId = session?.user?.user_id
+
+        if (!userId) {
+          throw new Error("User ID not found in session")
+        }
+
+        const response = await axios.get(`${baseUrl}listing/property?userid=${userId}`, {
+          headers: {
+            Authorization: `Bearer ${session.user.accessToken}`,
+          },
+        })
+
+        console.log(response, "propatis")
+
+        setProperties(response.data.results || [])
+      } catch (error) {
+        console.error(error)
+      }
+    }
+
+    fetchProperties()
+  }, [])
 
   const filteredProperties = properties.filter((property) => {
     if (status === "all") return true
@@ -39,6 +47,8 @@ export default function PropertiesPage() {
     if (status === "unavailable") return !property.is_available
     return true
   })
+
+  console.log(filteredProperties, "filter")
 
   return (
     <DashboardLayout>
@@ -53,13 +63,29 @@ export default function PropertiesPage() {
           <div
             className={`grid gap-6 ${view === "grid" ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3" : "grid-cols-1"}`}
           >
-            {filteredProperties.map((property) => (
-              <PropertyCard key={property.id} {...property} />
-            ))}
+            {filteredProperties.length > 0 ? (
+              filteredProperties.map((property) => (
+                <PropertyCard
+                  key={property.id}
+                  title={property.title}
+                  address={property.address}
+                  city={property.city}
+                  state={property.state}
+                  bedrooms={property.bedrooms || 0}
+                  bathrooms={property.bathrooms || 0}
+                  parking_spaces={property.parking_spaces || 0}
+                  rent_price={property.rent_price}
+                  is_available={property.is_available}
+                  is_approved={property.is_approved}
+                  featured={property.featured}
+                  main_image_url={property.main_image_url?.url || "/placeholder.svg"} id={0}                />
+              ))
+            ) : (
+              <p>No properties found.</p>
+            )}
           </div>
         </div>
       </div>
     </DashboardLayout>
   )
 }
-
