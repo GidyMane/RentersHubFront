@@ -1,97 +1,42 @@
-'use client'
+"use client"
 
-import { DashboardLayout } from '@/components/Test/Rentershub/DashbordLayout'
-import { FilterBar } from '@/components/Test/Rentershub/FilterBar'
-import { PropertyCard } from '@/components/Test/Rentershub/PropertyCard'
-import { useState } from 'react'
+import { DashboardLayout } from "@/components/Test/Rentershub/DashbordLayout"
+import { FilterBar } from "@/components/Test/Rentershub/FilterBar"
+import { PropertyCard } from "@/components/Test/Rentershub/PropertyCard"
+import { useState } from "react"
 
-// Updated properties for Kenyan market
+// Updated properties for the new structure
 const properties = [
   {
     id: 1,
-    name: "The Kilimani Haven",
-    address: "123 Kilimani Rd, Nairobi",
-    units: 45,
-    occupancyRate: 80,
-    status: "Active" as const,
-    lastUpdated: "Jan 12",
-    metrics: {
-      views: 1200,
-      leads: 50,
-      applications: 15
-    },
-    imageUrl: "/kilimani.jpg"
+    title: "The Kilimani Haven",
+    description: "A beautiful apartment in Kilimani",
+    address: "123 Kilimani Rd",
+    city: "Nairobi",
+    state: "Nairobi",
+    country: "Kenya",
+    postal_code: "00100",
+    bedrooms: 3,
+    bathrooms: 2,
+    parking_spaces: 1,
+    is_available: false,
+    is_approved: false,
+    featured: true,
+    rent_price: "150000.00",
+    deposit_amount: "150000.00",
+    main_image_url: "/kilimani.jpg",
   },
-  {
-    id: 2,
-    name: "Roysa Apartments",
-    address: "456 Roysambu St, Nairobi",
-    units: 60,
-    occupancyRate: 60,
-    status: "Active" as const,
-    lastUpdated: "Jan 8",
-    metrics: {
-      views: 950,
-      leads: 30,
-      applications: 10
-    },
-    imageUrl: "/roysa.webp"
-  },
-  {
-    id: 3,
-    name: "Uthiru Residency",
-    address: "789 Uthiru Rd, Nairobi",
-    units: 35,
-    occupancyRate: 40,
-    status: "Off Market" as const,
-    lastUpdated: "Jan 2",
-    metrics: {
-      views: 200,
-      leads: 5,
-      applications: 1
-    },
-    imageUrl: "/uthiru.jpg"
-  },
-  {
-    id: 4,
-    name: "Regen Apartments",
-    address: "101 Regen St, Nairobi",
-    units: 25,
-    occupancyRate: 90,
-    status: "Active" as const,
-    lastUpdated: "Jan 15",
-    metrics: {
-      views: 1800,
-      leads: 70,
-      applications: 25
-    },
-    imageUrl: "/regen.jpg"
-  },
-  {
-    id: 5,
-    name: "Kabiria Heights",
-    address: "202 Kabiria Rd, Nairobi",
-    units: 50,
-    occupancyRate: 50,
-    status: "Active" as const,
-    lastUpdated: "Jan 10",
-    metrics: {
-      views: 700,
-      leads: 20,
-      applications: 5
-    },
-    imageUrl: "/kabiria.jpg"
-  }
+  
 ]
 
 export default function PropertiesPage() {
-  const [view, setView] = useState<'grid' | 'list'>('grid')
-  const [status, setStatus] = useState('all')
+  const [view, setView] = useState<"grid" | "list">("grid")
+  const [status, setStatus] = useState("all")
 
-  const filteredProperties = properties.filter(property => {
-    if (status === 'all') return true
-    if (status === 'active') return property.status === 'Active'
-    if (status === 'off-market') return property.status === 'Off Market'
+  const filteredProperties = properties.filter((property) => {
+    if (status === "all") return true
+    if (status === "available") return property.is_available
+    if (status === "unavailable") return !property.is_available
     return true
   })
 
@@ -103,23 +48,13 @@ export default function PropertiesPage() {
             <h1 className="text-2xl sm:text-3xl font-bold text-[#1C4532]">My Properties</h1>
           </div>
 
-          <FilterBar
-            view={view}
-            onViewChange={setView}
-            status={status}
-            onStatusChange={setStatus}
-          />
+          <FilterBar view={view} onViewChange={setView} status={status} onStatusChange={setStatus} />
 
-          <div className={`grid gap-6 ${
-            view === 'grid' 
-              ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3' 
-              : 'grid-cols-1'
-          }`}>
+          <div
+            className={`grid gap-6 ${view === "grid" ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3" : "grid-cols-1"}`}
+          >
             {filteredProperties.map((property) => (
-              <PropertyCard
-                key={property.id}
-                {...property}
-              />
+              <PropertyCard key={property.id} {...property} />
             ))}
           </div>
         </div>
@@ -127,3 +62,4 @@ export default function PropertiesPage() {
     </DashboardLayout>
   )
 }
+
