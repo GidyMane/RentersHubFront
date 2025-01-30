@@ -24,8 +24,8 @@ export function FilterBar({
   onStatusChange
 }: FilterBarProps) {
   return (
-    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-      <div className="flex items-center gap-2">
+    <div className="flex flex-col sm:flex-row justify-end items-start sm:items-center gap-4 mb-6">
+      {/* <div className="flex items-center gap-2">
         <Button
           variant="outline"
           size="sm"
@@ -50,7 +50,7 @@ export function FilterBar({
         >
           Off Market <span className="ml-1 text-xs">(4)</span>
         </Button>
-      </div>
+      </div> */}
       <div className="flex items-center gap-4 w-full sm:w-auto">
         <div className="flex items-center gap-2">
           <span className="text-sm text-gray-500">Show as</span>
@@ -80,8 +80,7 @@ export function FilterBar({
           <SelectContent>
             <SelectItem value="newest">Newest to Oldest</SelectItem>
             <SelectItem value="oldest">Oldest to Newest</SelectItem>
-            <SelectItem value="views">Most Views</SelectItem>
-            <SelectItem value="leads">Most Leads</SelectItem>
+            
           </SelectContent>
         </Select>
       </div>
