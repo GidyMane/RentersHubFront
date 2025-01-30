@@ -44,13 +44,13 @@ export function PropertyCard({
           <div>
             <h3 className="font-semibold text-lg text-[#1C4532]">{title}</h3>
             <p className="text-sm text-gray-600">
-              {address}, {city}, {state}
+              {address}
             </p>
           </div>
           <div className="flex gap-1">
-            {is_available && <Badge variant="secondary">Available</Badge>}
+            {/* {is_available && <Badge variant="secondary">Available</Badge>} */}
             {is_approved && <Badge variant="secondary">Approved</Badge>}
-            {featured && <Badge>Featured</Badge>}
+            {/* {featured && <Badge>Featured</Badge>} */}
           </div>
         </div>
       </CardHeader>
