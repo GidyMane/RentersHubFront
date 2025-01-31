@@ -122,15 +122,15 @@ export default function PropertyDetails({
           <div className="grid grid-cols-2 gap-2">
             <div className="flex items-center gap-2">
               <DollarSign className="w-5 h-5 text-muted-foreground" />
-              <span>Price: ${price}</span>
+              <span>Price: KeS {price}</span>
             </div>
             <div className="flex items-center gap-2">
               <DollarSign className="w-5 h-5 text-muted-foreground" />
-              <span>Rent: ${rent_price}/month</span>
+              <span>Rent: KeS {rent_price}/month</span>
             </div>
             <div className="flex items-center gap-2">
               <DollarSign className="w-5 h-5 text-muted-foreground" />
-              <span>Deposit: ${deposit_amount}</span>
+              <span>Deposit: KeS {deposit_amount}</span>
             </div>
           </div>
         </div>
@@ -142,23 +142,23 @@ export default function PropertyDetails({
           <div className="grid grid-cols-2 gap-2">
             <div className="flex items-center gap-2">
               <Droplet className="w-5 h-5 text-muted-foreground" />
-              <span>Water: ${water_charges}</span>
+              <span>Water: KeS {water_charges}</span>
             </div>
             <div className="flex items-center gap-2">
               <Droplet className="w-5 h-5 text-muted-foreground" />
-              <span>Water Deposit: ${water_deposit}</span>
+              <span>Water Deposit: KeS {water_deposit}</span>
             </div>
             <div className="flex items-center gap-2">
               <Trash2 className="w-5 h-5 text-muted-foreground" />
-              <span>Garbage: ${garbage_charges}</span>
+              <span>Garbage: KeS {garbage_charges}</span>
             </div>
             <div className="flex items-center gap-2">
               <Shield className="w-5 h-5 text-muted-foreground" />
-              <span>Security: ${security_charges}</span>
+              <span>Security: KeS {security_charges}</span>
             </div>
             <div className="flex items-center gap-2">
               <DollarSign className="w-5 h-5 text-muted-foreground" />
-              <span>Other: ${other_charges}</span>
+              <span>Other: KeS {other_charges}</span>
             </div>
           </div>
         </div>
