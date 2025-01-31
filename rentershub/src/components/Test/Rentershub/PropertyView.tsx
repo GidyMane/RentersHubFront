@@ -136,7 +136,7 @@ export default function PropertyDetails({
       if (response.status === 204) {
         console.log("Property deleted successfully");
         setProperties((prevProperties) =>
-          prevProperties.filter((property: { id: any }) => property.id !== id)
+          prevProperties.filter((property: { id: number }) => property.id !== id)
         ); // Remove deleted property from the list
       } else {
         console.log("Failed to delete property", response);
