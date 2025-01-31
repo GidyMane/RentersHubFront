@@ -11,6 +11,9 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Home, DollarSign, Droplet, Trash2, Shield, Edit, Check, MoreVertical, Upload } from "lucide-react"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import Image from "next/image"
+import { getSession } from "next-auth/react"
+import { baseUrl } from "@/utils/constants"
+import axios from "axios"
 
 interface Feature {
   id: number
@@ -112,10 +115,37 @@ export default function PropertyDetails({
     setIsEditing(!isEditing)
   }
 
-  const handleDelete = () => {
-    console.log("Delete property", id)
-    setIsDeleteDialogOpen(false)
-  }
+  const handleDelete = async (id: any) => {
+    console.log("Delete property", id);
+    setIsDeleteDialogOpen(false);
+  
+    try {
+      const session = await getSession();
+      const userId = session?.user?.user_id;
+  
+      if (!userId) {
+        throw new Error("User ID not found in session");
+      }
+  
+      const response = await axios.delete(`${baseUrl}listing/property/${id}/`, {
+        headers: {
+          Authorization: `Bearer ${session.user.accessToken}`,
+        },
+      });
+  
+      if (response.status === 204) {
+        console.log("Property deleted successfully");
+        setProperties((prevProperties) =>
+          prevProperties.filter((property: { id: any }) => property.id !== id)
+        ); // Remove deleted property from the list
+      } else {
+        console.log("Failed to delete property", response);
+      }
+    } catch (error) {
+      console.error("Error deleting property:", error);
+    }
+  };
+  
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData((prev) => ({
@@ -461,5 +491,9 @@ export default function PropertyDetails({
       </CardContent>
     </Card>
   )
+}
+
+function setProperties(arg0: (prevProperties: any) => any) {
+  throw new Error("Function not implemented.")
 }
 
