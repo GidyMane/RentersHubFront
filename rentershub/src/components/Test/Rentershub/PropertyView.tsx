@@ -8,20 +8,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Checkbox } from "@/components/ui/checkbox"
-import {
-  Home,
-  MapPin,
-  Bed,
-  Bath,
-  Car,
-  DollarSign,
-  Droplet,
-  Trash2,
-  Shield,
-  Edit,
-  Check,
-  MoreVertical,
-} from "lucide-react"
+import { Home, DollarSign, Droplet, Trash2, Shield, Edit, Check, MoreVertical, Upload } from "lucide-react"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import Image from "next/image"
 
@@ -113,6 +100,7 @@ export default function PropertyDetails({
     bedrooms,
     bathrooms,
     parking_spaces,
+    main_image_url,
   })
 
   const handleEdit = () => {
@@ -135,17 +123,41 @@ export default function PropertyDetails({
     }))
   }
 
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (file) {
+      const reader = new FileReader()
+      reader.onloadend = () => {
+        setFormData((prev) => ({ ...prev, main_image_url: reader.result as string }))
+      }
+      reader.readAsDataURL(file)
+    }
+  }
+
   const onFeatureToggle = (featureId: number) => {
     setSelectedFeatures((prev) =>
       prev.includes(featureId) ? prev.filter((id) => id !== featureId) : [...prev, featureId],
     )
   }
 
-  const renderEditableInput = (name: string, value: string | number, label: string) => {
-    return isEditing ? (
-      <Input name={name} value={value} onChange={handleInputChange} className="mt-1" />
-    ) : (
-      <span className="text-sm">{value}</span>
+  const renderEditableInput = (name: string, value: string | number, label: string, unit?: string) => {
+    return (
+      <div className="flex flex-col space-y-1 w-full">
+        <label htmlFor={name} className="text-sm font-medium text-muted-foreground">
+          {label}
+        </label>
+        {isEditing ? (
+          <div className="flex items-center">
+            <Input id={name} name={name} value={value} onChange={handleInputChange} className="w-full" />
+            {unit && <span className="ml-2 text-sm text-muted-foreground">{unit}</span>}
+          </div>
+        ) : (
+          <div className="flex items-center">
+            <span className="text-sm">{value}</span>
+            {unit && <span className="ml-2 text-sm text-muted-foreground">{unit}</span>}
+          </div>
+        )}
+      </div>
     )
   }
 
@@ -221,26 +233,51 @@ export default function PropertyDetails({
         </div>
       </CardHeader>
       <CardContent className="space-y-6">
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
-          <div className="flex items-center gap-2">
-            <Home className="w-5 h-5 text-muted-foreground" />
-            <span className="text-sm">{property_type || "Not specified"}</span>
+        <div className="flex flex-col md:flex-row gap-6">
+          <div className="w-full md:w-1/2">
+            <h3 className="font-semibold mb-3">Main Image</h3>
+            <div className="relative aspect-video">
+              <Image
+                src={formData.main_image_url || "/placeholder.svg"}
+                alt={title}
+                fill
+                className="rounded-lg object-cover"
+              />
+              {isEditing && (
+                <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 rounded-lg">
+                  <label htmlFor="main-image-upload" className="cursor-pointer">
+                    <div className="flex flex-col items-center">
+                      <Upload className="w-8 h-8 text-white" />
+                      <span className="text-white text-sm mt-2">Upload new image</span>
+                    </div>
+                    <input
+                      id="main-image-upload"
+                      type="file"
+                      accept="image/*"
+                      className="hidden"
+                      onChange={handleImageChange}
+                    />
+                  </label>
+                </div>
+              )}
+            </div>
           </div>
-          <div className="flex items-center gap-2">
-            <MapPin className="w-5 h-5 text-muted-foreground" />
-            {renderEditableInput("size", formData.size, "Size")} sq ft
-          </div>
-          <div className="flex items-center gap-2">
-            <Bed className="w-5 h-5 text-muted-foreground" />
-            {renderEditableInput("bedrooms", formData.bedrooms, "Bedrooms")} Bedrooms
-          </div>
-          <div className="flex items-center gap-2">
-            <Bath className="w-5 h-5 text-muted-foreground" />
-            {renderEditableInput("bathrooms", formData.bathrooms, "Bathrooms")} Bathrooms
-          </div>
-          <div className="flex items-center gap-2">
-            <Car className="w-5 h-5 text-muted-foreground" />
-            {renderEditableInput("parking_spaces", formData.parking_spaces, "Parking")} Parking
+          <div className="w-full md:w-1/2">
+            <div className="grid grid-cols-2 gap-4">
+              <div className="col-span-2">
+                <h3 className="font-semibold mb-2">Property Type</h3>
+                <div className="flex items-center gap-2">
+                  <Home className="w-5 h-5 text-muted-foreground flex-shrink-0" />
+                  <span className="text-sm">{property_type || "Not specified"}</span>
+                </div>
+              </div>
+              <div className="col-span-1">{renderEditableInput("size", formData.size, "Size", "sq ft")}</div>
+              <div className="col-span-1">{renderEditableInput("bedrooms", formData.bedrooms, "Bedrooms")}</div>
+              <div className="col-span-1">{renderEditableInput("bathrooms", formData.bathrooms, "Bathrooms")}</div>
+              <div className="col-span-1">
+                {renderEditableInput("parking_spaces", formData.parking_spaces, "Parking Spaces")}
+              </div>
+            </div>
           </div>
         </div>
 
@@ -361,14 +398,6 @@ export default function PropertyDetails({
             </div>
           </div>
         </div>
-
-         {/* Main Image */}
-         <h3 className="font-semibold mb-3">Main Image</h3>
-         {main_image_url && (
-          <div className="relative w-full h-64 md:h-96">
-            <Image src={main_image_url} alt="Main Property Image" layout="fill" objectFit="cover" className="rounded-lg" />
-          </div>
-        )}
 
         <div>
           <h3 className="font-semibold mb-3">Property Images</h3>
