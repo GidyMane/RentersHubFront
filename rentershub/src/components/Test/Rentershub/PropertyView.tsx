@@ -84,7 +84,8 @@ export default function PropertyDetails({
 }: PropertyDetails) {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
   const [isEditing, setIsEditing] = useState(false)
-  const [selectedFeatures, setSelectedFeatures] = useState<number[]>([])
+  const [selectedFeatures, setSelectedFeatures] = useState<number[]>(features.map((f) => f.id))
+  const [featureList, setFeatureList] = useState<Feature[]>(features)
   const [formData, setFormData] = useState({
     title,
     description,
@@ -140,23 +141,32 @@ export default function PropertyDetails({
     )
   }
 
-  const renderEditableInput = (name: string, value: string | number, label: string, unit?: string) => {
+  const renderEditableInput = (
+    name: string,
+    value: string | number,
+    label: string,
+    unit?: string,
+    icon?: React.ReactNode,
+  ) => {
     return (
-      <div className="flex flex-col space-y-1 w-full">
-        <label htmlFor={name} className="text-sm font-medium text-muted-foreground">
-          {label}
-        </label>
-        {isEditing ? (
-          <div className="flex items-center">
-            <Input id={name} name={name} value={value} onChange={handleInputChange} className="w-full" />
-            {unit && <span className="ml-2 text-sm text-muted-foreground">{unit}</span>}
-          </div>
-        ) : (
-          <div className="flex items-center">
-            <span className="text-sm">{value}</span>
-            {unit && <span className="ml-2 text-sm text-muted-foreground">{unit}</span>}
-          </div>
-        )}
+      <div className="flex items-center gap-2 bg-muted/50 rounded-lg px-3 py-2">
+        {icon}
+        <div className="text-sm flex-1">
+          <label htmlFor={name} className="text-muted-foreground">
+            {label}
+          </label>
+          {isEditing ? (
+            <div className="flex items-center mt-1">
+              <Input id={name} name={name} value={value} onChange={handleInputChange} className="w-full" />
+              {unit && <span className="ml-2 text-sm text-muted-foreground">{unit}</span>}
+            </div>
+          ) : (
+            <div className="flex items-center mt-1">
+              <span>{value}</span>
+              {unit && <span className="ml-2 text-sm text-muted-foreground">{unit}</span>}
+            </div>
+          )}
+        </div>
       </div>
     )
   }
@@ -298,16 +308,16 @@ export default function PropertyDetails({
         <div>
           <h3 className="font-semibold mb-3">Features</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {features.map((feature) => (
+            {featureList.map((feature) => (
               <div key={feature.id} className="flex items-center space-x-2">
                 <Checkbox
-                  id={`${feature.id}`}
+                  id={`feature-${feature.id}`}
                   checked={selectedFeatures.includes(feature.id)}
                   onCheckedChange={() => onFeatureToggle(feature.id)}
                   disabled={!isEditing}
                 />
                 <label
-                  htmlFor={`${feature.id}`}
+                  htmlFor={`feature-${feature.id}`}
                   className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                 >
                   {feature.name}
@@ -316,16 +326,46 @@ export default function PropertyDetails({
             ))}
           </div>
 
+          {isEditing && (
+            <div className="mt-4">
+              <Input
+                placeholder="Add new feature"
+                onKeyPress={(e) => {
+                  if (e.key === "Enter") {
+                    const newFeature = { id: featureList.length + 1, name: e.currentTarget.value }
+                    setFeatureList([...featureList, newFeature])
+                    setSelectedFeatures([...selectedFeatures, newFeature.id])
+                    e.currentTarget.value = ""
+                  }
+                }}
+              />
+            </div>
+          )}
+
           {selectedFeatures.length > 0 && (
             <div className="mt-6 space-y-2">
               <h4 className="font-medium text-primary">Selected Features:</h4>
-              {features
+              {featureList
                 .filter((feature) => selectedFeatures.includes(feature.id))
                 .map((feature) => (
-                  <p key={feature.id} className="flex items-center text-sm text-muted-foreground">
-                    <Check className="h-4 w-4 mr-2 text-primary" />
-                    {feature.name}
-                  </p>
+                  <div key={feature.id} className="flex items-center justify-between text-sm text-muted-foreground">
+                    <span className="flex items-center">
+                      <Check className="h-4 w-4 mr-2 text-primary" />
+                      {feature.name}
+                    </span>
+                    {isEditing && (
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => {
+                          setFeatureList(featureList.filter((f) => f.id !== feature.id))
+                          setSelectedFeatures(selectedFeatures.filter((id) => id !== feature.id))
+                        }}
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    )}
+                  </div>
                 ))}
             </div>
           )}
@@ -334,68 +374,68 @@ export default function PropertyDetails({
         <div>
           <h3 className="font-semibold mb-3">Pricing</h3>
           <div className="grid sm:grid-cols-3 gap-4">
-            <div className="flex items-center gap-2 bg-muted/50 rounded-lg px-3 py-2">
-              <DollarSign className="w-5 h-5 text-muted-foreground" />
-              <div className="text-sm flex-1">
-                <p className="text-muted-foreground">Price</p>
-                {renderEditableInput("price", formData.price, "Price")}
-              </div>
-            </div>
-            <div className="flex items-center gap-2 bg-muted/50 rounded-lg px-3 py-2">
-              <DollarSign className="w-5 h-5 text-muted-foreground" />
-              <div className="text-sm flex-1">
-                <p className="text-muted-foreground">Rent</p>
-                {renderEditableInput("rent_price", formData.rent_price, "Rent")}
-              </div>
-            </div>
-            <div className="flex items-center gap-2 bg-muted/50 rounded-lg px-3 py-2">
-              <DollarSign className="w-5 h-5 text-muted-foreground" />
-              <div className="text-sm flex-1">
-                <p className="text-muted-foreground">Deposit</p>
-                {renderEditableInput("deposit_amount", formData.deposit_amount, "Deposit")}
-              </div>
-            </div>
+            {renderEditableInput(
+              "price",
+              formData.price,
+              "Price",
+              undefined,
+              <DollarSign className="w-5 h-5 text-muted-foreground" />,
+            )}
+            {renderEditableInput(
+              "rent_price",
+              formData.rent_price,
+              "Rent",
+              "/month",
+              <DollarSign className="w-5 h-5 text-muted-foreground" />,
+            )}
+            {renderEditableInput(
+              "deposit_amount",
+              formData.deposit_amount,
+              "Deposit",
+              undefined,
+              <DollarSign className="w-5 h-5 text-muted-foreground" />,
+            )}
           </div>
         </div>
 
         <div>
           <h3 className="font-semibold mb-3">Additional Charges</h3>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            <div className="flex items-center gap-2 bg-muted/50 rounded-lg px-3 py-2">
-              <Droplet className="w-5 h-5 text-muted-foreground" />
-              <div className="text-sm flex-1">
-                <p className="text-muted-foreground">Water</p>
-                {renderEditableInput("water_charges", formData.water_charges, "Water")}
-              </div>
-            </div>
-            <div className="flex items-center gap-2 bg-muted/50 rounded-lg px-3 py-2">
-              <Droplet className="w-5 h-5 text-muted-foreground" />
-              <div className="text-sm flex-1">
-                <p className="text-muted-foreground">Water Deposit</p>
-                {renderEditableInput("water_deposit", formData.water_deposit, "Water Deposit")}
-              </div>
-            </div>
-            <div className="flex items-center gap-2 bg-muted/50 rounded-lg px-3 py-2">
-              <Trash2 className="w-5 h-5 text-muted-foreground" />
-              <div className="text-sm flex-1">
-                <p className="text-muted-foreground">Garbage</p>
-                {renderEditableInput("garbage_charges", formData.garbage_charges, "Garbage")}
-              </div>
-            </div>
-            <div className="flex items-center gap-2 bg-muted/50 rounded-lg px-3 py-2">
-              <Shield className="w-5 h-5 text-muted-foreground" />
-              <div className="text-sm flex-1">
-                <p className="text-muted-foreground">Security</p>
-                {renderEditableInput("security_charges", formData.security_charges, "Security")}
-              </div>
-            </div>
-            <div className="flex items-center gap-2 bg-muted/50 rounded-lg px-3 py-2">
-              <DollarSign className="w-5 h-5 text-muted-foreground" />
-              <div className="text-sm flex-1">
-                <p className="text-muted-foreground">Other</p>
-                {renderEditableInput("other_charges", formData.other_charges, "Other")}
-              </div>
-            </div>
+            {renderEditableInput(
+              "water_charges",
+              formData.water_charges,
+              "Water",
+              undefined,
+              <Droplet className="w-5 h-5 text-muted-foreground" />,
+            )}
+            {renderEditableInput(
+              "water_deposit",
+              formData.water_deposit,
+              "Water Deposit",
+              undefined,
+              <Droplet className="w-5 h-5 text-muted-foreground" />,
+            )}
+            {renderEditableInput(
+              "garbage_charges",
+              formData.garbage_charges,
+              "Garbage",
+              undefined,
+              <Trash2 className="w-5 h-5 text-muted-foreground" />,
+            )}
+            {renderEditableInput(
+              "security_charges",
+              formData.security_charges,
+              "Security",
+              undefined,
+              <Shield className="w-5 h-5 text-muted-foreground" />,
+            )}
+            {renderEditableInput(
+              "other_charges",
+              formData.other_charges,
+              "Other",
+              undefined,
+              <DollarSign className="w-5 h-5 text-muted-foreground" />,
+            )}
           </div>
         </div>
 
