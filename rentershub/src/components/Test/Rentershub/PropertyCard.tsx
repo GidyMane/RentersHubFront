@@ -3,6 +3,7 @@
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Bed, Bath, Car } from "lucide-react"
+import { useRouter } from "next/navigation"
 
 interface PropertyCardProps {
   id: number
@@ -22,6 +23,7 @@ interface PropertyCardProps {
 }
 
 export function PropertyCard({
+  id,
   title,
   address,
   city,
@@ -36,6 +38,7 @@ export function PropertyCard({
   featured,  
   main_image_url,
 }: PropertyCardProps) {
+  const router = useRouter()
 
   const formattedDate = new Date(date).toLocaleDateString("en-US", {
     year: "numeric",
@@ -43,9 +46,13 @@ export function PropertyCard({
     day: "numeric",
   });
 
+  // Navigate to property details page when card is clicked
+  const handleClick = () => {
+    router.push(`/rentershub/properties/${id}`)
+  }
 
   return (
-    <Card className="overflow-hidden hover:shadow-lg transition-shadow">
+    <Card className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer" onClick={handleClick}>
       <div className="relative h-48 overflow-hidden">
         <img src={main_image_url || "/placeholder.svg"} alt={title} className="w-full h-full object-cover" />
       </div>
@@ -54,18 +61,16 @@ export function PropertyCard({
           <div>
             <h3 className="font-semibold text-lg text-[#1C4532]">{title}</h3>
             <p className="text-sm text-gray-600">
-              {address},{state}
+              {address}, {state}
             </p>
           </div>
           <div className="flex gap-1">
-            {/* {is_available && <Badge variant="secondary">Available</Badge>} */}
             {is_approved && <Badge variant="secondary">Approved</Badge>}
-            {/* {featured && <Badge>Featured</Badge>} */}
           </div>
         </div>
       </CardHeader>
       <CardContent className="p-4 pt-0">
-        <div className="text-sm text-gray-500">Rent: KeS  {rent_price}/month</div>
+        <div className="text-sm text-gray-500">Rent: KeS {rent_price}/month</div>
         <div className="text-xs text-gray-500 mt-2">Last Updated: {formattedDate}</div>
 
         <div className="mt-4 grid grid-cols-3 gap-4 text-center border-t pt-4">
@@ -95,4 +100,3 @@ export function PropertyCard({
     </Card>
   )
 }
-

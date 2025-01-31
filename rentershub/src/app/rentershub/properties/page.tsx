@@ -79,7 +79,7 @@ export default function PropertiesPage() {
                   is_approved={property.is_approved}
                   featured={property.featured}
                   date={property.updated_at}
-                  main_image_url={property.main_image_url?.url || "/placeholder.svg"} id={0}                />
+                  main_image_url={property.main_image_url?.url || "/placeholder.svg"} id={property.id}              />
               ))
             ) : (
               <p>No properties found.</p>
