@@ -63,14 +63,14 @@ export default function Footer() {
                 </div>
 
                 <div className="flex justify-center space-x-4 py-4">
-                    <Link href="https://x.com" className="hover:text-gray-900">
+                    {/* <Link href="https://x.com" className="hover:text-gray-900">
                         <Image src="/x.png" alt="X" width={24} height={24} />
                         <span className="sr-only">X</span>
                     </Link>
                     <Link href="https://instagram.com" className="hover:text-gray-900">
                         <Image src="/instagram.png" alt="Instagram" width={24} height={24} />
                         <span className="sr-only">Instagram</span>
-                    </Link>
+                    </Link> */}
                     <Link href="https://facebook.com" className="hover:text-gray-900">
                         <Image src="/facebook.png" alt="Facebook" width={24} height={24} />
                         <span className="sr-only">Facebook</span>
