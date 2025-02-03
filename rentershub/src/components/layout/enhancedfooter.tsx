@@ -38,10 +38,10 @@ export default function Footer() {
                     <div className="grid grid-cols-2 gap-8">
                         <nav>
                             <ul className="space-y-2">
-                                <li><Link href="/listing?limit=200&page=0" className="hover:text-gray-900">Properties</Link></li>
-                                <li><Link href="/blogs" className="hover:text-gray-900">Blogs</Link></li>
-                                <li><Link href="/about" className="hover:text-gray-900">About Us</Link></li>
-                                <li><Link href="/contact" className="hover:text-gray-900">Contact Us</Link></li>
+                                <li><Link href="/listing?limit=200&page=0" className="hover:text-gray-900">Vacant Houses</Link></li>
+                                {/* <li><Link href="/blogs" className="hover:text-gray-900">Blogs</Link></li> */}
+                                <li><Link href="/about" className="hover:text-gray-900">Manage Properties</Link></li>
+                                <li><Link href="/contact" className="hover:text-gray-900">Chat with Us</Link></li>
                             </ul>
                         </nav>
                         <nav>
