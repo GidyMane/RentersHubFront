@@ -66,20 +66,20 @@ export default function Footer() {
                     {/* <Link href="https://x.com" className="hover:text-gray-900">
                         <Image src="/x.png" alt="X" width={24} height={24} />
                         <span className="sr-only">X</span>
-                    </Link>
-                    <Link href="https://instagram.com" className="hover:text-gray-900">
+                    </Link> */}
+                    <Link href="https://www.instagram.com/rentershub.co.ke?igsh=MTVzcmh5Z2EwY3IwZg==" className="hover:text-gray-900">
                         <Image src="/instagram.png" alt="Instagram" width={24} height={24} />
                         <span className="sr-only">Instagram</span>
-                    </Link> */}
-                    <Link href="https://facebook.com" className="hover:text-gray-900">
+                    </Link>
+                    <Link href="https://www.facebook.com/rentershub.co.ke?mibextid=wwXIfr&mibextid=wwXIfr" className="hover:text-gray-900">
                         <Image src="/facebook.png" alt="Facebook" width={24} height={24} />
                         <span className="sr-only">Facebook</span>
                     </Link>
-                    <Link href="https://youtube.com" className="hover:text-gray-900">
+                    <Link href="https://www.youtube.com/channel/UCvUY01TbD9Fc9oZLPDVJbrw" className="hover:text-gray-900">
                         <Image src="/youtube.png" alt="YouTube" width={24} height={24} />
                         <span className="sr-only">YouTube</span>
                     </Link>
-                    <Link href="https://linkedin.com" className="hover:text-gray-900">
+                    <Link href="https://www.linkedin.com/company/renters-hub" className="hover:text-gray-900">
                         <Image src="/linkedin.png" alt="YouTube" width={24} height={24} />
                         <span className="sr-only">LinkedIN</span>
                     </Link>
