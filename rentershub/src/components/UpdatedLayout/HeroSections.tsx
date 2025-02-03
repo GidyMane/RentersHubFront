@@ -12,13 +12,13 @@ import { useRouter } from "next/navigation"
 
 
 const images = [
-    "/FrontApartment.jpg?height=1080&width=1920",
-    "/dining.jpg?height=1080&width=1920",
-    "/bungalow.jpg?height=1080&width=1920",
-    "/villa.jpg?height=1080&width=1920",
-    "/apartment.jpg?height=1080&width=1920",
-    "/insideapartment.jpg?height=1080&width=1920",
-    "/apartment2.jpg?height=1080&width=1920",
+    "/interior.jpg?height=1080&width=1920",
+    "/kilimani.jpg?height=1080&width=1920",
+    "/interior3.jpg?height=1080&width=1920",
+    "/kabiria.jpg?height=1080&width=1920",
+    "/kilimani.jpg?height=1080&width=1920",
+    "/regen.jpg?height=1080&width=1920",
+    "/uthiru.jpg?height=1080&width=1920",
 ]
 
 export function FullScreenCarousel() {
