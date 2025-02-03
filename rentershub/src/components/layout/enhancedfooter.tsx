@@ -56,10 +56,10 @@ export default function Footer() {
                     <p className="text-sm">
                         © {new Date().getFullYear()} RentersHub. All rights reserved.
                     </p>
-                    <div className="flex space-x-4 mt-4 md:mt-0">
+                    {/* <div className="flex space-x-4 mt-4 md:mt-0">
                         <Link href="/privacy" className="text-sm hover:text-gray-900">Privacy Policy</Link>
                         <Link href="/terms" className="text-sm hover:text-gray-900">Do Not Sell or Share My Info</Link>
-                    </div>
+                    </div> */}
                 </div>
 
                 <div className="flex justify-center space-x-4 py-4">
