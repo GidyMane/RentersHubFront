@@ -25,10 +25,10 @@ export function Filters({ totalResults, location, onSearch, showMap, onToggleMap
           {totalResults} Results <span className="text-muted-foreground">in {location}</span>
         </h1>
         <div className="flex items-center gap-4">
-          <div className="flex items-center gap-2">
+          {/* <div className="flex items-center gap-2">
             <span className="text-sm">Family mode</span>
             <Switch checked={familyMode} onCheckedChange={setFamilyMode} />
-          </div>
+          </div> */}
           <div className="flex items-center gap-2">
             <span className="text-sm">Map View</span>
             <Switch checked={showMap} onCheckedChange={onToggleMap} />
@@ -36,7 +36,7 @@ export function Filters({ totalResults, location, onSearch, showMap, onToggleMap
         </div>
       </div>
 
-      <div className="flex gap-2 flex-wrap">
+      {/* <div className="flex gap-2 flex-wrap">
         <div className="flex-1 min-w-[200px]">
           <div className="relative">
             <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
@@ -81,7 +81,7 @@ export function Filters({ totalResults, location, onSearch, showMap, onToggleMap
           <SlidersHorizontal className="h-4 w-4 mr-2" />
           More
         </Button>
-      </div>
+      </div> */}
     </div>
   )
 }
