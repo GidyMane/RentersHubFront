@@ -1,43 +1,34 @@
 "use client"
+
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from "framer-motion"
-import { ChevronDown, CircleUserRound, Dock, Facebook, HousePlus, Instagram, Menu, X } from 'lucide-react'
+import { ChevronDown, CircleUserRound, Dock, Facebook, Instagram, Menu, X } from 'lucide-react'
 import React from 'react'
 import { Button } from '../ui/button'
 import Link from 'next/link'
 import { usePathname, useSearchParams } from 'next/navigation'
+import Image from 'next/image' // Importing the Image component
 
 const Navbar = () => {
-
     const [isMenuOpen, setIsMenuOpen] = useState(false)
     const [isMobile, setIsMobile] = useState(false)
-    const [scrolled, setScrolled] = useState(false)
     const path = usePathname()
 
     const searchparams = useSearchParams()
-
     const url = new URLSearchParams(searchparams)
 
-    // clear all serachparams
     url.forEach((v, k) => {
         url.delete(k)
     })
 
-    // now set or search params
-    url.set("limit", "200"),
-        url.set("page", "0")
+    url.set("limit", "200")
+    url.set("page", "0")
 
-
-
-
-
-
-    // Ensure these hooks run only on the client-side
     useEffect(() => {
-        if (typeof window === "undefined") return; // Skip effect during SSR
+        if (typeof window === "undefined") return;
 
         const checkMobile = () => setIsMobile(window.innerWidth < 768);
-        checkMobile(); // Initial check
+        checkMobile();
         window.addEventListener("resize", checkMobile);
 
         return () => {
@@ -45,9 +36,10 @@ const Navbar = () => {
         };
     }, []);
 
-
     const NavItem = ({ href, children }: { href: string; children: React.ReactNode }) => (
-        <Link href={href} className={`block py-2 text-labelLarge transition-all ${path.split("/")[1] == href.split("/")[1] && "bg-black rounded-full  text-white"} duration-300 px-2`}>{children}</Link>
+        <Link href={href} className={`block py-2 text-labelLarge transition-all ${path.split("/")[1] == href.split("/")[1] && "bg-black rounded-full text-white"} duration-300 px-2`}>
+            {children}
+        </Link>
     )
 
     const DropdownNavItem = ({ title, items }: { title: string; items: string[] }) => (
@@ -68,17 +60,17 @@ const Navbar = () => {
             </div>
         </div>
     )
+
     if (path.includes("intime-admin") || path.startsWith("/intimehomes")) {
         return null
     }
+
     return (
         <div className='my-4 flex items-center justify-between gap-2 w-full px-8'>
-
             <div className='flex gap-2 items-center justify-center'>
-                <HousePlus className="text-displayLarge font-bold" />
+                <Image src="/RH1.png" alt="RentersHub Logo" width={40} height={40}  />
                 <p className='text-headlineSmall text-secondary500 text-balance'>RentersHub</p>
             </div>
-
 
             <div className='md:hidden flex'>
                 <AnimatePresence>
@@ -92,7 +84,7 @@ const Navbar = () => {
                         >
                             <div className='flex gap-2 items-center justify-center'>
                                 <div className='flex flex-col gap-2'>
-                                    <HousePlus className="text-displayLarge font-bold" />
+                                    <Image src="/RH1.png" alt="RentersHub Logo" width={40} height={40}  />
                                     <p className='text-headlineSmall text-secondary500 text-balance'>RentersHub</p>
                                 </div>
                                 <Button variant="ghost" size="icon" className="self-end justify-end items-end flex mb-4" onClick={() => setIsMenuOpen(false)}>
@@ -101,25 +93,23 @@ const Navbar = () => {
                             </div>
 
                             <NavItem href="/">Vacant Houses</NavItem>
-                          
-
                             <NavItem href={`/listing`}>Post a House</NavItem>
                             <NavItem href="/#testimonials">Manage Rentals</NavItem>
-                            {/* <NavItem href="/blogs">Blogs</NavItem> */}
-                            <NavItem href="/contact">Chat With us </NavItem>
+                            <NavItem href="/contact">Chat With us</NavItem>
 
                             <div className='bottom-0 mt-6 flex gap-4 justify-center items-center mx-2'>
                                 <NavItem href=''><Instagram /></NavItem>
                                 <NavItem href=''><Facebook /></NavItem>
-                                <NavItem href=''><svg xmlns="http://www.w3.org/2000/svg" className='text-white' x="0px" y="0px" width="50" height="50" viewBox="0 0 50 50">
-                                    <path d="M 5.9199219 6 L 20.582031 27.375 L 6.2304688 44 L 9.4101562 44 L 21.986328 29.421875 L 31.986328 44 L 44 44 L 28.681641 21.669922 L 42.199219 6 L 39.029297 6 L 27.275391 19.617188 L 17.933594 6 L 5.9199219 6 z M 9.7167969 8 L 16.880859 8 L 40.203125 42 L 33.039062 42 L 9.7167969 8 z"></path>
-                                </svg></NavItem>
+                                <NavItem href=''>
+                                    <svg xmlns="http://www.w3.org/2000/svg" className='text-white' x="0px" y="0px" width="50" height="50" viewBox="0 0 50 50">
+                                        <path d="M 5.9199219 6 L 20.582031 27.375 L 6.2304688 44 L 9.4101562 44 L 21.986328 29.421875 L 31.986328 44 L 44 44 L 28.681641 21.669922 L 42.199219 6 L 39.029297 6 L 27.275391 19.617188 L 17.933594 6 L 5.9199219 6 z M 9.7167969 8 L 16.880859 8 L 40.203125 42 L 33.039062 42 L 9.7167969 8 z"></path>
+                                    </svg>
+                                </NavItem>
                             </div>
                         </motion.div>
                     )}
                 </AnimatePresence>
             </div>
-
 
             <div className='items-center gap-4 justify-around hidden md:flex'>
                 <NavItem href="#">
@@ -129,29 +119,21 @@ const Navbar = () => {
                     </div>
                 </NavItem>               
                 <NavItem href={`/`}>Post A House</NavItem>                
-                {/* <NavItem href="/blogs">Manage Rentals</NavItem> */}
                 <NavItem href="/contact">Chat With Us</NavItem>
             </div>
 
             <div className='flex gap-2'>
                 <div className="flex-1 flex items-center justify-center md:hidden">
-                    {/* <NavItem href="/contact"><CircleUserRound className=' text-gray-600' /></NavItem> */}
-
                     <Button variant="ghost" size="icon" onClick={() => setIsMenuOpen(!isMenuOpen)}>
                         <Menu className="h-6 w-6" />
                     </Button>
-
                 </div>
                 <div className='hidden md:flex gap-2 items-center justify-center'>
-                    {/* <NavItem href="/blogs">Blogs</NavItem> */}
-                    {/* <NavItem href="/contact"><CircleUserRound className=' text-gray-600' /></NavItem> */}
                     <Button variant={'outline'} className='text-black bg-secondary400 rounded-3xl text-bodySmall'>
                         Manage Rentals
                     </Button>
-
                 </div>
             </div>
-
         </div>
     )
 }
