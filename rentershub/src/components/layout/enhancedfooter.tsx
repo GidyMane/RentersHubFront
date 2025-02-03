@@ -79,6 +79,10 @@ export default function Footer() {
                         <Image src="/youtube.png" alt="YouTube" width={24} height={24} />
                         <span className="sr-only">YouTube</span>
                     </Link>
+                    <Link href="https://linkedin.com" className="hover:text-gray-900">
+                        <Image src="/linkedin.png" alt="YouTube" width={24} height={24} />
+                        <span className="sr-only">LinkedIN</span>
+                    </Link>
                 </div>
             </div>
         </footer>
