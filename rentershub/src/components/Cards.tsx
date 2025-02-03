@@ -138,10 +138,10 @@ export default function Component({ properties }: { properties: any[] }) {
           className="w-12 h-1 bg-primary300 mx-auto mb-6"
         />
         <motion.h1 variants={itemVariants} className="text-4xl font-bold mb-4">
-          FIND YOUR DREAM HOME
+          Vacant Houses
         </motion.h1>
         <motion.p variants={itemVariants} className="text-muted-foreground">
-          Below are some of our real estate listings spread across Nairobi,
+          Below are some of our real estate listings spread across
           Kenya.
         </motion.p>
         <motion.p variants={itemVariants} className="text-muted-foreground">
