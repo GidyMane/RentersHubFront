@@ -114,19 +114,19 @@ export function FullScreenCarousel() {
                             transition={{ duration: 0.6, delay: 0.4 }}
                             className="mb-6 text-5xl text-secondary300 font-bold leading-tight md:text-6xl"
                         >
-                            Discover Exceptional Properties
+                            The Place Where Smart Kenyans Come To Find Houses
                         </motion.h1>
                         <motion.p initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.6, delay: 0.6 }}
                             className="mb-8 text-lg md:text-xl">
-                            Explore our curated collection of luxury real estate across prime locations
+                            Finding your dream house is just a click away!
                         </motion.p>
-                        <Button className="rounded-full bg-white px-8 py-3 text-lg font-semibold text-gray-900 transition-colors hover:bg-gray-100" onClick={()=>{
+                        {/* <Button className="rounded-full bg-white px-8 py-3 text-lg font-semibold text-gray-900 transition-colors hover:bg-gray-100" onClick={()=>{
                             router.push("/listing")
                         }}>
                             View Properties
-                        </Button>
+                        </Button> */}
                     </motion.div>
                 </div>
             </div>
