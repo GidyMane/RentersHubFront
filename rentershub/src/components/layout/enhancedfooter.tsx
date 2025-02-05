@@ -2,13 +2,11 @@
 
 import Image from "next/image"
 import Link from "next/link"
-import { Facebook, Instagram, Youtube, ArrowUp } from 'lucide-react'
+import { ArrowUp } from 'lucide-react'
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
 
 export default function Footer() {
     const path = usePathname();
-    const [details, setDetails] = useState<any[]>([]);
 
     if (path.includes("intime-admin") || path.startsWith("/intimehomes")) {
         return null;
@@ -20,7 +18,7 @@ export default function Footer() {
                 <div className="flex justify-end py-4">
                     <button
                         onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-                        className="hover:text-secondary700 flex items-center"
+                        className="hover:text-gray-300 flex items-center"
                     >
                         <ArrowUp className="mr-2 h-4 w-4" />
                         Back to top
@@ -38,16 +36,14 @@ export default function Footer() {
                     <div className="grid grid-cols-2 gap-8">
                         <nav>
                             <ul className="space-y-2">
-                                <li><Link href="/listing?limit=200&page=0" className="hover:text-gray-900">Vacant Houses</Link></li>
-                                {/* <li><Link href="/blogs" className="hover:text-gray-900">Blogs</Link></li> */}
-                                <li><Link href="/about" className="hover:text-gray-900">Manage Properties</Link></li>
-                                <li><a href="https://api.whatsapp.com/send?phone=254731352350&text=Hello.%20I%20am%20from%20the%20website,%20https://rentershub.co.ke%20and%20I%20am%20searching%20for%20a%20vacant%20house" target="_blank" rel="noopener noreferrer" className="hover:text-gray-900">Chat with Us</a></li>
-
+                                <li><Link href="/listing?limit=200&page=0" className="hover:text-gray-300">Vacant Houses</Link></li>
+                                <li><Link href="/about" className="hover:text-gray-300">Manage Properties</Link></li>
+                                <li><a href="https://api.whatsapp.com/send?phone=254731352350&text=Hello.%20I%20am%20from%20the%20website,%20https://rentershub.co.ke%20and%20I%20am%20searching%20for%20a%20vacant%20house" target="_blank" rel="noopener noreferrer" className="hover:text-gray-300">Chat with Us</a></li>
                             </ul>
                         </nav>
                         <nav>
                             <ul className="space-y-2">
-                                <li><Link href="/intimehomes/sign-in" className="hover:text-gray-900">Admin panel</Link></li>
+                                <li><Link href="/intimehomes/sign-in" className="hover:text-gray-300">Admin panel</Link></li>
                             </ul>
                         </nav>
                     </div>
@@ -57,32 +53,24 @@ export default function Footer() {
                     <p className="text-sm">
                         © {new Date().getFullYear()} RentersHub. All rights reserved.
                     </p>
-                    {/* <div className="flex space-x-4 mt-4 md:mt-0">
-                        <Link href="/privacy" className="text-sm hover:text-gray-900">Privacy Policy</Link>
-                        <Link href="/terms" className="text-sm hover:text-gray-900">Do Not Sell or Share My Info</Link>
-                    </div> */}
                 </div>
 
                 <div className="flex justify-center space-x-4 py-4">
-                    {/* <Link href="https://x.com" className="hover:text-gray-900">
-                        <Image src="/x.png" alt="X" width={24} height={24} />
-                        <span className="sr-only">X</span>
-                    </Link> */}
-                    <Link href="https://www.instagram.com/rentershub.co.ke?igsh=MTVzcmh5Z2EwY3IwZg==" className="hover:text-gray-900">
+                    <Link href="https://www.instagram.com/rentershub.co.ke?igsh=MTVzcmh5Z2EwY3IwZg==" className="hover:text-gray-300">
                         <Image src="/instagram.png" alt="Instagram" width={24} height={24} />
                         <span className="sr-only">Instagram</span>
                     </Link>
-                    <Link href="https://www.facebook.com/rentershub.co.ke?mibextid=wwXIfr&mibextid=wwXIfr" className="hover:text-gray-900">
+                    <Link href="https://www.facebook.com/rentershub.co.ke?mibextid=wwXIfr&mibextid=wwXIfr" className="hover:text-gray-300">
                         <Image src="/facebook.png" alt="Facebook" width={24} height={24} />
                         <span className="sr-only">Facebook</span>
                     </Link>
-                    <Link href="https://www.youtube.com/channel/UCvUY01TbD9Fc9oZLPDVJbrw" className="hover:text-gray-900">
+                    <Link href="https://www.youtube.com/channel/UCvUY01TbD9Fc9oZLPDVJbrw" className="hover:text-gray-300">
                         <Image src="/youtube.png" alt="YouTube" width={24} height={24} />
                         <span className="sr-only">YouTube</span>
                     </Link>
-                    <Link href="https://www.linkedin.com/company/renters-hub" className="hover:text-gray-900">
-                        <Image src="/linkedin.png" alt="YouTube" width={24} height={24} />
-                        <span className="sr-only">LinkedIN</span>
+                    <Link href="https://www.linkedin.com/company/renters-hub" className="hover:text-gray-300">
+                        <Image src="/linkedin.png" alt="LinkedIn" width={24} height={24} />
+                        <span className="sr-only">LinkedIn</span>
                     </Link>
                 </div>
             </div>
