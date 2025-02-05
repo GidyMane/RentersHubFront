@@ -95,7 +95,18 @@ const Navbar = () => {
                             <NavItem href="/">Vacant Houses</NavItem>
                             <NavItem href={`/listing`}>Post a House</NavItem>
                             <NavItem href="/#testimonials">Manage Rentals</NavItem>
-                            <NavItem href="/contact">Ch4at With us</NavItem>
+                            <a
+    href="https://api.whatsapp.com/send?phone=254731352350&text=Hello.%20I%20am%20from%20the%20website,%20https://rentershub.co.ke%20and%20I%20am%20searching%20for%20a%20vacant%20house"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="flex items-center gap-2 px-4 py-2 bg-green-500 text-white rounded-full shadow-lg hover:bg-green-600 transition-all"
+>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-whatsapp">
+        <path d="M3 20.7a10.8 10.8 0 0 1 0-17.4 10.6 10.6 0 0 1 16.7 12l3 3-4.2-1.1a10.6 10.6 0 0 1-6.5 1.9z"></path>
+        <path d="M8 12s1 2 3 3 3 1 3 1l2-2"></path>
+    </svg>
+    <span className="text-bodySmall font-semibold">Chat With Us</span>
+</a>
 
                             <div className='bottom-0 mt-6 flex gap-4 justify-center items-center mx-2'>
                                 <NavItem href=''><Instagram /></NavItem>
@@ -123,11 +134,15 @@ const Navbar = () => {
     href="https://api.whatsapp.com/send?phone=254731352350&text=Hello.%20I%20am%20from%20the%20website,%20https://rentershub.co.ke%20and%20I%20am%20searching%20for%20a%20vacant%20house"
     target="_blank"
     rel="noopener noreferrer"
+    className="flex items-center gap-2 px-4 py-2 bg-green-500 text-white rounded-full shadow-lg hover:bg-green-600 transition-all"
 >
-    <Button variant="outline" className="text-black bg-secondary400 rounded-3xl text-bodySmall">
-        Chat With Us
-    </Button>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-whatsapp">
+        <path d="M3 20.7a10.8 10.8 0 0 1 0-17.4 10.6 10.6 0 0 1 16.7 12l3 3-4.2-1.1a10.6 10.6 0 0 1-6.5 1.9z"></path>
+        <path d="M8 12s1 2 3 3 3 1 3 1l2-2"></path>
+    </svg>
+    <span className="text-bodySmall font-semibold">Chat With Us</span>
 </a>
+
 
             </div>
 
