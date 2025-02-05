@@ -10,8 +10,8 @@ import { getpropertytypes } from '@/actions/propertytype';
 
 
 const metadata: Metadata = {
-    title: "Listings - Intime Homes",
-    description: "The better way to buy real estate",
+    title: "RentersHub",
+    description: "Where smart Kenyans come to find homes",
 };
 
 export const dynamic = "force-dynamic"

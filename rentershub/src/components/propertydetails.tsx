@@ -346,9 +346,9 @@ export default function PropertyDetail({
                   <User className="w-6 h-6" />
                 </div>
                 <div>
-                  <h3 className="font-semibold">Intime Homes</h3>
+                  <h3 className="font-semibold">RentersHub</h3>
                   <Button variant="link" className="h-auto p-0">
-                    View Listings
+                    View Property
                   </Button>
                 </div>
               </div>
@@ -358,7 +358,7 @@ export default function PropertyDetail({
                 <Input placeholder="Email" />
                 <Textarea
                   placeholder="Message"
-                  defaultValue="Hello, I am interested in [2 and 3 Bedroom Apartments for Sale in Riverside]"
+                  defaultValue="Hello, I am interested in 2 and 3 Bedroom Apartments"
                 />
                 <Button className="w-full bg-[#B5A887] hover:bg-[#A39775] text-white">
                   Send Message
