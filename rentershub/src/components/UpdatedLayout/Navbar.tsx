@@ -95,7 +95,7 @@ const Navbar = () => {
                             <NavItem href="/">Vacant Houses</NavItem>
                             <NavItem href={`/listing`}>Post a House</NavItem>
                             <NavItem href="/#testimonials">Manage Rentals</NavItem>
-                            <NavItem href="/contact">Chat With us</NavItem>
+                            <NavItem href="/contact">Ch4at With us</NavItem>
 
                             <div className='bottom-0 mt-6 flex gap-4 justify-center items-center mx-2'>
                                 <NavItem href=''><Instagram /></NavItem>
