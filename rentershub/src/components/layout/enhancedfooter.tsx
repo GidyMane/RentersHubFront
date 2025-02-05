@@ -41,7 +41,8 @@ export default function Footer() {
                                 <li><Link href="/listing?limit=200&page=0" className="hover:text-gray-900">Vacant Houses</Link></li>
                                 {/* <li><Link href="/blogs" className="hover:text-gray-900">Blogs</Link></li> */}
                                 <li><Link href="/about" className="hover:text-gray-900">Manage Properties</Link></li>
-                                <li><Link href="/contact" className="hover:text-gray-900">Chat with Us</Link></li>
+                                <li><a href="https://api.whatsapp.com/send?phone=254731352350&text=Hello.%20I%20am%20from%20the%20website,%20https://rentershub.co.ke%20and%20I%20am%20searching%20for%20a%20vacant%20house" target="_blank" rel="noopener noreferrer" className="hover:text-gray-900">Chat with Us</a></li>
+
                             </ul>
                         </nav>
                         <nav>
