@@ -119,7 +119,16 @@ const Navbar = () => {
                     </div>
                 </NavItem>               
                 <NavItem href={`/`}>Post A House</NavItem>                
-                <NavItem href="/contact">Chat With Us</NavItem>
+                <a
+    href="https://api.whatsapp.com/send?phone=254731352350&text=Hello.%20I%20am%20from%20the%20website,%20https://rentershub.co.ke%20and%20I%20am%20searching%20for%20a%20vacant%20house"
+    target="_blank"
+    rel="noopener noreferrer"
+>
+    <Button variant="outline" className="text-black bg-secondary400 rounded-3xl text-bodySmall">
+        Chat With Us
+    </Button>
+</a>
+
             </div>
 
             <div className='flex gap-2'>
