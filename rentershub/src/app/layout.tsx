@@ -32,7 +32,7 @@ export default function RootLayout({
       <SessionProvider>
       {/* <ToastContainer /> */}
         <EdgeStoreProvider>
-          <html lang="en">
+          <html lang="en" suppressHydrationWarning>
             <body
               className={`${geistSans.variable} ${geistMono.variable} antialiased`}
             >

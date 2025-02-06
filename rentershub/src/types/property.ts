@@ -51,4 +51,23 @@ export interface PropertyFormData {
     // Add all 47 counties here
   ];
   
-  
+  // /types/Property.ts
+export interface Property {
+  id: string
+  title: string
+  rent_price: string // Change rentPrice to string based on your API response
+  address: string
+  city: string
+  state: string
+  price: string
+  main_image_url: {id:string, url:string}
+  coordinates: [number, number]
+  propertytype:{
+    id:number,
+    name:string
+  }
+  postal_code:string
+  bedrooms:number
+  bathrooms:number
+  size:number
+}

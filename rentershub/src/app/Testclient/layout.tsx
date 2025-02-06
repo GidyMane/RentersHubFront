@@ -26,12 +26,7 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return (
-    <html lang="en">
-      <head>
-        <title>RentersHub</title>
-      </head>
-      <body className={`${lato.className} antialiased min-h-screen bg-[#FAF9F6]`}>
+  return (    
         <div className="relative">
           <Suspense fallback={<Loader className='animate animate-spin text-secondary400' />}>  
             
@@ -56,8 +51,6 @@ export default function RootLayout({
                 </div>
               
           </Suspense>
-        </div>
-      </body>
-    </html>
+        </div>     
   );
 }
