@@ -1,13 +1,15 @@
 import Image from "next/image"
 import Link from "next/link"
-import { Bath, Bed, Heart, Square } from "lucide-react"
+import { Heart } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 
 interface PropertyCardProps {
   id: string
   imageUrl: string
-  price: number
+  title: string
+  propertyType: string
+  rentPrice: number
   address: string
   city: string
   state: string
@@ -22,7 +24,9 @@ interface PropertyCardProps {
 export function PropertyCard({
   id,
   imageUrl,
-  price,
+  title,
+  propertyType,
+  rentPrice,
   address,
   city,
   state,
@@ -39,12 +43,12 @@ export function PropertyCard({
         <div className="relative">
           <Image
             src={imageUrl || "/placeholder.svg"}
-            alt={address}
+            alt={title}
             width={400}
             height={300}
             className="w-full h-[200px] object-cover"
           />
-          <div className="absolute top-2 right-2 flex gap-2">
+          <div className="absolute top-2 left-2 flex flex-col gap-2">
             {isPerfectFit && (
               <Badge variant="secondary" className="bg-white/90">
                 Perfect Fit
@@ -61,25 +65,31 @@ export function PropertyCard({
           </Button>
         </div>
         <div className="p-4">
-          <div className="flex items-center gap-4 mb-4">
-            <div className="flex items-center gap-1">
-              <Bed className="w-4 h-4" />
-              <span className="text-sm">{beds} Beds</span>
-            </div>
-            <div className="flex items-center gap-1">
-              <Bath className="w-4 h-4" />
-              <span className="text-sm">{baths} Baths</span>
-            </div>
-            <div className="flex items-center gap-1">
-              <Square className="w-4 h-4" />
-              <span className="text-sm">{sqft.toLocaleString()} Ft²</span>
-            </div>
-          </div>
-          <h3 className="text-2xl font-bold mb-2">${price.toLocaleString()}</h3>
+          {/* Title and Property Type */}
+          <h3 className="text-lg font-bold">{title}</h3>
+          <p className="text-sm text-gray-600">{propertyType}</p>
+
+          {/* Address */}
           <p className="text-sm text-muted-foreground">{address}</p>
           <p className="text-sm text-muted-foreground">
             {city}, {state} {zip}
           </p>
+
+          {/* Rent Price */}
+          <h3 className="text-2xl font-bold text-primary mt-2">{rentPrice.toLocaleString()} /mo</h3>
+
+          {/* Property Details */}
+          <div className="flex items-center gap-4 mt-3">
+            <div className="flex items-center gap-1">
+              <span className="text-sm">{beds} Beds</span>
+            </div>
+            <div className="flex items-center gap-1">
+              <span className="text-sm">{baths} Baths</span>
+            </div>
+            <div className="flex items-center gap-1">
+              <span className="text-sm">{sqft.toLocaleString()} Ft²</span>
+            </div>
+          </div>
         </div>
       </div>
     </Link>

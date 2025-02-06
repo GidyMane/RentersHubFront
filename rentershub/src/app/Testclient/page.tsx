@@ -14,6 +14,9 @@ const allProperties = [
   {
     id: "1",
     imageUrl: "",
+    title:"Two BEDroom",
+    rentPrice: 28400,
+    propertyType:"two bed",
     price: 142900,
     address: "150 Mission Ave",
     city: "Chestertown",
