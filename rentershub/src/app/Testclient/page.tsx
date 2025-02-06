@@ -53,7 +53,7 @@ export default async function PropertyListingPage() {
         </div>
       </div>
 
-      <div className="container mx-auto p-4 space-y-6">
+      <div className="container mx-auto p-4 space-y-6 mt-8">
         {/* <Filters
           totalResults={properties.length}
           location={location}
