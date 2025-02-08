@@ -1,6 +1,6 @@
 import Image from "next/image"
 import Link from "next/link"
-import { Heart } from "lucide-react"
+import { Bath, Bed, Car, Heart } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 
@@ -10,6 +10,7 @@ interface PropertyCardProps {
   title: string
   propertyType: string
   rentPrice: number
+  description: string
   address: string
   city: string
   state: string
@@ -25,7 +26,7 @@ export function PropertyCard({
   title,
   propertyType,
   rentPrice,
-  address,
+  description,
   city,
   state,
   zip,
@@ -52,26 +53,39 @@ export function PropertyCard({
           <h3 className="text-lg font-bold">{title}</h3>
           <p className="text-sm text-gray-600">{propertyType}</p>
 
-          <p className="text-sm text-muted-foreground">{address}</p>
-          <p className="text-sm text-muted-foreground">
-            {city}, {state} {zip}
+          {/* <p className="text-sm text-gray-600">{description}</p> */}
+          <p className="text-sm text-gray-600">
+            {city}, {state} 
           </p>
 
           <h3 className="text-2xl font-bold text-primary mt-2">{rentPrice.toLocaleString()} /mo</h3>
 
-          <div className="flex items-center gap-4 mt-3">
-            <div className="flex items-center gap-1">
-              <span className="text-sm">{beds} Beds</span>
+          {/* <div className="mt-4 grid grid-cols-3 gap-4 text-center border-t pt-4">
+          <div>
+            <div className="flex items-center justify-center gap-1 text-[#2C7BE5]">
+              <Bed className="w-4 h-4" />
+              <span className="font-semibold">{beds}</span>
             </div>
-            <div className="flex items-center gap-1">
-              <span className="text-sm">{baths} Baths</span>
-            </div>
-            <div className="flex items-center gap-1">
-              <span className="text-sm">{sqft.toLocaleString()} Ft²</span>
-            </div>
+            <div className="text-xs text-gray-600 mt-1">Bedrooms</div>
           </div>
+          <div>
+            <div className="flex items-center justify-center gap-1 text-[#2C7BE5]">
+              <Bath className="w-4 h-4" />
+              <span className="font-semibold">{baths}</span>
+            </div>
+            <div className="text-xs text-gray-600 mt-1">Bathrooms</div>
+          </div>
+          <div>
+            <div className="flex items-center justify-center gap-1 text-[#2C7BE5]">
+              <Car className="w-4 h-4" />
+              <span className="font-semibold">{sqft.toLocaleString()}</span>
+            </div>
+            <div className="text-xs text-gray-600 mt-1">Parking</div>
+          </div>
+        </div> */}
         </div>
       </div>
     </Link>
   )
 }
+

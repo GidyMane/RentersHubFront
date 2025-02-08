@@ -60,6 +60,7 @@ export interface Property {
   city: string
   state: string
   price: string
+  description:string
   main_image_url: {id:string, url:string}
   coordinates: [number, number]
   propertytype:{

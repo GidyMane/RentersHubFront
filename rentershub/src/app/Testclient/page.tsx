@@ -71,6 +71,7 @@ export default async function PropertyListingPage() {
                 key={property.id}
                 id={property.id.toString()}
                 title={property.title}
+                description={property.description}
                 rentPrice={parseFloat(property.rent_price)}
                 address={property.address}
                 imageUrl={property.main_image_url?.url || "/placeholder.svg"}
