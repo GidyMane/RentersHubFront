@@ -1,5 +1,6 @@
 
-import { getPropertyById, getSimilarPropertyById } from '@/actions/property';
+import { fetchPropertyById } from '@/actions/fetchproperties';
+import {  getSimilarPropertyById } from '@/actions/property';
 import PropertyDetail from '@/components/propertydetails';
 import { Loader } from 'lucide-react';
 import React, { Suspense } from 'react';
@@ -11,7 +12,7 @@ interface PageProps {
 const Editpage = async ({ params }: PageProps) => {
   const { id } = params; // Extract id from the route parameters
   const [property, similarProperties] = await Promise.all([
-    getPropertyById(id),
+    fetchPropertyById(id),
     getSimilarPropertyById(id)
   ]);
   
