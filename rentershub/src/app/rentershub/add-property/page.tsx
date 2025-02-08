@@ -31,7 +31,7 @@ export default function AddPropertyPage() {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { data: session } = useSession();
-  const [houseTypes, setHouseTypes] = useState<string[]>([]);
+  const [houseTypes, setHouseTypes] = useState<{ id: number; name: string }[]>([]);
   const [selectedFeatures, setSelectedFeatures] = useState<string[]>([]);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
   const [uploadedFiles, setUploadedFiles] = useState<{
@@ -66,7 +66,7 @@ export default function AddPropertyPage() {
   
 
 
-    const fetchHouseTypes = async () => {
+    const fetchHouseTypes = async () => { 
       try {
         const response = await fetch(`${baseUrl}listing/propertytype`, {
           method: 'GET',
@@ -74,18 +74,22 @@ export default function AddPropertyPage() {
             Authorization: `Bearer ${session.user.accessToken}`,
           },
         });
-
+    
         if (!response.ok) {
           const errorDetails = await response.text();
           throw new Error(`Failed to fetch house types: ${response.status}, ${errorDetails}`);
         }
-
+    
         const data = await response.json();
-        setHouseTypes(data.results.map((type: { name: string }) => type.name));
+        setHouseTypes(data.results.map((type: { id: number, name: string }) => ({
+          id: type.id,
+          name: type.name,
+        })));
       } catch (error) {
         console.error('Error fetching house types:', error);
       }
     };
+    
 
     fetchHouseTypes();
   }, [session?.user.accessToken]);
@@ -169,7 +173,7 @@ export default function AddPropertyPage() {
         const formattedData = {
           title: values.title,
           description: values.description,
-          property_type: parseInt(values.houseType, 10),
+          property_type: values.houseType,
           price: '0',
           city: values.city || 'Unknown City',
           state: values.county,          
@@ -277,20 +281,24 @@ export default function AddPropertyPage() {
                   <div>
                     <Label htmlFor="houseType">House Type</Label>
                     <Select
-                      onValueChange={(value) => formik.setFieldValue('houseType', value)}
-                      required
-                    >
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select house type" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {houseTypes.map((type) => (
-                          <SelectItem key={type} value={type}>
-                            {type}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+  onValueChange={(value) => {
+    const selectedType = houseTypes.find((type) => type.id.toString() === value);
+    formik.setFieldValue('houseType', selectedType ? selectedType.id : '');
+  }}
+  required
+>
+  <SelectTrigger>
+    <SelectValue placeholder="Select house type" />
+  </SelectTrigger>
+  <SelectContent>
+    {houseTypes.map((type) => (
+      <SelectItem key={type.id} value={type.id.toString()}>
+        {type.name}
+      </SelectItem>
+    ))}
+  </SelectContent>
+</Select>
+
                     {formik.touched.houseType && formik.errors.houseType && (
                       <p className="text-red-500 text-sm">{formik.errors.houseType}</p>
                     )}
