@@ -91,56 +91,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     ],
   }
   return (
-    // <Sidebar {...props}>
-    //   <SidebarHeader className="bg-primary300/15">
-    //     <SidebarMenu>
-    //       <SidebarMenuItem>
-    //         <SidebarMenuButton size="lg" className="hover:bg-primary300" asChild>
-    //           <Link href="#">
-    //             <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-    //               <Image width={300} height={300} src={"/logo.jpeg"} alt={"logo"} className="w-full h-full" />
-    //             </div>
-    //             <div className="flex flex-col gap-0.5 leading-none">
-    //               <span className="font-semibold text-secondary500">Intime Homes Consultancy</span>
-    //               <span className="">v1.0.0</span>
-    //             </div>
-    //           </Link>
-    //         </SidebarMenuButton>
-    //       </SidebarMenuItem>
-    //     </SidebarMenu>
-    //   </SidebarHeader>
-    //   <SidebarContent className="bg-primary200/15">
-    //     <SidebarGroup>
-    //       <SidebarMenu>
-    //         {data.navMain.map((item) => (
-    //           <SidebarMenuItem key={item.title}>
-    //             <SidebarMenuButton asChild className="my-4">
-    //               <Link href={item.url} className="font-medium">
-    //                 {item.title}
-    //               </Link>
-    //             </SidebarMenuButton>
-    //             {item.items?.length ? (
-    //               <SidebarMenuSub>
-    //                 {item.items.map((item) => (
-    //                   <SidebarMenuSubItem key={item.title}>
-    //                     <SidebarMenuSubButton className={``} asChild isActive={pathname.split("/")[2] === item.url.split("/")[2]}>
-    //                       <div>
-    //                         {item.icon}
-    //                         <Link href={item.url}>{item.title}</Link>
-
-    //                       </div>
-    //                     </SidebarMenuSubButton>
-    //                   </SidebarMenuSubItem>
-    //                 ))}
-    //               </SidebarMenuSub>
-    //             ) : null}
-    //           </SidebarMenuItem>
-    //         ))}
-    //       </SidebarMenu>
-    //     </SidebarGroup>
-    //   </SidebarContent>
-    //   <SidebarRail />
-    // </Sidebar>
+   
     <Sidebar className="h-screen flex justify-between bg-primary ">
       <SidebarHeader className="h-screen flex justify-between bg-primary/10">
         <div className="px-4 py-6">
