@@ -33,55 +33,55 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     navMain: [
       {
         title: "Dashboard",
-        url: "/intime-admin",
+        url: "/admin",
         items: [],
         icon: "/dashboard.png"
       },
       {
 
-        title: "property listing",
-        url: "/intime-admin/managelisting",
+        title: "Approved Houses",
+        url: "/rentershub/properties",
         icon: "/property.png"
 
       },
       {
 
-        title: "feature listing",
-        url: "/intime-admin/managefeatures",
+        title: "Pending Houses",
+        url: "/rentershub/managefeatures",
         icon: "/feature.png",
 
       },
+      // {
+
+      //   title: "Property Type lis",
+      //   url: "/rentershub/manage-property-types",
+      //   icon: "/list.png",
+
+      // },
+      // {
+
+      //   title: "Blogs",
+      //   url: "/rentershub/blogs",
+      //   icon: "/blog.png",
+
+      // },
+      // {
+
+      //   title: "Testimonials",
+      //   url: "/rentershub/testimonials",
+      //   icon: "/testim.png",
+
+      // },
       {
 
-        title: "Property Type listing",
-        url: "/intime-admin/manage-property-types",
-        icon: "/list.png",
-
-      },
-      {
-
-        title: "Blogs",
-        url: "/intime-admin/blogs",
-        icon: "/blog.png",
-
-      },
-      {
-
-        title: "Testimonials",
-        url: "/intime-admin/testimonials",
-        icon: "/testim.png",
-
-      },
-      {
-
-        title: "Users",
-        url: "/intime-admin/users",
+        title: "Approved Landlords",
+        url: "/rentershub/users",
         icon: "/users.png",
 
       },
       {
 
-        title: "Requested Access",
+        title: "Pending Landlords",
         url: "/intime-admin/requestaccess",
         icon: "/access.png",
 
