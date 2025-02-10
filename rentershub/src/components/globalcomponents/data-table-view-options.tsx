@@ -34,48 +34,48 @@ export function DataTableViewOptions<TData>({
   // console.log("Delete Type:", deleteType); // Debug log
 
   // Mutation for handling deletion
-  const mutation = useMutation({
-    mutationFn: async (ids: string[]) => {
-      const promises = ids.map(async (id) => {
-        const res = await fetch(`${baseUrl}${id}/${deleteType}`, {
-          method: "DELETE",
-        })
-        if(res.status == 204){
-          RevalidatePath(pathname)
-        }
-        return { id, status: res.status }
-      })
-      return Promise.all(promises)
-    },
-    onSuccess(data) {
-      const failed = data.filter((result) => result.status !== 204)
-      if (failed.length === 0) {
-        toast.success("Data deleted successfully")
-      } else {
-        toast.error("Some items could not be deleted")
-      }
-    },
-    onError() {
-      toast.error("Something went wrong while deleting data")
-    },
-  })
+  // const mutation = useMutation({
+  //   mutationFn: async (ids: string[]) => {
+  //     const promises = ids.map(async (id) => {
+  //       const res = await fetch(`${baseUrl}${id}/${deleteType}`, {
+  //         method: "DELETE",
+  //       })
+  //       if(res.status == 204){
+  //         RevalidatePath(pathname)
+  //       }
+  //       return { id, status: res.status }
+  //     })
+  //     return Promise.all(promises)
+  //   },
+  //   onSuccess(data) {
+  //     const failed = data.filter((result) => result.status !== 204)
+  //     if (failed.length === 0) {
+  //       toast.success("Data deleted successfully")
+  //     } else {
+  //       toast.error("Some items could not be deleted")
+  //     }
+  //   },
+  //   onError() {
+  //     toast.error("Something went wrong while deleting data")
+  //   },
+  // })
 
   // Handle delete button click
-  const handleDelete = () => {
-    const selectedRows = table
-      .getSelectedRowModel()
-      .rows.map((row:any) => row.original.id) // Assuming each row has an `id`
-    if (selectedRows.length > 0) {
-      mutation.mutate(selectedRows)
-    } else {
-      toast.error("No items selected for deletion")
-    }
-  }
+  // const handleDelete = () => {
+  //   const selectedRows = table
+  //     .getSelectedRowModel()
+  //     .rows.map((row:any) => row.original.id) // Assuming each row has an `id`
+  //   if (selectedRows.length > 0) {
+  //     mutation.mutate(selectedRows)
+  //   } else {
+  //     toast.error("No items selected for deletion")
+  //   }
+  // }
 
   return (
     <div className="flex gap-2 items-center justify-center">
       {/* Delete Button */}
-      <Button
+      {/* <Button
         onClick={handleDelete}
         disabled={
           (!table.getIsSomeRowsSelected() &&
@@ -89,7 +89,7 @@ export function DataTableViewOptions<TData>({
         ) : (
           "Delete"
         )}
-      </Button>
+      </Button> */}
 
       {/* Dropdown Menu */}
       <DropdownMenu>

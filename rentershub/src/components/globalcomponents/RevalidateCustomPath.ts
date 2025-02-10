@@ -1,8 +1,7 @@
-"use server"
+"use server";
 
-import { revalidatePath } from "next/cache"
+import { revalidatePath } from "next/cache";
 
-
-export const RevalidatePath = (path:string)=>{
-    return revalidatePath(path)
-}
+export const RevalidatePath = async (path: string) => {
+  return revalidatePath(path);
+};

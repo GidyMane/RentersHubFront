@@ -1,5 +1,6 @@
 
 import AdminLayout from "@/components/admin/adminLayout";
+import ReduxProvider from "@/providers/reduxProvider";
 import type { Metadata } from "next";
 import { Jost } from "next/font/google"; // Import Google Font
 import Script from 'next/script'
@@ -29,11 +30,12 @@ export default function DashboardLayout({
     <div className="relative h-screen bg-white m-0" >
       
         <AdminLayout>
+        <ReduxProvider>
           
             <Suspense>
               {children}
             </Suspense>
-          
+        </ReduxProvider> 
         </AdminLayout>
      
 

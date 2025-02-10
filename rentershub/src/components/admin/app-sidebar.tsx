@@ -75,7 +75,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       {
 
         title: "Approved Landlords",
-        url: "/rentershub/users",
+        url: "/admin/approvedlandlords",
         icon: "/users.png",
 
       },
