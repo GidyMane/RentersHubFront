@@ -1,10 +1,12 @@
 import { ColumnDef } from "@tanstack/react-table"
 import { Badge } from "@/components/ui/badge"
 import { Checkbox } from "@/components/ui/checkbox"
-import { DataTableColumnHeader } from "../../../components/admin/property/data-table-column-header"
+
 import DataTableCheckBox from "@/components/globalcomponents/DataTableCheckBox"
+import { DataTableRowActions } from "../ApprovedProperties/data-table-row-actions"
+import { DataTableColumnHeader } from "../ApprovedProperties/data-table-column-header"
 import { removefeature } from "@/actions/feature"
-import { DataTableRowActions } from "../property/data-table-row-actions"
+
 
 
 

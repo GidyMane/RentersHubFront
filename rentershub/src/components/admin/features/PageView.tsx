@@ -25,7 +25,7 @@ const PageView = ({ features }: { features: any }) => {
     return (
         <div className='flex flex-col gap-4'>
             <div className='flex justify-between my-4'>
-                <h1 className="text-2xl font-bold mb-5">Manage Property Types</h1>
+                <h1 className="text-2xl font-bold mb-5">Approved Landlords</h1>
                 <Dialog>
                     <DialogTrigger asChild>
                         <Button onClick={() => {
