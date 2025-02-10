@@ -71,7 +71,7 @@ export function DataTable<TData, TValue>({
       <DataTableToolbar table={table} searchColumn={searchColumn} />
       <div className="rounded-md border">
         <Table>
-          <TableHeader className="bg-primary500 ">
+          <TableHeader className="bg-primary ">
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {

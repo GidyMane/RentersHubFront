@@ -50,7 +50,7 @@ export function DataTableRowActions<TData>({
       <DropdownMenuContent align="end" className="w-[160px]">
         <DropdownMenuItem onClick={()=>{
           dispatch(setEditData({data:property, page}))
-        }} className="text-center text-primary300">Edit</DropdownMenuItem>
+        }} className="text-center text-primary">Edit</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   )

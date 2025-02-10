@@ -36,12 +36,12 @@ const PageView = ({ properties, features, propertytypes}: { properties: any; fea
                         dispatch(setIsAdd())
 
                     }
-                }} className='bg-primary500 text-white rounded-none' >
+                }} className='bg-primary text-white rounded-none' >
                     {isadd || isedit ? "back" : "add property"}
                 </Button>
             </div>
 
-            <Suspense fallback={<Loader className='animate animate-spin text-secondary300' />}>
+            <Suspense fallback={<Loader className='animate animate-spin text-secondary' />}>
 
                 {isadd ? (
                     <AddProperty features={features} propertytypes={propertytypes} />
