@@ -35,7 +35,7 @@ const PageView = ({ features }: { features: any }) => {
                             //     dispatch(setIsAdd())
 
                             // }
-                        }} className='bg-primary500 text-white rounded-none' >
+                        }} className='bg-primary text-white rounded-none' >
                             {/* {isadd || isedit ? "back" : "add property"} */}
                             Add Feature
                         </Button>
