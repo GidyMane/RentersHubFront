@@ -5,7 +5,7 @@ import { getAllproperties, getproperties, getpropertyfeatures } from '@/actions/
 import { Loader } from 'lucide-react'
 
 import { getpropertytypes } from '@/actions/propertytype'
-import PageView from '@/components/admin/ApprovedLandlords/ManageLandlords'
+import PageView from '@/components/admin/ApprovedProperties/ManageProperties'
 
 export const dynamic = "force-dynamic"
 

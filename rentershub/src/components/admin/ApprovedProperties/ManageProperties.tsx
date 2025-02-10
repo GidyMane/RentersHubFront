@@ -11,7 +11,7 @@ import { useAppDispatch } from '@/store/hooks'
 import { clearEditData, setIsAdd } from '@/store/slices/PropertySlice'
 
 import Link from 'next/link'
-import { columns } from '@/app/admin/approvedlandlords/columns'
+import { columns } from '@/app/admin/approvedproperties/columns'
 import AddProperty from './AddProperty'
 
 const PageView = ({ properties, features, propertytypes}: { properties: any; features:any; propertytypes:any;}) => {

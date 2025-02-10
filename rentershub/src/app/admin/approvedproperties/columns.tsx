@@ -16,8 +16,8 @@ import {
     QuestionMarkCircledIcon,
     StopwatchIcon,
 } from "@radix-ui/react-icons"
-import { DataTableColumnHeader } from "@/components/admin/ApprovedLandlords/data-table-column-header"
-import { DataTableRowActions } from "@/components/admin/ApprovedLandlords/data-table-row-actions-property"
+import { DataTableColumnHeader } from "@/components/admin/ApprovedProperties/data-table-column-header"
+import { DataTableRowActions } from "@/components/admin/ApprovedProperties/data-table-row-actions-property"
 
 export const labels = [
     {

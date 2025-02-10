@@ -20,7 +20,7 @@ import {
 
 import { useAppDispatch } from "@/store/hooks"
 import { setEditData } from "@/store/slices/PropertySlice"
-import { Property } from "@/app/admin/approvedlandlords/columns"
+import { Property } from "@/app/admin/approvedproperties/columns"
 
 
 interface DataTableRowActionsProps<TData> {
