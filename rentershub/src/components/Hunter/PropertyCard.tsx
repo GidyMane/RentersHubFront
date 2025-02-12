@@ -45,7 +45,7 @@ export function PropertyCard({
             height={300}
             className="w-full h-[200px] object-cover"
           />
-          <Button size="icon" variant="ghost" className="absolute top-2 right-2 bg-white/80 hover:bg-white">
+          <Button size="icon" variant="ghost" className="absolute top-2 right-2 bg-white/80 hover:bg-red-500">
             <Heart className="w-5 h-5" />
           </Button>
         </div>

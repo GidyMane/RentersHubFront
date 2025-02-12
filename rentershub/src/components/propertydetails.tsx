@@ -104,6 +104,36 @@ export interface PropertyResponse {
     property: PropertyData;
     images: ImageData[];
   };
+  title: string;
+  propertytype:{id:number, name:string};
+  updated_at: string;  
+  description: string; 
+  city: string;
+  state: string;
+  country: string;
+  postal_code: string;
+  address: string;
+  location: string
+  location_coords: string  
+  is_available: boolean
+  is_approved: boolean
+  featured: boolean
+  rent_price: string
+  deposit_amount: string
+  main_image_url:{id:string, url:string}
+  images: []
+  features: {id:number, name:string}
+  water_charges: string
+  water_deposit: string
+  garbage_charges: string
+  security_charges: string
+  other_charges: string
+  posted_by: number
+  managed_by: string
+
+ 
+
+
 }
 
 export interface SimilarProperty {
@@ -130,17 +160,6 @@ export default function PropertyDetail({
   const images = Array.isArray(property?.data?.images) ? property.data.images.map((image: any) => image.url) : [];
 
 
-  // const features = [
-  //   { icon: "CCTV", label: "24 Hour CCTV" },
-  //   { icon: "Generator", label: "Backup Generator" },
-  //   { icon: "Balcony", label: "Balcony" },
-  //   { icon: "Water", label: "Borehole Water" },
-  //   { icon: "Gym", label: "Gym" },
-  //   { icon: "Intercom", label: "Intercom" },
-  //   { icon: "Lift", label: "Lift" },
-  //   { icon: "Parking", label: "Parking" },
-  //   { icon: "Pool", label: "Swimming Pool" },
-  // ];
 
   const features = property?.data?.property?.propertyToFeatures || [];
   const [ref, inView] = useInView({
@@ -148,65 +167,27 @@ export default function PropertyDetail({
     threshold: 0.1,
   });
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2,
-      },
-    },
-  };
 
-  const itemVariants = {
-    hidden: { opacity: 0, y: 50 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.5,
-        ease: "easeOut",
-      },
-    },
-  };
 
-  const property1 = {
-    id: 1,
-    title: "2 Bedroom Apartment",
-    price: 7900000,
-    location: "Kilimani, Nairobi, Kenya",
-    beds: 2,
-    baths: 1,
-    sqft: "80 sq m",
-    type: "APARTMENT",
-    featured: true,
-    status: "FOR SALE",
-    images: [
-      "/1.jpg?height=300&width=400",
-      "/2.jpg?height=300&width=400",
-      "/3.jpg?height=300&width=400",
-    ],
-  };
-
-  const handleShare = () => {
-    const url = window.location.href; // You can replace this with the property URL you want to share
-    if (navigator.share) {
-      navigator
-        .share({
-          title: property?.data?.property?.name || "Property",
-          text: `Check out this property: ${property?.data?.property?.name}`,
-          url: url,
-        })
-        .then(() => setIsShared(true))
-        .catch((error) => console.log("Error sharing:", error));
-    } else {
-      // Fallback: Copy link to clipboard if sharing is not supported
-      navigator.clipboard.writeText(url).then(() => {
-        setIsShared(true);
-        toast.success("Link copied to clipboard!");
-      });
-    }
-  };
+  // const handleShare = () => {
+  //   const url = window.location.href; // You can replace this with the property URL you want to share
+  //   if (navigator.share) {
+  //     navigator
+  //       .share({
+  //         title: property?.data?.property?.name || "Property",
+  //         text: `Check out this property: ${property?.data?.property?.name}`,
+  //         url: url,
+  //       })
+  //       .then(() => setIsShared(true))
+  //       .catch((error) => console.log("Error sharing:", error));
+  //   } else {
+  //     // Fallback: Copy link to clipboard if sharing is not supported
+  //     navigator.clipboard.writeText(url).then(() => {
+  //       setIsShared(true);
+  //       toast.success("Link copied to clipboard!");
+  //     });
+  //   }
+  // };
 
   return (
     <div className="mx-auto ">
@@ -222,15 +203,15 @@ export default function PropertyDetail({
                   </Badge>
                 )}
                 <Badge variant="secondary">
-                  {property.data.property.saleType}
+                  {property.featured}
                 </Badge>
               </div>
               <h1 className="text-3xl font-bold">
-                {property.data.property.name}
+                {property.title}
               </h1>
-              <div className="flex items-center text-muted-foreground">
+              <div className="flex items-center text-muted">
                 <MapPin className="w-4 h-4 mr-2" />
-                {`${property.data.property.streetAddress}, ${property.data.property.city}, ${property.data.property.state}, ${property.data.property.country}`}
+                {`${property.address}, ${property.city}, ${property.state}, ${property.country}`}
               </div>
               <div className="flex items-center justify-between">
                 <div className="text-3xl font-bold">
@@ -242,14 +223,14 @@ export default function PropertyDetail({
                     }).format(property.data.property.price)}
                   </span>
                 </div>
-                <Button
+                {/* <Button
                   variant="outline"
                   className="gap-2"
                   onClick={handleShare}
                 >
                   <Share2 className="w-4 h-4" />
                   {isSharing ? "Sharing..." : "Share"}
-                </Button>
+                </Button> */}
                 {/* {isShared && (
                   <span className="text-green-500">Link Shared!</span>
                 )} */}
@@ -296,12 +277,12 @@ export default function PropertyDetail({
             <Card>
               <CardContent className="pt-6">
                 <div className="flex items-center gap-2">
-                  <Building2 className="w-4 h-4 text-muted-foreground" />
+                  <Building2 className="w-4 h-4 text-muted" />
                   <div className="space-y-1">
-                    <p className="text-sm text-muted-foreground">
+                    <p className="text-sm text-secondary">
                       Property Type
                     </p>
-                    <p className="font-medium">{property?.data?.property?.propertyType?.name}</p>
+                    <p className="font-medium">{property?.propertytype?.name}</p>
                   </div>
                 </div>
               </CardContent>
@@ -309,9 +290,9 @@ export default function PropertyDetail({
             <Card>
               <CardContent className="pt-6">
                 <div className="flex items-center gap-2">
-                  <Bed className="w-4 h-4 text-muted-foreground" />
+                  <Bed className="w-4 h-4 text-muted" />
                   <div className="space-y-1">
-                    <p className="text-sm text-muted-foreground">Bedrooms</p>
+                    <p className="text-sm text-secondary">Bedrooms</p>
                     <p className="font-medium">
                       {property?.data?.property?.bedrooms}
                     </p>
@@ -322,9 +303,9 @@ export default function PropertyDetail({
             <Card>
               <CardContent className="pt-6">
                 <div className="flex items-center gap-2">
-                  <Square className="w-4 h-4 text-muted-foreground" />
+                  <Square className="w-4 h-4 text-muted" />
                   <div className="space-y-1">
-                    <p className="text-sm text-muted-foreground">
+                    <p className="text-sm text-secondary">
                       Square Meters
                     </p>
                     <p className="font-medium">
@@ -375,12 +356,12 @@ export default function PropertyDetail({
           {/* Description */}
           <div className="space-y-4 my-10 px-4 py-8 ">
             <h2 className="text-2xl font-semibold">Description</h2>
-            <p className="text-muted-foreground">
-              {property?.data?.property?.description}
+            <p className="text-black">
+              {property?.description}
             </p>
             <div className="space-y-2">
               <h3 className="font-semibold">Prices:</h3>
-              <ul className="list-disc list-inside space-y-1 text-muted-foreground">
+              <ul className="list-disc list-inside space-y-1 text-muted">
                 <li>{`${property?.data?.property?.bedrooms} Bedroom (${property?.data?.property?.size
                   }, ${property?.data?.property?.propertyToFeatures
                     ? "master en-suite"
@@ -395,10 +376,10 @@ export default function PropertyDetail({
           </div>
           <div className="space-y-4 my-10 px-4 py-8">
             <h3 className="text-lg font-semibold">Details</h3>
-            <div className="text-sm text-muted-foreground">
+            <div className="text-sm text-black">
               Updated on{" "}
-              {property?.data?.property.updatedAt
-                ? new Date(property?.data?.property?.updatedAt).toLocaleString()
+              {property?.updated_at
+                ? new Date(property?.updated_at).toLocaleString()
                 : "N/A"}
             </div>
             <div className="grid gap-4 rounded-lg bg-muted p-4">
@@ -416,7 +397,7 @@ export default function PropertyDetail({
                 </div>
                 <div>
                   <div className="font-medium">Property Type:</div>
-                  <div>{property?.data?.property?.propertyType?.name || "N/A"}</div>
+                  <div>{property?.propertytype?.name || "N/A"}</div>
                 </div>
               </div>
               <Separator />
@@ -480,31 +461,31 @@ export default function PropertyDetail({
               <div className="grid gap-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <div className="text-sm font-medium text-muted-foreground">
+                    <div className="text-sm font-medium text-muted">
                       City
                     </div>
-                    <div>{property?.data?.property?.city}</div>
+                    <div>{property?.city}</div>
                   </div>
                   <div>
-                    <div className="text-sm font-medium text-muted-foreground">
+                    <div className="text-sm font-medium text-muted">
                       Area
                     </div>
-                    <div>{property?.data?.property?.area}</div>
+                    <div>{property?.address}</div>
                   </div>
                 </div>
                 <Separator />
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <div className="text-sm font-medium text-muted-foreground">
+                    <div className="text-sm font-medium text-muted">
                       State/county
                     </div>
-                    <div>{property?.data?.property?.county}</div>
+                    <div>{property?.state}</div>
                   </div>
                   <div>
-                    <div className="text-sm font-medium text-muted-foreground">
+                    <div className="text-sm font-medium text-muted">
                       Country
                     </div>
-                    <div>{property?.data?.property?.country}</div>
+                    <div>{property?.country}</div>
                   </div>
                 </div>
               </div>
@@ -513,7 +494,7 @@ export default function PropertyDetail({
           </Card>
         </div>
 
-        <div className="bg-white overflow-hidden z-20">
+        <div className="bg-secondary overflow-hidden z-20">
           <MapContainer
             center={position}
             zoom={13}
@@ -524,7 +505,7 @@ export default function PropertyDetail({
               attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             />
             <Marker position={position}>
-              <Popup>A property in Runda, Nairobi</Popup>
+              <Popup>A property in {property?.address}</Popup>
             </Marker>
           </MapContainer>
         </div>

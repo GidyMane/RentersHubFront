@@ -16,6 +16,7 @@ const Editpage = async ({ params }: PageProps) => {
     getSimilarPropertyById(id)
   ]);
   
+  console.log(property, "on the page")
 
 
   return (
