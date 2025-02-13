@@ -28,6 +28,7 @@ import Link from "next/link";
 import { PropertyCarousel } from "./Cards";
 import { useInView } from "react-intersection-observer";
 import toast, { ToastBar, Toaster } from "react-hot-toast";
+import CallLandlordForm from "./CallLandlord";
 
 // Fix for default marker icon
 // delete L.Icon.Default.prototype
@@ -358,8 +359,13 @@ export default function PropertyDetail({
                 <Button className="w-full bg-[#B5A887] hover:bg-[#A39775] text-white">
                   Send Message
                 </Button>
+
+                <CallLandlordForm landlordPhone={""}/>
               </form>
+
+              
             </CardContent>
+            
           </Card>
         </div>
       </div>
