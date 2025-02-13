@@ -205,11 +205,11 @@ export default function PropertyDetail({
               <div className="flex items-center gap-2">
                 {property.featured && (
                   <Badge className="bg-green-500 hover:bg-green-600">
-                    FEATURED
+                    AVAILABLE
                   </Badge>
                 )}
                 <Badge variant="secondary">
-                  {property.featured}
+                  {property?.is_available}
                 </Badge>
               </div>
               <h1 className="text-3xl font-bold">
@@ -350,10 +350,10 @@ export default function PropertyDetail({
               <form className="space-y-4">
                 <Input placeholder="Name" />
                 <Input placeholder="Phone" />
-                <Input placeholder="Email" />
+                {/* <Input placeholder="Email" /> */}
                 <Textarea
                   placeholder="Message"
-                  defaultValue="Hello, I am interested in 2 and 3 Bedroom Apartments"
+                  defaultValue="Hello. I have seen this vacant house on Renters Hub Platform. Is it still available?”"
                 />
                 <Button className="w-full bg-[#B5A887] hover:bg-[#A39775] text-white">
                   Send Message
