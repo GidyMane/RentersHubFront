@@ -130,6 +130,7 @@ export interface PropertyResponse {
   other_charges: string
   posted_by: number
   managed_by: string
+  property_features: {id:number, name:string}
 
  
 
@@ -161,7 +162,8 @@ export default function PropertyDetail({
 
 
 
-  const features = property?.data?.property?.propertyToFeatures || [];
+  const features = Array.isArray(property?.property_features) ? property.property_features : [];
+
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.1,
@@ -429,14 +431,18 @@ export default function PropertyDetail({
           {/* Features */}
           <div className="space-y-4 bg-secondary50/90 my-10 p-4">
             <h2 className="text-2xl font-semibold">Features</h2>
-            <div className="grid grid-cols-2 gap-4">
-              {features.map((feature, idx) => (
-                <div key={idx} className="flex items-center gap-2">
-                  <Check className="w-4 h-4 text-green-500" />
-                  <span>{feature?.name}</span>
-                </div>
-              ))}
-            </div>
+            {property?.property_features && Array.isArray(property.property_features) ? (
+  <div className="grid grid-cols-2 gap-4">
+    {property.property_features.map((feature) => (
+      <div key={feature.id} className="flex items-center gap-2">
+        <Check className="w-4 h-4 text-green-500" />
+        <span>{feature.name}</span>
+      </div>
+    ))}
+  </div>
+) : (
+  <p>No features available</p>
+)}
           </div>
         </div>
 
