@@ -234,14 +234,14 @@ export default function PropertyDetail({
                     }).format(Number(property.rent_price))}
                   </span>
                 </div>
-                <Button
+                {/* <Button
                   variant="outline"
                   className="gap-2"
                   onClick={handleShare}
                 >
                   <Share2 className="w-4 h-4" />
                   {isSharing ? "Sharing..." : "Share"}
-                </Button>
+                </Button> */}
                 {/* {isShared && (
                   <span className="text-green-500">Link Shared!</span>
                 )} */}
@@ -415,7 +415,7 @@ export default function PropertyDetail({
                 ? new Date(property?.updated_at).toLocaleString()
                 : "N/A"}
             </div>
-            <div className="grid gap-4 rounded-lg bg-muted p-4">
+            <div className="grid gap-4 rounded-lg bg-white p-4">
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <div className="font-medium">Price:</div>
@@ -424,7 +424,7 @@ export default function PropertyDetail({
                       ? `${new Intl.NumberFormat("en-US", {
                         style: "currency",
                         currency: "KES",
-                      }).format(property?.data?.property.price)}`
+                      }).format(Number(property?.rent_price))}`
                       : "N/A"}
                   </div>
                 </div>
@@ -551,7 +551,9 @@ export default function PropertyDetail({
       {/* similar listings */}
       <div className="bg-white my-10">
         <div className="px-4 py-8 container">
-          <h3 className="text-3xl font-semibold my-6">Similar Listings</h3>
+          <h3 className="text-3xl font-semibold my-6">Other Properties In the Same Area</h3>
+
+          <p>No properties for now</p>
           
         </div>
       </div>

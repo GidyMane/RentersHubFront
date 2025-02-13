@@ -10,10 +10,10 @@ const ShareButton = ({ propertyLink }: { propertyLink: string }) => {
 
   return (
     <Button
-      className="w-full bg-[#25D366] hover:bg-[#1EBE5D] text-white flex items-center justify-center gap-2"
+      className="w-full bg-white hover:bg-[#1EBE5D] text-primary flex items-center justify-center gap-2 border border-primary"
       onClick={() => window.open(whatsappUrl, "_blank")}
     >
-      <Share2 className="w-5 h-5" /> Share on WhatsApp
+      <Share2 className="w-5 h-5" /> Share 
     </Button>
   );
 };
