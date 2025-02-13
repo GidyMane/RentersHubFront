@@ -70,13 +70,13 @@ export default function AddProperty({
 
     onSubmit: async (values) => {
       // convert features from an array to a string
-      let updatedvalues={
+      const updatedvalues={
         ...values,
         features:values.features.join(",")
       }
 
       // remove unwanted data from our post body and format it
-      let formattedValues = Object.entries(updatedvalues).filter(([key, value]) => { // Remove empty values
+      const formattedValues = Object.entries(updatedvalues).filter(([key, value]) => { // Remove empty values
         if (key === "images" || key === "Image") {
           return false;
         }

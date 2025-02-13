@@ -14,7 +14,7 @@ type DataTableCheckBoxProps<T> = {
 const DataTableCheckBox = <T,>({ table, row, deletefunc }: DataTableCheckBoxProps<T>) => {
     
     const dispatch = useAppDispatch()
-    let selecteddata = table?.getSelectedRowModel().rows.flatMap((row: any) => {
+    const selecteddata = table?.getSelectedRowModel().rows.flatMap((row: any) => {
         return row.original?.id
     })
 

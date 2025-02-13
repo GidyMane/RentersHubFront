@@ -61,7 +61,7 @@ export const removefeature = async (feature: any) => {
     const { isAuthenticated } = getKindeServerSession()
    // console.log(feature, "fetures")
 
-    let url = `${feature[0]}/feature`
+    // let url = `${feature[0]}/feature`
 
     // if (feature.length > 1) {
     //     url = 'features'
