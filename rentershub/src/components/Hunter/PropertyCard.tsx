@@ -35,7 +35,7 @@ export function PropertyCard({
   sqft
 }: PropertyCardProps) {
   return (
-    <Link href={`/property/${id}`}>
+    <Link href={`/Testclient/property/${id}`}>
       <div className="group rounded-lg overflow-hidden border bg-card hover:shadow-lg transition-shadow cursor-pointer">
         <div className="relative">
           <Image
