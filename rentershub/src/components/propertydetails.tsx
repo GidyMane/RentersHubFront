@@ -158,11 +158,15 @@ export default function PropertyDetail({
 
   // console.log(similarproperties)
 
-  const images = Array.isArray(property?.data?.images) ? property.data.images.map((image: any) => image.url) : [];
+  // const images = Array.isArray(property?.data?.images) ? property.data.images.map((image: any) => image.url) : [];
 
+  const images: string[] = [
+    property?.main_image_url?.url ?? "", // Main image first
+    ...(Array.isArray(property?.images) ? property.images.map((img: { url: string }) => img.url) : []),
+  ].filter(Boolean); // Remove null/undefined/empty values
+  
 
-
-  const features = Array.isArray(property?.property_features) ? property.property_features : [];
+  // const features = Array.isArray(property?.property_features) ? property.property_features : [];
 
   const [ref, inView] = useInView({
     triggerOnce: true,
@@ -242,38 +246,46 @@ export default function PropertyDetail({
 
           {/* Image Gallery */}
           <div className="space-y-2">
-            <Dialog>
-              <DialogTrigger asChild>
-                <div className="relative aspect-video cursor-pointer group">
-                  <Image
-                    src={images[selectedImage]}
-                    alt="Property"
-                    fill
-                    className="object-cover rounded-lg"
-                  />
-                  <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg" />
-                  <div className="absolute bottom-4 right-4 bg-black/50 text-white px-3 py-1 rounded-full text-sm">
-                    <Camera className="w-4 h-4 inline mr-2" />
-                    View all photos
-                  </div>
-                </div>
-              </DialogTrigger>
-              <DialogContent className="max-w-4xl">
-                <div className="grid grid-cols-2 gap-2">
-                  {images.map((src, idx) => (
-                    <Image
-                      key={idx}
-                      src={src}
-                      alt={`Property ${idx + 1}`}
-                      width={400}
-                      height={300}
-                      className="rounded-lg"
-                    />
-                  ))}
-                </div>
-              </DialogContent>
-            </Dialog>
+  <Dialog>
+    <DialogTrigger asChild>
+      <div className="relative aspect-video cursor-pointer group">
+        {images.length > 0 ? (
+          <Image
+            src={images[selectedImage]}
+            alt="Property"
+            fill
+            className="object-cover rounded-lg"
+          />
+        ) : (
+          <div className="flex items-center justify-center h-48 bg-gray-200 rounded-lg">
+            <p className="text-gray-500">No images available</p>
           </div>
+        )}
+        <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg" />
+        <div className="absolute bottom-4 right-4 bg-black/50 text-white px-3 py-1 rounded-full text-sm">
+          <Camera className="w-4 h-4 inline mr-2" />
+          View all photos
+        </div>
+      </div>
+    </DialogTrigger>
+
+    <DialogContent className="max-w-4xl">
+      <div className="grid grid-cols-2 gap-2">
+        {images.map((src, idx) => (
+          <Image
+            key={idx}
+            src={src}
+            alt={`Property ${idx + 1}`}
+            width={400}
+            height={300}
+            className="rounded-lg"
+          />
+        ))}
+      </div>
+    </DialogContent>
+  </Dialog>
+</div>
+
           {/* Property Details */}
           <div className="grid grid-cols-3 gap-4">
             <Card>
