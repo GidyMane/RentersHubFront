@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { Dialog, DialogTrigger, DialogContent } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { Phone } from 'lucide-react';
 
 const CallLandlordForm = ({ landlordPhone }: { landlordPhone: string }) => 
  {
@@ -23,9 +24,12 @@ const CallLandlordForm = ({ landlordPhone }: { landlordPhone: string }) =>
     <div>
       <Dialog>
         <DialogTrigger asChild>
-          <Button className="w-full bg-[#B5A887] hover:bg-[#A39775] text-white">
-            Call Landlord
-          </Button>
+        
+
+<Button className="w-full bg-secondary hover:bg-[#29335f] text-white flex items-center justify-center gap-2">
+  <Phone className="w-5 h-5" /> Call Landlord
+</Button>
+
         </DialogTrigger>
         <DialogContent className="p-6 max-w-lg text-center">
           {!submitted ? (

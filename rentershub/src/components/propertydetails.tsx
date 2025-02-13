@@ -29,6 +29,10 @@ import { PropertyCarousel } from "./Cards";
 import { useInView } from "react-intersection-observer";
 import toast, { ToastBar, Toaster } from "react-hot-toast";
 import CallLandlordForm from "./CallLandlord";
+import ChatWithLandlord from "./ChatLandlord";
+import ShareButton from "./ShareWhatsapp";
+
+
 
 // Fix for default marker icon
 // delete L.Icon.Default.prototype
@@ -344,23 +348,26 @@ export default function PropertyDetail({
                 <div>
                   <h3 className="font-semibold">RentersHub</h3>
                   <Button variant="link" className="h-auto p-0">
-                    View Property
+                    Connect with Us
                   </Button>
                 </div>
               </div>
               <form className="space-y-4">
-                <Input placeholder="Name" />
-                <Input placeholder="Phone" />
+                {/* <Input placeholder="Name" />
+                <Input placeholder="Phone" /> */}
                 {/* <Input placeholder="Email" /> */}
-                <Textarea
+                {/* <Textarea
                   placeholder="Message"
                   defaultValue="Hello. I have seen this vacant house on Renters Hub Platform. Is it still available?”"
-                />
-                <Button className="w-full bg-[#B5A887] hover:bg-[#A39775] text-white">
+                /> */}
+                {/* <Button className="w-full bg-[#B5A887] hover:bg-[#A39775] text-white">
                   Send Message
-                </Button>
+                </Button> */}
 
                 <CallLandlordForm landlordPhone={""}/>
+                <ChatWithLandlord landlordPhone={""}/>
+                {/* <ShareButton propertyLink={""}/> */}
+                <ShareButton propertyLink={window.location.href}/>
               </form>
 
               
