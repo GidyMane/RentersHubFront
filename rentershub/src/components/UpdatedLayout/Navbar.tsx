@@ -92,9 +92,9 @@ const Navbar = () => {
                                 </Button>
                             </div>
 
-                            <NavItem href="/">Vacant Houses</NavItem>
-                            <NavItem href={`/listing`}>Post a House</NavItem>
-                            <NavItem href="/#testimonials">Manage Rentals</NavItem>
+                            <NavItem href="/Testclient">Vacant Houses</NavItem>
+                            <NavItem href={`/login`}>Post a House</NavItem>
+                            <NavItem href="/admin">Manage Rentals</NavItem>
                             <a
     href="https://api.whatsapp.com/send?phone=254731352350&text=Hello.%20I%20am%20from%20the%20website,%20https://rentershub.co.ke%20and%20I%20am%20searching%20for%20a%20vacant%20house"
     target="_blank"
@@ -109,8 +109,8 @@ const Navbar = () => {
 </a>
 
                             <div className='bottom-0 mt-6 flex gap-4 justify-center items-center mx-2'>
-                                <NavItem href=''><Instagram /></NavItem>
-                                <NavItem href=''><Facebook /></NavItem>
+                                <NavItem href='https://www.instagram.com/rentershub.co.ke?igsh=MTVzcmh5Z2EwY3IwZg=='><Instagram /></NavItem>
+                                <NavItem href='https://www.facebook.com/rentershub.co.ke?mibextid=wwXIfr&mibextid=wwXIfr'><Facebook /></NavItem>
                                 <NavItem href=''>
                                     <svg xmlns="http://www.w3.org/2000/svg" className='text-white' x="0px" y="0px" width="50" height="50" viewBox="0 0 50 50">
                                         <path d="M 5.9199219 6 L 20.582031 27.375 L 6.2304688 44 L 9.4101562 44 L 21.986328 29.421875 L 31.986328 44 L 44 44 L 28.681641 21.669922 L 42.199219 6 L 39.029297 6 L 27.275391 19.617188 L 17.933594 6 L 5.9199219 6 z M 9.7167969 8 L 16.880859 8 L 40.203125 42 L 33.039062 42 L 9.7167969 8 z"></path>
