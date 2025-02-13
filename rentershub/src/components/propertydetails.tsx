@@ -169,35 +169,35 @@ export default function PropertyDetail({
 
 
 
-  // const handleShare = () => {
-  //   const url = window.location.href; // You can replace this with the property URL you want to share
-  //   if (navigator.share) {
-  //     navigator
-  //       .share({
-  //         title: property?.data?.property?.name || "Property",
-  //         text: `Check out this property: ${property?.data?.property?.name}`,
-  //         url: url,
-  //       })
-  //       .then(() => setIsShared(true))
-  //       .catch((error) => console.log("Error sharing:", error));
-  //   } else {
-  //     // Fallback: Copy link to clipboard if sharing is not supported
-  //     navigator.clipboard.writeText(url).then(() => {
-  //       setIsShared(true);
-  //       toast.success("Link copied to clipboard!");
-  //     });
-  //   }
-  // };
+  const handleShare = () => {
+    const url = window.location.href; // You can replace this with the property URL you want to share
+    if (navigator.share) {
+      navigator
+        .share({
+          title: property?.title || "Property",
+          text: `Check out this property: ${property?.title}`,
+          url: url,
+        })
+        .then(() => setIsShared(true))
+        .catch((error) => console.log("Error sharing:", error));
+    } else {
+      // Fallback: Copy link to clipboard if sharing is not supported
+      navigator.clipboard.writeText(url).then(() => {
+        setIsShared(true);
+        toast.success("Link copied to clipboard!");
+      });
+    }
+  };
 
   return (
     <div className="mx-auto ">
       <div className="grid lg:grid-cols-[1fr_400px] gap-8 px-4 py-8 container">
         <div className="space-y-6">
           {/* Header */}
-          {property?.data?.property && (
+          {property && (
             <div className="space-y-4">
               <div className="flex items-center gap-2">
-                {property.data.property.featured && (
+                {property.featured && (
                   <Badge className="bg-green-500 hover:bg-green-600">
                     FEATURED
                   </Badge>
@@ -220,17 +220,17 @@ export default function PropertyDetail({
                     {new Intl.NumberFormat("en-US", {
                       style: "currency",
                       currency: "KES",
-                    }).format(property.data.property.price)}
+                    }).format(Number(property.rent_price))}
                   </span>
                 </div>
-                {/* <Button
+                <Button
                   variant="outline"
                   className="gap-2"
                   onClick={handleShare}
                 >
                   <Share2 className="w-4 h-4" />
                   {isSharing ? "Sharing..." : "Share"}
-                </Button> */}
+                </Button>
                 {/* {isShared && (
                   <span className="text-green-500">Link Shared!</span>
                 )} */}
@@ -362,15 +362,21 @@ export default function PropertyDetail({
             <div className="space-y-2">
               <h3 className="font-semibold">Prices:</h3>
               <ul className="list-disc list-inside space-y-1 text-muted">
-                <li>{`${property?.data?.property?.bedrooms} Bedroom (${property?.data?.property?.size
-                  }, ${property?.data?.property?.propertyToFeatures
-                    ? "master en-suite"
-                    : ""
-                  }) -  ${new Intl.NumberFormat("en-US", {
+                <li>{`Rent Amount 
+                     -  ${new Intl.NumberFormat("en-US", {
                     style: "currency",
                     currency: "KES",
-                  }).format(property?.data?.property.price)}`}</li>
-                {/* <li>3 Bedroom (DSQ/168 sqm) - KSh 20.5M</li> */}
+                  }).format(Number(property?.rent_price))}`}</li>
+                <li>{`Deposit Amount 
+                     -  ${new Intl.NumberFormat("en-US", {
+                    style: "currency",
+                    currency: "KES",
+                  }).format(Number(property?.deposit_amount))}`}</li>
+                  <li>{`Water Charges 
+                     -  ${new Intl.NumberFormat("en-US", {
+                    style: "currency",
+                    currency: "KES",
+                  }).format(Number(property?.water_charges))}per unit`}</li>
               </ul>
             </div>
           </div>
