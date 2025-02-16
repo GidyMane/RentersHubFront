@@ -166,6 +166,7 @@ export default function AddPropertyPage() {
         .required('Deposit amount is required')
         .positive('Deposit must be a positive value'),
       description: Yup.string().required('Description is required'),
+      
     }),
     onSubmit: async (values) => {
       setIsSubmitting(true);
@@ -176,7 +177,8 @@ export default function AddPropertyPage() {
           property_type: values.houseType,
           price: '0',
           city: values.city || 'Unknown City',
-          state: values.county,          
+          state: values.county,
+          owners_contact: values.phone,          
           country: 'Kenya',
           postal_code: values.poBox || '00000',          
           address: values.location,
@@ -560,6 +562,7 @@ export default function AddPropertyPage() {
             alert("You can only upload one cover image.");
           }
         }}
+        
       />
     ) : (
       <div className="border p-4 rounded-lg bg-gray-100">
@@ -568,6 +571,7 @@ export default function AddPropertyPage() {
           src={uploadedFiles.coverImage}
           alt="Cover"
           className="mt-2 w-32 h-32 object-cover"
+          
         />
         
         {/* Allow the user to remove the image and upload a new one */}
