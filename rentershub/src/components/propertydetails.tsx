@@ -437,7 +437,7 @@ export default function PropertyDetail({
                 ? new Date(property?.updated_at).toLocaleString()
                 : "N/A"}
             </div>
-            <div className="grid gap-4 rounded-lg bg-white p-4">
+            {/* <div className="grid gap-4 rounded-lg bg-white p-4">
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <div className="font-medium">Price:</div>
@@ -471,7 +471,7 @@ export default function PropertyDetail({
                 <div className="font-medium">Bathrooms:</div>
                 <div>{property?.data?.property?.bathrooms || "N/A"}</div>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
         <div className="bg-secondary50/90 px-4 py-8 md:container">
