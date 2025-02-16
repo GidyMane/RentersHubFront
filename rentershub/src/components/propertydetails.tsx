@@ -15,9 +15,11 @@ import {
   Camera,
   Check,
   Share2,
+  
   Building2,
   User,
   Maximize2,
+  Cctv,
 } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
@@ -292,7 +294,7 @@ export default function PropertyDetail({
 </div>
 
           {/* Property Details */}
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-2 gap-4">
             <Card>
               <CardContent className="pt-6">
                 <div className="flex items-center gap-2">
@@ -309,17 +311,17 @@ export default function PropertyDetail({
             <Card>
               <CardContent className="pt-6">
                 <div className="flex items-center gap-2">
-                  <Bed className="w-4 h-4 text-muted" />
+                  <Cctv className="w-4 h-4 text-muted" />
                   <div className="space-y-1">
-                    <p className="text-sm text-secondary">Bedrooms</p>
+                    <p className="text-sm text-secondary">Managed By</p>
                     <p className="font-medium">
-                      {property?.data?.property?.bedrooms}
+                      {property?.managed_by}
                     </p>
                   </div>
                 </div>
               </CardContent>
             </Card>
-            <Card>
+            {/* <Card>
               <CardContent className="pt-6">
                 <div className="flex items-center gap-2">
                   <Square className="w-4 h-4 text-muted" />
@@ -333,7 +335,7 @@ export default function PropertyDetail({
                   </div>
                 </div>
               </CardContent>
-            </Card>
+            </Card> */}
           </div>
         </div>
 
@@ -404,6 +406,26 @@ export default function PropertyDetail({
                     style: "currency",
                     currency: "KES",
                   }).format(Number(property?.water_charges))}per unit`}</li>
+                   <li>{`Water Deposit 
+                     -  ${new Intl.NumberFormat("en-US", {
+                    style: "currency",
+                    currency: "KES",
+                  }).format(Number(property?.water_deposit))}per unit`}</li>
+                  <li>{`Garbage Changes 
+                     -  ${new Intl.NumberFormat("en-US", {
+                    style: "currency",
+                    currency: "KES",
+                  }).format(Number(property?.garbage_charges))}`}</li>
+                  <li>{`Security Charges 
+                     -  ${new Intl.NumberFormat("en-US", {
+                    style: "currency",
+                    currency: "KES",
+                  }).format(Number(property?.security_charges))}`}</li>
+                  <li>{`Other Charges 
+                     -  ${new Intl.NumberFormat("en-US", {
+                    style: "currency",
+                    currency: "KES",
+                  }).format(Number(property?.other_charges))}`}</li>  
               </ul>
             </div>
           </div>
