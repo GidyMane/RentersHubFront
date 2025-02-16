@@ -226,7 +226,7 @@ export default function PropertyDetail({
               </div>
               <div className="flex items-center justify-between">
                 <div className="text-3xl font-bold">
-                  From{" "}
+                  {" "}
                   <span className="text-primary">
                     {new Intl.NumberFormat("en-US", {
                       style: "currency",

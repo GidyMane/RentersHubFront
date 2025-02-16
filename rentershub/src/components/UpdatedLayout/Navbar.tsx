@@ -93,7 +93,7 @@ const Navbar = () => {
                             </div>
 
                             <NavItem href="/Testclient">Vacant Houses</NavItem>
-                            <NavItem href={`/login`}>Post a House</NavItem>
+                            <NavItem href={`/rentershub/Dashboard`}>Post a House</NavItem>
                             <NavItem href="/admin">Manage Rentals</NavItem>
                             <a
     href="https://api.whatsapp.com/send?phone=254731352350&text=Hello.%20I%20am%20from%20the%20website,%20https://rentershub.co.ke%20and%20I%20am%20searching%20for%20a%20vacant%20house"
@@ -129,7 +129,7 @@ const Navbar = () => {
                         Vacant Houses
                     </div>
                 </NavItem>               
-                <NavItem href={`/`}>Post A House</NavItem>                
+                <NavItem href={`/rentershub/Dashboard`}>Post A House</NavItem>                
                 <a
     href="https://api.whatsapp.com/send?phone=254731352350&text=Hello.%20I%20am%20from%20the%20website,%20https://rentershub.co.ke%20and%20I%20am%20searching%20for%20a%20vacant%20house"
     target="_blank"
