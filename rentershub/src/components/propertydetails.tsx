@@ -429,7 +429,7 @@ export default function PropertyDetail({
               </ul>
             </div>
           </div>
-          <div className="space-y-4 my-10 px-4 py-8">
+          <div className="space-y-2 my-2 px-4 py-2">
             <h3 className="text-lg font-semibold">Details</h3>
             <div className="text-sm text-black">
               Updated on{" "}
