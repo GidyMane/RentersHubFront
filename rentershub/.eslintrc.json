@@ -1,0 +1,11 @@
+{
+  "extends": ["next/core-web-vitals", "next/typescript"],
+  "rules": {
+    "@typescript-eslint/no-unused-vars": "off", // Disable unused variable checks
+    "@typescript-eslint/no-explicit-any": "off", // Allow 'any' type usage
+    "react/no-unescaped-entities": "off", // Allow unescaped characters in JSX
+    "@next/next/no-img-element": "off", // Allow the usage of <img> tags
+    "@typescript-eslint/no-unused-expressions": "off", // Disable unused expressions rule
+    "no-console": "off" // Allow console logs (optional)
+  }
+}
