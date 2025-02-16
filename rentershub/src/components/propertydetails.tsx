@@ -457,7 +457,7 @@ export default function PropertyDetail({
           <div className="space-y-4 bg-secondary50/90 my-10 p-4">
             <h2 className="text-2xl font-semibold">Features</h2>
             {property?.property_features && Array.isArray(property.property_features) ? (
-  <div className="grid grid-cols-2 gap-4">
+  <div className="grid grid-cols-1 gap-4">
     {property.property_features.map((feature) => (
       <div key={feature.id} className="flex items-center gap-2">
         <Check className="w-4 h-4 text-green-500" />
