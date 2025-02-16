@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import {
   Bed,
   Square,
@@ -282,19 +282,21 @@ export default function PropertyDetail({
     </DialogTrigger>
 
     <DialogContent className="max-w-4xl">
-      <div className="grid grid-cols-2 gap-2">
-        {images.map((src, idx) => (
-          <Image
-            key={idx}
-            src={src}
-            alt={`Property ${idx + 1}`}
-            width={400}
-            height={300}
-            className="rounded-lg"
-          />
-        ))}
-      </div>
-    </DialogContent>
+  <DialogTitle className="text-lg font-semibold">Property Images</DialogTitle>
+  <div className="grid grid-cols-2 gap-2">
+    {images.map((src, idx) => (
+      <Image
+        key={idx}
+        src={src}
+        alt={`Property ${idx + 1}`}
+        width={400}
+        height={300}
+        className="rounded-lg"
+      />
+    ))}
+  </div>
+</DialogContent>
+
   </Dialog>
 </div>
 
