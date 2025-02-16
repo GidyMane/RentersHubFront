@@ -105,11 +105,16 @@ export interface PropertyData {
   propertyType: PropertyType;
 }
 
+interface Image {
+  id: string;
+  url: string;
+}
+
 export interface PropertyResponse {
   status: string;
   data: {
     property: PropertyData;
-    images: ImageData[];
+   
   };
   title: string;
   propertytype:{id:number, name:string};
@@ -128,7 +133,7 @@ export interface PropertyResponse {
   rent_price: string
   deposit_amount: string
   main_image_url:{id:string, url:string}
-  images: []
+  images: Image[];
   features: {id:number, name:string}
   water_charges: string
   water_deposit: string
