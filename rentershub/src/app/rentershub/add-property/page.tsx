@@ -98,16 +98,20 @@ export default function AddPropertyPage() {
     const validTypes = isCoverImage
       ? ['image/jpeg', 'image/png', 'image/jpg']
       : ['image/jpeg', 'image/png', 'image/jpg', 'video/mp4', 'video/webm'];
-
+  
     const validFiles = files.filter((file) => validTypes.includes(file.type));
-
+  
     if (validFiles.length !== files.length) {
       alert('Some files have invalid types and will not be uploaded.');
     }
-
+  
     const uploadedUrls: string[] = [];
     for (const file of validFiles) {
       try {
+        if (isCoverImage) {
+          setUploadedFiles((prev) => ({ ...prev, coverImageLoading: true }));
+        }
+  
         const res = await edgestore.publicFiles.upload({
           file,
           onProgressChange: (progress) => {
@@ -117,9 +121,14 @@ export default function AddPropertyPage() {
         uploadedUrls.push(res.url);
       } catch (error) {
         console.error(`Error uploading ${file.name}:`, error);
+      } finally {
+        if (isCoverImage) {
+          setUploadedFiles((prev) => ({ ...prev, coverImageLoading: false }));
+        }
       }
     }
-
+  
+    // Store the URLs in the respective fields
     if (isCoverImage) {
       setUploadedFiles((prev) => ({ ...prev, coverImage: uploadedUrls[0] }));
     } else {
@@ -129,6 +138,7 @@ export default function AddPropertyPage() {
       }));
     }
   };
+  
 
   type FeatureId = number
   
@@ -138,8 +148,8 @@ export default function AddPropertyPage() {
       features: [] as FeatureId[],
       houseType: '',
       county: '',
-      city:'',
-      poBox:'',
+      city: '',
+      poBox: '',
       location: '',
       managedBy: '',
       phone: '',
@@ -151,12 +161,11 @@ export default function AddPropertyPage() {
       waterDeposit: '',
       otherFees: '',
       description: '',
-      
     },
     validationSchema: Yup.object({
       title: Yup.string().required('Title is required'),
       houseType: Yup.string().required('House type is required'),
-      county: Yup.string().required('County is required'),      
+      county: Yup.string().required('County is required'),
       managedBy: Yup.string().required('Manager is required'),
       phone: Yup.string().required('Phone number is required'),
       rent: Yup.number()
@@ -166,9 +175,14 @@ export default function AddPropertyPage() {
         .required('Deposit amount is required')
         .positive('Deposit must be a positive value'),
       description: Yup.string().required('Description is required'),
-      
+       // Cover image is required
     }),
     onSubmit: async (values) => {
+      if (!uploadedFiles.coverImage) {
+        toast.error('Please upload a cover image before submitting.');
+        return;
+      }
+  
       setIsSubmitting(true);
       try {
         const formattedData = {
@@ -178,14 +192,14 @@ export default function AddPropertyPage() {
           price: '0',
           city: values.city || 'Unknown City',
           state: values.county,
-          owners_contact: values.phone,          
+          owners_contact: values.phone,
           country: 'Kenya',
-          postal_code: values.poBox || '00000',          
+          postal_code: values.poBox || '00000',
           address: values.location,
           features: values.features,
-          amenities:[],
-          water_charges: parseFloat(values.waterCharges || '0'), // Ensuring type consistency
-          garbage_charges: parseFloat(values.garbageFees || '0'), // Consistently parse to float
+          amenities: [],
+          water_charges: parseFloat(values.waterCharges || '0'),
+          garbage_charges: parseFloat(values.garbageFees || '0'),
           security_charges: parseFloat(values.securityFees || '0'),
           other_charges: parseFloat(values.otherFees || '0'),
           water_deposit: parseFloat(values.waterDeposit || '0'),
@@ -194,19 +208,19 @@ export default function AddPropertyPage() {
           featured: true,
           rent_price: parseFloat(values.rent),
           deposit_amount: parseFloat(values.deposit),
-          main_image_url: uploadedFiles?.coverImage
+          main_image_url: uploadedFiles.coverImage
             ? { id: 'main-image', url: uploadedFiles.coverImage }
             : null,
-          other_images: (uploadedFiles?.otherMedia || []).map((url, idx) => ({
+          images: (uploadedFiles.otherMedia || []).map((url, idx) => ({
             id: `img-${idx + 1}`,
             url,
           })),
           posted_by: session?.user?.user_id,
           managed_by: values.managedBy,
         };
-
-       console.log(formattedData, "formatted data")
-
+  
+        console.log(formattedData, 'formatted data');
+  
         const response = await fetch(`${baseUrl}listing/property`, {
           method: 'POST',
           headers: {
@@ -215,12 +229,12 @@ export default function AddPropertyPage() {
           },
           body: JSON.stringify(formattedData),
         });
-
-        console.log(response,"this is a response from post")
+  
+        console.log(response, 'this is a response from post');
   
         if (!response.ok) {
           const errorDetails = await response.text();
-         
+  
           throw new Error(
             `Failed to create property: ${response.status}, ${errorDetails}`
           );
@@ -232,13 +246,13 @@ export default function AddPropertyPage() {
         setIsSuccessModalOpen(true);
         setIsSubmitting(false); // End loading
         router.push('/rentershub/properties'); // Redirect after success
-      }       
-      catch (error) {
-        toast.error('Error submitting property',);
+      } catch (error) {
+        toast.error('Error submitting property');
         alert('Failed to submit property. Please try again.');
       }
     },
   });
+  
   
 
   
@@ -593,21 +607,22 @@ export default function AddPropertyPage() {
 
 
             {/* Property Images & Videos */}
-            <Card>
-              <CardContent className="p-6">
-                <h3 className="text-lg font-semibold text-[#1C4532] mb-4">Property Images & Videos</h3>
-                <FileUploadZone onFilesSelected={(files) => handleFilesSelected(files, false)} />
-                {uploadedFiles.otherMedia.map((url, idx) => (
-                  <div key={idx}>
-                    {url.endsWith('.mp4') ? (
-                      <video src={url} controls className="w-32 h-32" />
-                    ) : (
-                      <img src={url} alt={`Media ${idx}`} className="w-32 h-32" />
-                    )}
-                  </div>
-                ))}
-              </CardContent>
-            </Card>
+           
+<Card>
+  <CardContent className="p-6">
+    <h3 className="text-lg font-semibold text-[#1C4532] mb-4">Property Images & Videos</h3>
+    <FileUploadZone onFilesSelected={(files) => handleFilesSelected(files, false)} />
+    {uploadedFiles.otherMedia.map((url, idx) => (
+      <div key={idx}>
+        {url.endsWith('.mp4') ? (
+          <video src={url} controls className="w-32 h-32" />
+        ) : (
+          <img src={url} alt={`Media ${idx}`} className="w-32 h-32" />
+        )}
+      </div>
+    ))}
+  </CardContent>
+</Card>
 
             <div className="flex justify-end">
         <Button
