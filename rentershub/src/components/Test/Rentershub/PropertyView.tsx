@@ -24,7 +24,7 @@ interface PropertyDetails {
   id: number
   title: string
   description: string
-  property_type: string | null
+  
   price: string
   city: string
   state: string
@@ -41,7 +41,7 @@ interface PropertyDetails {
   featured: boolean
   rent_price: string
   deposit_amount: string
-  main_image_url: string | null
+  main_image_url: {id:number,url: string}
   images: string[]
   features: Feature[]
   amenities: number[]
@@ -53,13 +53,14 @@ interface PropertyDetails {
   posted_by: number
   managed_by: string
   space_types: string[]
+  propertytype:{id:number, name:string};
 }
 
 export default function PropertyDetails({
   id,
   title,
   description,
-  property_type,
+  propertytype,
   price,
   city,
   state,
@@ -77,6 +78,7 @@ export default function PropertyDetails({
   deposit_amount,
   main_image_url,
   images,
+ 
   water_charges,
   water_deposit,
   garbage_charges,
@@ -97,6 +99,7 @@ export default function PropertyDetails({
     deposit_amount,
     water_charges,
     water_deposit,
+    propertytype,
     garbage_charges,
     security_charges,
     other_charges,
@@ -106,6 +109,8 @@ export default function PropertyDetails({
     parking_spaces,
     main_image_url,
   })
+
+  console.log(formData, "data ya form")
 
   const handleEdit = () => {
     if (isEditing) {
@@ -155,15 +160,19 @@ export default function PropertyDetails({
   }
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
+    const file = e.target.files?.[0];
     if (file) {
-      const reader = new FileReader()
+      const reader = new FileReader();
       reader.onloadend = () => {
-        setFormData((prev) => ({ ...prev, main_image_url: reader.result as string }))
-      }
-      reader.readAsDataURL(file)
+        setFormData((prev) => ({
+          ...prev,
+          main_image_url: { id: Date.now(), url: reader.result as string },
+        }));
+      };
+      reader.readAsDataURL(file);
     }
-  }
+  };
+  
 
   const onFeatureToggle = (featureId: number) => {
     setSelectedFeatures((prev) =>
@@ -266,8 +275,8 @@ export default function PropertyDetails({
             </p>
             <div className="flex flex-wrap gap-2 mt-2">
               {is_available && <Badge variant="secondary">Available</Badge>}
-              {is_approved && <Badge variant="secondary">Approved</Badge>}
-              {featured && <Badge>Featured</Badge>}
+              {is_approved && <Badge >Approved</Badge>}
+              {/* {featured && <Badge>Featured</Badge>} */}
             </div>
           </div>
         </div>
@@ -278,7 +287,7 @@ export default function PropertyDetails({
             <h3 className="font-semibold mb-3">Main Image</h3>
             <div className="relative aspect-video">
               <Image
-                src={formData.main_image_url || "/placeholder.svg"}
+                src={formData?.main_image_url?.url || "/placeholder.svg"}
                 alt={title}
                 fill
                 className="rounded-lg object-cover"
@@ -308,15 +317,15 @@ export default function PropertyDetails({
                 <h3 className="font-semibold mb-2">Property Type</h3>
                 <div className="flex items-center gap-2">
                   <Home className="w-5 h-5 text-muted-foreground flex-shrink-0" />
-                  <span className="text-sm">{property_type || "Not specified"}</span>
+                  <span className="text-sm">{formData?.propertytype?.name || "Not specified"}</span>
                 </div>
               </div>
-              <div className="col-span-1">{renderEditableInput("size", formData.size, "Size", "sq ft")}</div>
+              {/* <div className="col-span-1">{renderEditableInput("size", formData.size, "Size", "sq ft")}</div>
               <div className="col-span-1">{renderEditableInput("bedrooms", formData.bedrooms, "Bedrooms")}</div>
               <div className="col-span-1">{renderEditableInput("bathrooms", formData.bathrooms, "Bathrooms")}</div>
               <div className="col-span-1">
                 {renderEditableInput("parking_spaces", formData.parking_spaces, "Parking Spaces")}
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
@@ -326,12 +335,12 @@ export default function PropertyDetails({
           {isEditing ? (
             <Textarea
               name="description"
-              value={formData.description}
+              value={formData?.description}
               onChange={handleInputChange}
               className="min-h-[100px]"
             />
           ) : (
-            <p className="text-sm text-muted-foreground">{description}</p>
+            <p className="text-sm text-black">{description}</p>
           )}
         </div>
 
@@ -348,7 +357,7 @@ export default function PropertyDetails({
                 />
                 <label
                   htmlFor={`feature-${feature.id}`}
-                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  className="text-sm text-black font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                 >
                   {feature.name}
                 </label>
@@ -378,7 +387,7 @@ export default function PropertyDetails({
               {featureList
                 .filter((feature) => selectedFeatures.includes(feature.id))
                 .map((feature) => (
-                  <div key={feature.id} className="flex items-center justify-between text-sm text-muted-foreground">
+                  <div key={feature.id} className="flex items-center justify-between text-sm text-black">
                     <span className="flex items-center">
                       <Check className="h-4 w-4 mr-2 text-primary" />
                       {feature.name}
@@ -470,20 +479,24 @@ export default function PropertyDetails({
         </div>
 
         <div>
-          <h3 className="font-semibold mb-3">Property Images</h3>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {[main_image_url, ...images].filter(Boolean).map((image, index) => (
-              <div key={index} className="relative aspect-square">
-                <Image
-                  src={image || "/placeholder.svg"}
-                  alt={`Property image ${index + 1}`}
-                  fill
-                  className="rounded-lg object-cover"
-                />
-              </div>
-            ))}
-          </div>
+  <h3 className="font-semibold mb-3">Property Images</h3>
+  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+    {[main_image_url, ...images].filter(Boolean).map((image, index) => {
+      const src = typeof image === "string" ? image : image.url;
+      return (
+        <div key={index} className="relative aspect-square">
+          <Image
+            src={src || "/placeholder.svg"}
+            alt={`Property image ${index + 1}`}
+            fill
+            className="rounded-lg object-cover"
+          />
         </div>
+      );
+    })}
+  </div>
+</div>
+
 
         <div className="flex justify-between items-center pt-4">
           <span className="text-sm text-muted-foreground">Managed by: {managed_by}</span>
