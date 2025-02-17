@@ -50,7 +50,7 @@ const SuccessMessage = () => {
           <Button 
              
             className="bg-blue-600 hover:bg-blue-700 text-white py-6 px-8 text-lg"
-            onClick={() => router.push('/')}
+            onClick={() => router.push('/Testclient')}
           >
             Explore Platform
           </Button>
