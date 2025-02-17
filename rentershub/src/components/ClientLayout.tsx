@@ -65,7 +65,7 @@ const SignUpForm = () => {
     }
     setIsLoading(true);
     try {
-      const response = await axios.post(`${baseUrl}accounts/create/otp`, { contact: phone });
+      const response = await axios.post(`${baseUrl}accounts/create/otp`, { contact:  `0${phone}` });
       console.log('OTP sent response:', response.data);  
       toast.success(`An OTP has been sent to ${phone}`);
       setStep(3);
