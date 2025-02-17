@@ -118,7 +118,7 @@ const SignUpForm = () => {
       contact: `0${phone}`,
       username,
     };
-     console.log(payload, "payload")
+    
 
     setIsLoading(true);
     try {
