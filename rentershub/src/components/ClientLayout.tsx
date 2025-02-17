@@ -67,7 +67,7 @@ const SignUpForm = () => {
     try {
       const response = await axios.post(`${baseUrl}accounts/create/otp`, { contact:  `0${phone}` });
       console.log('OTP sent response:', response.data);  
-      toast.success(`An OTP has been sent to ${phone}`);
+      toast.success(`An OTP has been sent to 0${phone}`);
       setStep(3);
     } catch (error) {
       toast.error('Failed to send OTP. Please try again.');
