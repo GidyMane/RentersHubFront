@@ -178,44 +178,39 @@ const SignUpForm = () => {
 
             {step === 2 && (
               <form className="space-y-6">
-              <div className="space-y-2">
-                <Label htmlFor="phone" className="text-sm font-medium">Phone Number</Label>
-                <div className="flex">
-                  <div className="flex items-center bg-gray-100 px-3 rounded-l-md border border-r-0 border-gray-300">
-                    <Image
-                      src="/kenya-flag.svg"
-                      alt="Kenyan Flag"
-                      width={24}
-                      height={16}
-                      className="mr-2"
+                <div className="space-y-2">
+                  <Label htmlFor="phone" className="text-sm font-medium">Phone Number</Label>
+                  <div className="flex">
+                    <div className="flex items-center bg-gray-100 px-3 rounded-l-md border border-r-0 border-gray-300">
+                      <Image
+                        src="/kenya-flag.svg"
+                        alt="Kenyan Flag"
+                        width={24}
+                        height={16}
+                        className="mr-2"
+                      />
+                      <span className="text-gray-500">+254</span>
+                    </div>
+                    <Input
+                      id="phone"
+                      type="tel"
+                      placeholder="7XXXXXXXX"
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value.replace(/[^0-9]/g, '').slice(0, 9))}
+                      className="rounded-l-none flex-1"
+                      required
                     />
-                    <span className="text-gray-500">+254</span>
                   </div>
-                  <Input
-                    id="phone"
-                    type="tel"
-                    placeholder="7XXXXXXXX"
-                    value={phone}
-                    onChange={(e) => {
-                      let input = e.target.value.replace(/[^0-9]/g, '');
-                      if (input.charAt(0) === '0') input = input.slice(1);
-                      setPhone(input.slice(0, 9));
-                    }}
-                    className="rounded-l-none flex-1"
-                    required
-                  />
                 </div>
-              </div>
-              <Button
-                type="button"
-                onClick={handleSendOtp}
-                className="w-full bg-[#1C4532] hover:bg-[#153726] text-white"
-                disabled={isLoading || phone.length !== 9}
-              >
-                {isLoading ? 'Sending OTP...' : 'Send OTP'}
-              </Button>
-            </form>
-            
+                <Button
+                  type="button"
+                  onClick={handleSendOtp}
+                  className="w-full bg-[#1C4532] hover:bg-[#153726] text-white"
+                  disabled={isLoading || phone.length !== 9}
+                >
+                  {isLoading ? 'Sending OTP...' : 'Send OTP'}
+                </Button>
+              </form>
             )}
 
             {step === 3 && (
