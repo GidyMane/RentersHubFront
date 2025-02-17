@@ -143,6 +143,7 @@ export interface PropertyResponse {
   posted_by: number
   managed_by: string
   property_features: {id:number, name:string}
+  owners_contact: string
 
  
 
@@ -373,8 +374,8 @@ export default function PropertyDetail({
                   Send Message
                 </Button> */}
 
-                <CallLandlordForm landlordPhone={""}/>
-                <ChatWithLandlord landlordPhone={""}/>
+                <CallLandlordForm landlordPhone={property?.owners_contact}/>
+                <ChatWithLandlord landlordPhone={property?.owners_contact}/>
                 {/* <ShareButton propertyLink={""}/> */}
                 <ShareButton propertyLink={window.location.href}/>
               </form>
