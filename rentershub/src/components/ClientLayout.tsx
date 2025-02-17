@@ -11,6 +11,7 @@ import { Progress } from '@/components/ui/progress';
 import { Card, CardContent } from '@/components/ui/card';
 import { User, Building, Phone, Mail, Lock, UserPlus, CheckCircle2, ArrowLeft, ArrowRight } from 'lucide-react';
 import Image from 'next/image';
+import { baseUrl } from '@/lib/globalvariables';
 
 interface Role {
   pk: number;
@@ -31,7 +32,7 @@ const SignUpForm = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
-  const baseUrl = 'https://rentershubservicev1.onrender.com/api/v1/';
+  
 
   const totalSteps = 4;
 
