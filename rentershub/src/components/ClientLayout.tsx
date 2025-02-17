@@ -11,7 +11,8 @@ import { Progress } from '@/components/ui/progress';
 import { Card, CardContent } from '@/components/ui/card';
 import { User, Building, Phone, Mail, Lock, UserPlus, CheckCircle2, ArrowLeft, ArrowRight } from 'lucide-react';
 import Image from 'next/image';
-import { baseUrl } from '@/lib/globalvariables';
+import { baseUrl } from '@/utils/constants';
+
 
 interface Role {
   pk: number;
@@ -117,6 +118,7 @@ const SignUpForm = () => {
       contact: `0${phone}`,
       username,
     };
+     console.log(payload, "payload")
 
     setIsLoading(true);
     try {
