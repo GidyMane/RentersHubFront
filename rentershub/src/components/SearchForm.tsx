@@ -19,7 +19,7 @@ const SearchForm = ({ propertytypes }: { propertytypes: any }) => {
 
 
                 <div className='flex flex-col gap-2'>
-                    <label htmlFor="" className='cursor-none  font-medium   '>location</label>
+                    <label htmlFor="" className='cursor-none  font-medium   '>Location</label>
                     <PlacesAutocomplete />
                 </div>
 
@@ -29,7 +29,7 @@ const SearchForm = ({ propertytypes }: { propertytypes: any }) => {
                     <label htmlFor="" className='cursor-none  font-medium   '>House type</label>
                     <Select name='propertytype_name' >
                         <SelectTrigger className="w-full border-primary">
-                            <SelectValue placeholder="property type" className='text-secondary' />
+                            <SelectValue placeholder="House type" className='text-secondary' />
                         </SelectTrigger>
                         <SelectContent>
                             <SelectGroup>
