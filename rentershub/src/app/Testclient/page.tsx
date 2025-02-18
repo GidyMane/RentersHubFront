@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, Suspense } from "react"
 
 import { Filters } from "@/components/Hunter/filters"
 import { PropertyCard } from "@/components/Hunter/PropertyCard"
@@ -11,6 +11,10 @@ import { motion } from "framer-motion"
 import SearchForm from "@/components/SearchForm"
 import { getproperties } from "../../../data-access/actions/getProperties"
 import { getpropertytype } from "../../../data-access/actions/get-property-type"
+import { Loader } from "lucide-react"
+import PropertyRender from "@/components/PropertyRender"
+import { Pagination } from "@/components/pagination"
+import { updatePage } from "../../../data-access/actions/updatePage"
 
 const page = async (props: {
   searchParams: Promise<{ limit: number; offset: number; address: string; propertytype_name: string; rent_price_max: number }>
@@ -48,41 +52,43 @@ const page = async (props: {
         */}
       </div>
 
-      <div className="container mx-auto p-4 space-y-6 mt-8">
-        {/*
-        <Filters
-          totalResults={properties.length}
-          location={location}
-          onSearch={handleSearch}
-          showMap={showMap}
-          onToggleMap={() => setShowMap(!showMap)}
-        />
-        */}
-        {properties.length === 0 ? (
-          <EmptyState resetFilters={resetFilters} />
-        ) : (
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {properties.map((property: Property) => (
-              <PropertyCard
-                key={property.id}
-                id={property.id.toString()}
-                title={property.title}
-                description={property.description}
-                rentPrice={parseFloat(property.rent_price)}
-                address={property.address}
-                imageUrl={property.main_image_url?.url || "/placeholder.svg"}
-                propertyType={property.propertytype?.name}
-                city={property.city}
-                state={property.state}
-                zip={property.postal_code || ""}
-                beds={property.bedrooms || 0}
-                baths={property.bathrooms || 0}
-                sqft={property.size || 0}
-              />
-            ))}
+      <div className='flex items-center justify-center md:px-10'>
+          <div className='my-10'>
+            <h2 className='text-gray-800 text-3xl font-semibold text-balance'>Available Houses</h2>
+
+            <p className='my-4 text-muted text-md text-center'>Verified by our team</p>
+
           </div>
-        )}
-      </div>
+        </div>
+  
+
+      <div className="grid grid-cols-1 mt-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:px-16 px-6">
+          <Suspense fallback={<div className='col-span-1 md:col-span-2 lg:col-span-3 xl:col-span-4 flex items-center justify-center my-4'>
+            <Loader className='text-primary w-6 h-6 animate-spin' />
+          </div>}>
+            {apiproperties[0] == 200 && apiproperties[1].results.length > 0 ? apiproperties[1].results?.map((property: any, idx: number) => (
+              <PropertyRender property={property} key={idx} />
+            )) : (
+              <div className='flex items-center justify-center'>
+                <div className='max-w-xl'>
+                  <p className='text-balance leading-4 tracking-wide '>
+                    Something went wrong, please check your internet, meanwhile our team is working to ensure you find your home in no time. Thank you for your patience
+                  </p>
+                </div>
+              </div>
+            )}
+          </Suspense>
+
+
+
+
+        </div>
+        <div>
+          {apiproperties[0] == 200 && apiproperties[1]?.results.length > 0 &&(
+            <Pagination count={apiproperties[0] == 200 ? Math.round(apiproperties[1].count / 20) as number : 0} previous={""} next={""} updatePage={updatePage} />
+
+          )}
+        </div>
     </div>
   )
 }
