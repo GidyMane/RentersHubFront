@@ -1,12 +1,13 @@
 import Image from "next/image"
 import Link from "next/link"
-import { Bath, Bed, Car, Heart, MapPin } from "lucide-react"
+import { MapPin, Share2, PhoneIcon as WhatsApp } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardFooter } from "../ui/card"
 import { motion } from "framer-motion"
 import { formatDistanceToNow } from "date-fns/formatDistanceToNow"
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"
 
 interface PropertyCardProps {
   id: string
@@ -18,7 +19,11 @@ interface PropertyCardProps {
   state: string
   managed_by: string
   updated_at: Date
-  
+}
+
+function handleShare(id: string, title: string) {
+  const url = `https://wa.me/?text=Check out this property: ${title} - ${window.location.origin}/Testclient/property/${id}`;
+  window.open(url, '_blank');
 }
 
 export function PropertyCard({
@@ -48,9 +53,17 @@ export function PropertyCard({
               height={300}
               className="w-full h-[200px] object-cover"
             />
-            <Button size="icon" variant="ghost" className="absolute top-2 right-2 bg-white/80 hover:bg-red-500">
-              <Heart className="w-5 h-5" />
-            </Button>
+            <div className="absolute top-4 right-4 z-20 flex items-center gap-2">
+             
+              <Button
+                size="icon"
+                variant="secondary"
+                className="bg-gray-900/60 hover:bg-gray-900/70 text-white rounded-full h-8 w-8"
+                onClick={() => handleShare(id, title)}
+              >
+                <Share2 className="h-4 w-4" />
+              </Button>
+            </div>
           </div>
           <div className="p-4">
             <Badge variant="secondary" className="mb-2">
@@ -80,5 +93,5 @@ export function PropertyCard({
         </CardFooter>
       </Card>
     </motion.div>
-  )
+  );
 }
