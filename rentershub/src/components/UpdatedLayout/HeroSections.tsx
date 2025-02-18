@@ -3,18 +3,11 @@
 import type React from "react"
 import { useState, useEffect, useCallback } from "react"
 import useEmblaCarousel from "embla-carousel-react"
-import { ChevronLeft, ChevronRight, Pause, Play, Plus } from "lucide-react"
+import { ChevronLeft, ChevronRight, Pause, Play } from "lucide-react"
 import Image from "next/image"
 import Autoplay from 'embla-carousel-autoplay'
 import { motion } from "framer-motion"
-import { useRouter } from "next/navigation"
-
-import Link from "next/link"
 import SearchForm from "../SearchForm"
-import { Button } from "../ui/button"
-
-
-
 
 const images = [
     "/interior.jpg?height=1080&width=1920",
@@ -26,22 +19,16 @@ const images = [
     "/uthiru.jpg?height=1080&width=1920",
 ]
 
-export function FullScreenCarousel({propertytype}:{propertytype:any }) {
+export function FullScreenCarousel({ propertytype }: { propertytype: any }) {
     const autoplay = Autoplay({ stopOnInteraction: true, delay: 4000 });
-
-
     const [emblaRef, emblaApi] = useEmblaCarousel({
         loop: true,
         duration: 5,
         skipSnaps: false,
         dragFree: false,
-        // containScroll: "trimSnaps",
     }, [autoplay])
     const [isPaused, setIsPaused] = useState(false)
     const [currentIndex, setCurrentIndex] = useState(0)
-    const [autoPlayInterval, setAutoPlayInterval] = useState<NodeJS.Timeout | null>(null)
-
-
 
     const scrollPrev = useCallback(() => {
         if (emblaApi) emblaApi.scrollPrev()
@@ -69,68 +56,9 @@ export function FullScreenCarousel({propertytype}:{propertytype:any }) {
         }
     }, [emblaApi, onSelect])
 
-    //   useEffect(() => {
-    //     if (!emblaApi || isPaused) return
-
-    //     const autoPlay = () => {
-    //       if (!emblaApi || emblaApi.isPlaying()) return
-
-    //       if (!emblaApi.canScrollNext()) {
-    //         emblaApi.scrollTo(0, true)
-    //       } else {
-    //         emblaApi.scrollNext({ duration: 30 })
-    //       }
-    //     }
-
-    //     const interval = setInterval(autoPlay, 4000)
-    //     setAutoPlayInterval(interval)
-
-    //     return () => {
-    //       if (autoPlayInterval) clearInterval(autoPlayInterval)
-    //     }
-    //   }, [emblaApi, isPaused])
-
-    useEffect(() => {
-        if (isPaused && autoPlayInterval) {
-            clearInterval(autoPlayInterval)
-            setAutoPlayInterval(null)
-        }
-    }, [isPaused, autoPlayInterval])
-
-
-    // useEffect(() => {
-    //     if (!emblaApi) return;
-    //     autoplay.play(); // Ensure autoplay starts correctly after initialization.
-    // }, [emblaApi, autoplay]);
-
     return (
         <div className="relative rounded h-full w-full md:overflow-hidden">
-            {/* Overlay for text content */}
-            <div className="absolute inset-0 z-20 bg-gradient-to-r  from-black/50 to-transparent">
-                <motion.div
-                    initial={{ opacity: 0, y: -40 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, ease: "easeInOut" }}
-                    exit={{ y: -40, opacity: 0 }}
-                    className='w-full flex justify-between bg-transparent  p-8 md:px-16 items-center'>
-                    {/* <div className='flex gap-4 items-center justify-center'>
-                        <Link href="/">     
-                                           <Image src={"/RH2.jpg"} alt='rentershublogo' width={50} height={50} />
-                        </Link>
-                        <ul className='md:flex hidden'>
-                            <li>
-                                <Link href={"/"} className='hover:cursor-pointer text-white text-sm font-medium hover:text-primary'>
-                                    Chat with us
-                                </Link>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <div className='flex gap-4'>
-                        <Button className='flex gap-2'><Plus /> Post a house</Button>
-                        <Button className='' variant="outline">Login</Button>
-                    </div> */}
-                </motion.div>
+            <div className="absolute inset-0 z-20 bg-gradient-to-r from-black/50 to-transparent">
                 <div className="container mx-auto flex flex-col md:mt-20 mt-10 items-center justify-center px-4">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
@@ -141,17 +69,18 @@ export function FullScreenCarousel({propertytype}:{propertytype:any }) {
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.6, delay: 0.4 }}
-                            className="mb-6 text-5xl text-white font-bold leading-tight md:text-6xl"
+                            className="mb-6 text-4xl md:text-5xl lg:text-6xl font-bold leading-tight"
                         >
                             The Place Where Smart Kenyans Come To Find Houses
                         </motion.h1>
-                        <motion.p initial={{ opacity: 0, y: 20 }}
+                        <motion.p
+                            initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.6, delay: 0.6 }}
-                            className="mb-8 text-lg md:text-xl">
+                            className="mb-8 text-base md:text-lg lg:text-xl"
+                        >
                             Finding your dream house is just a click away!
                         </motion.p>
-
                     </motion.div>
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
@@ -159,39 +88,23 @@ export function FullScreenCarousel({propertytype}:{propertytype:any }) {
                         transition={{ duration: 0.6, delay: 0.6 }}
                         className="bg-white/40 shadow-md h-fit w-full md:w-fit p-2"
                     >
-
                         <div className="bg-white w-full h-full p-4">
-                            <SearchForm propertytypes={propertytype}/>
-
+                            <SearchForm propertytypes={propertytype} />
                         </div>
                     </motion.div>
                 </div>
             </div>
-
-            {/* Navigation controls */}
-            <div className="absolute inset-x-0 bottom-8 z-30 flex justify-center space-x-4">
-                <button
-                    className="rounded-full bg-black/20 p-3 text-white backdrop-blur-sm transition-all hover:bg-black/40"
-                    onClick={scrollPrev}
-                >
+            {/* <div className="absolute inset-x-0 bottom-8 z-30 flex justify-center space-x-4">
+                <button className="rounded-full bg-black/20 p-3 text-white backdrop-blur-sm transition-all hover:bg-black/40" onClick={scrollPrev}>
                     <ChevronLeft size={24} />
                 </button>
-                <button
-                    className="rounded-full bg-black/20 p-3 text-white backdrop-blur-sm transition-all hover:bg-black/40"
-                    onClick={togglePause}
-                >
+                <button className="rounded-full bg-black/20 p-3 text-white backdrop-blur-sm transition-all hover:bg-black/40" onClick={togglePause}>
                     {isPaused ? <Play size={24} /> : <Pause size={24} />}
                 </button>
-                <button
-                    className="rounded-full bg-black/20 p-3 text-white backdrop-blur-sm transition-all hover:bg-black/40"
-                    onClick={scrollNext}
-                >
+                <button className="rounded-full bg-black/20 p-3 text-white backdrop-blur-sm transition-all hover:bg-black/40" onClick={scrollNext}>
                     <ChevronRight size={24} />
                 </button>
-            </div>
-
-
-            {/* Carousel */}
+            </div> */}
             <div className="h-full w-full" ref={emblaRef}>
                 <div className="flex h-full">
                     {images.map((src, index) => (
@@ -199,9 +112,9 @@ export function FullScreenCarousel({propertytype}:{propertytype:any }) {
                             key={index}
                             className="relative h-full w-full flex-[0_0_100%] transition-all duration-700 ease-out"
                             style={{
-                                opacity: index === currentIndex ? 1 : 0.6, // Keep opacity consistent.
-                                transform: 'scale(1)', // Avoid scaling down for inactive slides.
-                                transition: 'opacity 0.5s ease', // Smooth opacity transition.
+                                opacity: index === currentIndex ? 1 : 0.6,
+                                transform: 'scale(1)',
+                                transition: 'opacity 0.5s ease',
                             }}
                         >
                             <Image
@@ -218,4 +131,3 @@ export function FullScreenCarousel({propertytype}:{propertytype:any }) {
         </div>
     )
 }
-
