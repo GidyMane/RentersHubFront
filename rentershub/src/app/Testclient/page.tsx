@@ -7,66 +7,62 @@ import { FullScreenCarousel } from "@/components/UpdatedLayout/HeroSections"
 import HeroSearchBar from "@/components/UpdatedLayout/HeroSearchBar"
 import { Property } from "@/types/property"
 import { fetchProperties } from "@/actions/fetchproperties"
+import { motion } from "framer-motion"
+import SearchForm from "@/components/SearchForm"
+import { getproperties } from "../../../data-access/actions/getProperties"
+import { getpropertytype } from "../../../data-access/actions/get-property-type"
 
-export default async function PropertyListingPage() {
-  // const [properties, setProperties] = useState<Property[]>([])
-  // const [location, setLocation] = useState("New York, US")
-  // const [showMap, setShowMap] = useState(false)
+const page = async (props: {
+  searchParams: Promise<{ limit: number; offset: number; address: string; propertytype_name: string; rent_price_max: number }>
+}) => {
 
-  // console.log(properties, "property state")
+  const params = await (props).searchParams
+  const limit = params?.limit || 4
+  const offset = params?.offset || null
+  const address = params?.address || null
+  const propertytype_name = params?.propertytype_name || null
+  const rent_price_max = params?.rent_price_max || null
+  const [apiproperties, propertytypes] = await Promise.all([getproperties(limit, offset, address, propertytype_name, rent_price_max), getpropertytype()])
+  console.log(apiproperties, "ap", propertytypes, "pp")
+  
+  // Fetch properties asynchronously
   const properties = await fetchProperties()
 
   const resetFilters = () => {}
-  // useEffect(() => {
-  //   async function loadProperties() {
-  //     try {
-  //       const data = await fetchProperties()
-  //       console.log("Fetched Properties:", data) 
-  //       setProperties(data)
-  //     } catch (error) {
-  //       console.error("Error fetching properties:", error)
-  //     }
-  //   }
-
-  //   loadProperties()
-  // }, [])
-
-  // const handleSearch = (filters: any) => {
-  //   setProperties(properties)
-  // }
-
-  // const resetFilters = () => {
-  //   setProperties(properties)
-  // }
 
   return (
     <div className="min-h-screen bg-background">
       <div className="h-[100vh] relative w-full px-6">
-        <FullScreenCarousel />
+        <FullScreenCarousel propertytype={propertytypes} />
+        {/*
         <div className="absolute -bottom-10 z-30 flex justify-center mx-auto inset-x-0">
           <div className="w-fit bg-[#F0F8FF] py-2 px-4 rounded-lg shadow-lg backdrop-blur-lg">
-            <h3 className="text-labelLarge p-2 font-bold">Find your next dream house</h3>
+            <h3 className="text-labelLarge p-2 font-bold">
+              Find your next dream house
+            </h3>
             <div className="my-2 p-2">
               <HeroSearchBar />
             </div>
           </div>
         </div>
+        */}
       </div>
 
       <div className="container mx-auto p-4 space-y-6 mt-8">
-        {/* <Filters
+        {/*
+        <Filters
           totalResults={properties.length}
           location={location}
           onSearch={handleSearch}
           showMap={showMap}
           onToggleMap={() => setShowMap(!showMap)}
-        /> */}
-
+        />
+        */}
         {properties.length === 0 ? (
           <EmptyState resetFilters={resetFilters} />
         ) : (
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {properties?.map((property) => (
+            {properties.map((property: Property) => (
               <PropertyCard
                 key={property.id}
                 id={property.id.toString()}
@@ -75,7 +71,7 @@ export default async function PropertyListingPage() {
                 rentPrice={parseFloat(property.rent_price)}
                 address={property.address}
                 imageUrl={property.main_image_url?.url || "/placeholder.svg"}
-                propertyType={property.propertytype?.name }
+                propertyType={property.propertytype?.name}
                 city={property.city}
                 state={property.state}
                 zip={property.postal_code || ""}
@@ -90,3 +86,5 @@ export default async function PropertyListingPage() {
     </div>
   )
 }
+
+export default page

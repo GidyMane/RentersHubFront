@@ -3,12 +3,17 @@
 import type React from "react"
 import { useState, useEffect, useCallback } from "react"
 import useEmblaCarousel from "embla-carousel-react"
-import { ChevronLeft, ChevronRight, Pause, Play } from "lucide-react"
+import { ChevronLeft, ChevronRight, Pause, Play, Plus } from "lucide-react"
 import Image from "next/image"
 import Autoplay from 'embla-carousel-autoplay'
 import { motion } from "framer-motion"
-import { Button } from "../ui/button"
 import { useRouter } from "next/navigation"
+
+import Link from "next/link"
+import SearchForm from "../SearchForm"
+import { Button } from "../ui/button"
+
+
 
 
 const images = [
@@ -21,10 +26,10 @@ const images = [
     "/uthiru.jpg?height=1080&width=1920",
 ]
 
-export function FullScreenCarousel() {
+export function FullScreenCarousel({propertytype}:{propertytype:any }) {
     const autoplay = Autoplay({ stopOnInteraction: true, delay: 4000 });
 
-    const router = useRouter()
+
     const [emblaRef, emblaApi] = useEmblaCarousel({
         loop: true,
         duration: 5,
@@ -92,27 +97,51 @@ export function FullScreenCarousel() {
         }
     }, [isPaused, autoPlayInterval])
 
-    
+
     // useEffect(() => {
     //     if (!emblaApi) return;
     //     autoplay.play(); // Ensure autoplay starts correctly after initialization.
     // }, [emblaApi, autoplay]);
 
     return (
-        <div className="relative h-full w-full rounded-lg shadow-lg backdrop-blur-sm overflow-hidden">
+        <div className="relative rounded h-full w-full md:overflow-hidden">
             {/* Overlay for text content */}
-            <div className="absolute inset-0 z-20 bg-gradient-to-r from-black/50 to-transparent">
-                <div className="container mx-auto flex h-full items-center px-4">
+            <div className="absolute inset-0 z-20 bg-gradient-to-r  from-black/50 to-transparent">
+                <motion.div
+                    initial={{ opacity: 0, y: -40 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, ease: "easeInOut" }}
+                    exit={{ y: -40, opacity: 0 }}
+                    className='w-full flex justify-between bg-transparent  p-8 md:px-16 items-center'>
+                    {/* <div className='flex gap-4 items-center justify-center'>
+                        <Link href="/">     
+                                           <Image src={"/RH2.jpg"} alt='rentershublogo' width={50} height={50} />
+                        </Link>
+                        <ul className='md:flex hidden'>
+                            <li>
+                                <Link href={"/"} className='hover:cursor-pointer text-white text-sm font-medium hover:text-primary'>
+                                    Chat with us
+                                </Link>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div className='flex gap-4'>
+                        <Button className='flex gap-2'><Plus /> Post a house</Button>
+                        <Button className='' variant="outline">Login</Button>
+                    </div> */}
+                </motion.div>
+                <div className="container mx-auto flex flex-col md:mt-20 mt-10 items-center justify-center px-4">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6 }}
-                        className="max-w-xl text-white">
+                        className="max-w-2xl text-white items-center justify-center flex flex-col">
                         <motion.h1
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.6, delay: 0.4 }}
-                            className="mb-6 text-5xl text-secondary300 font-bold leading-tight md:text-6xl"
+                            className="mb-6 text-5xl text-white font-bold leading-tight md:text-6xl"
                         >
                             The Place Where Smart Kenyans Come To Find Houses
                         </motion.h1>
@@ -122,11 +151,19 @@ export function FullScreenCarousel() {
                             className="mb-8 text-lg md:text-xl">
                             Finding your dream house is just a click away!
                         </motion.p>
-                        {/* <Button className="rounded-full bg-white px-8 py-3 text-lg font-semibold text-gray-900 transition-colors hover:bg-gray-100" onClick={()=>{
-                            router.push("/listing")
-                        }}>
-                            View Properties
-                        </Button> */}
+
+                    </motion.div>
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.6, delay: 0.6 }}
+                        className="bg-white/40 shadow-md h-fit w-full md:w-fit p-2"
+                    >
+
+                        <div className="bg-white w-full h-full p-4">
+                            <SearchForm propertytypes={propertytype}/>
+
+                        </div>
                     </motion.div>
                 </div>
             </div>
