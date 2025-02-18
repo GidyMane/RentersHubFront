@@ -1,8 +1,12 @@
 import Image from "next/image"
 import Link from "next/link"
-import { Bath, Bed, Car, Heart } from "lucide-react"
+import { Bath, Bed, Car, Heart, MapPin } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
+import { Card, CardFooter } from "../ui/card"
+import { motion } from "framer-motion"
+import { formatDistanceToNow } from "date-fns/formatDistanceToNow"
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
 
 interface PropertyCardProps {
   id: string
@@ -10,14 +14,11 @@ interface PropertyCardProps {
   title: string
   propertyType: string
   rentPrice: number
-  description: string
-  address: string
   city: string
   state: string
-  zip: string
-  beds: number
-  baths: number
-  sqft: number
+  managed_by: string
+  updated_at: Date
+  
 }
 
 export function PropertyCard({
@@ -26,66 +27,58 @@ export function PropertyCard({
   title,
   propertyType,
   rentPrice,
-  description,
   city,
   state,
-  zip,
-  beds,
-  baths,
-  sqft
+  managed_by,
+  updated_at,
 }: PropertyCardProps) {
   return (
-    <Link href={`/Testclient/property/${id}`}>
-      <div className="group rounded-lg overflow-hidden border bg-card hover:shadow-lg transition-shadow cursor-pointer">
-        <div className="relative">
-          <Image
-            src={imageUrl || "/placeholder.svg"}
-            alt={title}
-            width={400}
-            height={300}
-            className="w-full h-[200px] object-cover"
-          />
-          <Button size="icon" variant="ghost" className="absolute top-2 right-2 bg-white/80 hover:bg-red-500">
-            <Heart className="w-5 h-5" />
-          </Button>
-        </div>
-        <div className="p-4">
-          <h3 className="text-lg font-bold">{title}</h3>
-          <p className="text-sm text-gray-600">{propertyType}</p>
-
-          {/* <p className="text-sm text-gray-600">{description}</p> */}
-          <p className="text-sm text-gray-600">
-            {city}, {state} 
-          </p>
-
-          <h3 className="text-2xl font-bold text-primary mt-2">{rentPrice.toLocaleString()} /Month</h3>
-
-          {/* <div className="mt-4 grid grid-cols-3 gap-4 text-center border-t pt-4">
-          <div>
-            <div className="flex items-center justify-center gap-1 text-[#2C7BE5]">
-              <Bed className="w-4 h-4" />
-              <span className="font-semibold">{beds}</span>
-            </div>
-            <div className="text-xs text-gray-600 mt-1">Bedrooms</div>
+    <motion.div
+      initial={{ y: 10, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.8, ease: "easeIn" }}
+    >
+      <Card className="overflow-hidden group cursor-pointer transition-shadow hover:shadow-lg">
+        <Link href={`/Testclient/property/${id}`}>
+          <div className="relative">
+            <Image
+              src={imageUrl || "/placeholder.svg"}
+              alt={title}
+              width={400}
+              height={300}
+              className="w-full h-[200px] object-cover"
+            />
+            <Button size="icon" variant="ghost" className="absolute top-2 right-2 bg-white/80 hover:bg-red-500">
+              <Heart className="w-5 h-5" />
+            </Button>
           </div>
-          <div>
-            <div className="flex items-center justify-center gap-1 text-[#2C7BE5]">
-              <Bath className="w-4 h-4" />
-              <span className="font-semibold">{baths}</span>
+          <div className="p-4">
+            <Badge variant="secondary" className="mb-2">
+              {propertyType}
+            </Badge>
+            <h3 className="text-lg font-bold">{title}</h3>
+            <div className="flex items-center gap-1 text-muted">
+              <MapPin className="h-4 w-4" />
+              <span className="text-sm"> {city}, {state} </span>
             </div>
-            <div className="text-xs text-gray-600 mt-1">Bathrooms</div>
+            <h3 className="text-2xl font-bold text-primary mt-2">
+              {rentPrice.toLocaleString()} /Month
+            </h3>
           </div>
-          <div>
-            <div className="flex items-center justify-center gap-1 text-[#2C7BE5]">
-              <Car className="w-4 h-4" />
-              <span className="font-semibold">{sqft.toLocaleString()}</span>
-            </div>
-            <div className="text-xs text-gray-600 mt-1">Parking</div>
+        </Link>
+        <CardFooter className="p-4 border-t flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Avatar className="h-8 w-8">
+              <AvatarImage src="/placeholder-user.jpg" alt={managed_by} />
+              <AvatarFallback>{managed_by[0]}</AvatarFallback>
+            </Avatar>
+            <div className="text-sm font-medium">{managed_by}</div>
           </div>
-        </div> */}
-        </div>
-      </div>
-    </Link>
+          <div className="text-sm text-muted">
+            {formatDistanceToNow(new Date(updated_at))}
+          </div>
+        </CardFooter>
+      </Card>
+    </motion.div>
   )
 }
-
