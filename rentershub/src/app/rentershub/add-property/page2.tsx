@@ -26,6 +26,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent } from '@/components/ui/card';
 import { baseUrl } from '@/utils/constants';
 import { useEdgeStore } from '@/lib/edgestore';
+import Autocomplete from "react-google-autocomplete";
 
 export default function AddPropertyPage() {
   const router = useRouter();
@@ -41,6 +42,7 @@ export default function AddPropertyPage() {
     otherMedia: [],
   });
   const { edgestore } = useEdgeStore();
+  const GOOGLE_MAPS_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!
 
   const COUNTIES = [
   'Baringo', 'Bomet', 'Bungoma', 'Busia', 'Elgeyo Marakwet', 'Embu', 'Garissa', 
@@ -60,6 +62,7 @@ export default function AddPropertyPage() {
       console.error('Session is not available.');
       return;
     }
+
 
 
     
@@ -138,6 +141,36 @@ export default function AddPropertyPage() {
       }));
     }
   };
+     
+const handlePlaceSelect = (place: google.maps.places.PlaceResult) => {
+  if (!place.address_components) return;
+
+  let county = "";
+  let city = "";
+  let postalCode = "";
+  console.log(place.address_components, "Address components");
+  place.address_components.forEach((component) => {
+    if (component.types.includes("administrative_area_level_2")) {
+      county = component.long_name;
+    }
+    if (component.types.includes("locality")) {
+      city = component.long_name;
+    }
+    if (component.types.includes("postal_code")) {
+      postalCode = component.long_name;
+    }
+    console.log(component.types, "Types");
+  
+  });
+
+  formik.setValues({
+    ...formik.values,
+    location: place.formatted_address || "",
+    county,
+    city,
+    poBox: postalCode,
+  });
+};
   
 
   type FeatureId = number
@@ -165,11 +198,9 @@ export default function AddPropertyPage() {
     validationSchema: Yup.object({
       title: Yup.string().required('Title is required'),
       houseType: Yup.string().required('House type is required'),
-      county: Yup.string().required('County is required'),
+      
       managedBy: Yup.string().required('Manager is required'),
-      phone: Yup.string()
-      .matches(/^\d{10}$/, 'Phone number must be exactly 10 digits, no country code')
-      .required('Phone number is required'),
+      phone: Yup.string().required('Phone number is required'),
       rent: Yup.number()
         .required('Rent price is required')
         .positive('Rent must be a positive value'),
@@ -321,75 +352,34 @@ export default function AddPropertyPage() {
                       <p className="text-red-500 text-sm">{formik.errors.houseType}</p>
                     )}
                   </div>
-                  <div>
-                    <Label htmlFor="county">County</Label>
-                    <Select
-                      onValueChange={(value) => formik.setFieldValue('county', value)}
-                      required
-                    >
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select county" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {COUNTIES.map((county) => (
-                          <SelectItem key={county} value={county}>
-                            {county}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    {formik.touched.county && formik.errors.county && (
-                      <p className="text-red-500 text-sm">{formik.errors.county}</p>
-                    )}
                   </div>
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div>
-                <Label htmlFor="location">Location</Label>
-                <Input
-                  id="location"
-                  name="location"
-                  placeholder="e.g., Kabiria, Dagoretti near Fremo Hospital"
-                  value={formik.values.location}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  required
-                />
-                {formik.touched.location && formik.errors.location && (
-                  <p className="text-red-500 text-sm">{formik.errors.location}</p>
-                )}
-              </div>
-              <div>
-                <Label htmlFor="city">City</Label>
-                <Input
-                  id="city"
-                  name="city"
-                  placeholder="e.g., Nairobi"
-                  value={formik.values.city}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  required
-                />
-                {formik.touched.city && formik.errors.city && (
-                  <p className="text-red-500 text-sm">{formik.errors.city}</p>
-                )}
-              </div>
-              <div>
-                <Label htmlFor="postal_code">Po Box</Label>
-                <Input
-                  id="poBox"
-                  name="poBox"
-                  placeholder="e.g., 0100"
-                  value={formik.values.poBox}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  required
-                />
-                {formik.touched.poBox && formik.errors.poBox && (
-                  <p className="text-red-500 text-sm">{formik.errors.poBox}</p>
-                )}
-              </div>
-            </div>
+                  <div>
+    <Label htmlFor="location">Location</Label>
+    <Autocomplete
+      apiKey={GOOGLE_MAPS_API_KEY}
+      onPlaceSelected={handlePlaceSelect}
+      options={{ types: ["geocode"], componentRestrictions: { country: "KE" } }}
+      className="w-full px-3 py-2 border rounded-lg"
+    />
+    {formik.touched.location && formik.errors.location && (
+      <p className="text-red-500 text-sm">{formik.errors.location}</p>
+    )}
+
+    <div className="grid grid-cols-3 gap-4 mt-4">
+      {/* <div>
+        <Label htmlFor="county">County</Label>
+        <Input id="county" name="county" value={formik.values.county} readOnly />
+      </div>
+      <div>
+        <Label htmlFor="city">City</Label>
+        <Input id="city" name="city" value={formik.values.city} readOnly />
+      </div>
+      <div>
+        <Label htmlFor="poBox">Po Box</Label>
+        <Input id="poBox" name="poBox" value={formik.values.poBox} readOnly />
+      </div> */}
+    </div>
+  </div>
 
 
                 
@@ -410,22 +400,21 @@ export default function AddPropertyPage() {
                 )}
               </div>
               <div>
-  <Label htmlFor="phone">Phone Number</Label>
-  <Input
-    id="phone"
-    name="phone"
-    type="tel"
-    placeholder="Enter 10-digit number"
-    value={formik.values.phone}
-    onChange={formik.handleChange}
-    onBlur={formik.handleBlur}
-    required
-  />
-  {formik.touched.phone && formik.errors.phone && (
-    <p className="text-red-500 text-sm">{formik.errors.phone}</p>
-  )}
-</div>
-
+                <Label htmlFor="phone">Phone Number</Label>
+                <Input
+                  id="phone"
+                  name="phone"
+                  type="tel"
+                  placeholder="+254"
+                  value={formik.values.phone}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  required
+                />
+                {formik.touched.phone && formik.errors.phone && (
+                  <p className="text-red-500 text-sm">{formik.errors.phone}</p>
+                )}
+              </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
