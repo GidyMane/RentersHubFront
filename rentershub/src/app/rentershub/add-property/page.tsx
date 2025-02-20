@@ -6,6 +6,7 @@ import { useSession } from 'next-auth/react';
 import { useFormik } from 'formik';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Autocomplete from "react-google-autocomplete";
 
 import * as Yup from 'yup';
 import { DashboardLayout } from '@/components/Test/Rentershub/DashbordLayout';
@@ -41,6 +42,7 @@ export default function AddPropertyPage() {
     otherMedia: [],
   });
   const { edgestore } = useEdgeStore();
+  const GOOGLE_MAPS_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!
 
   const COUNTIES = [
   'Baringo', 'Bomet', 'Bungoma', 'Busia', 'Elgeyo Marakwet', 'Embu', 'Garissa', 
@@ -142,118 +144,149 @@ export default function AddPropertyPage() {
 
   type FeatureId = number
   
-  const formik = useFormik({
-    initialValues: {
-      title: '',
-      features: [] as FeatureId[],
-      houseType: '',
-      county: '',
-      city: '',
-      poBox: '',
-      location: '',
-      managedBy: '',
-      phone: '',
-      rent: '',
-      deposit: '',
-      garbageFees: '',
-      securityFees: '',
-      waterCharges: '',
-      waterDeposit: '',
-      otherFees: '',
-      description: '',
-    },
-    validationSchema: Yup.object({
-      title: Yup.string().required('Title is required'),
-      houseType: Yup.string().required('House type is required'),
-      county: Yup.string().required('County is required'),
-      managedBy: Yup.string().required('Manager is required'),
-      phone: Yup.string()
-      .matches(/^\d{10}$/, 'Phone number must be exactly 10 digits, no country code')
-      .required('Phone number is required'),
-      rent: Yup.number()
-        .required('Rent price is required')
-        .positive('Rent must be a positive value'),
-      deposit: Yup.number()
-        .required('Deposit amount is required')
-        .positive('Deposit must be a positive value'),
-      description: Yup.string().required('Description is required'),
-       // Cover image is required
-    }),
-    onSubmit: async (values) => {
-      if (!uploadedFiles.coverImage) {
-        toast.error('Please upload a cover image before submitting.');
-        return;
+  const handlePlaceSelect = (place: google.maps.places.PlaceResult, formik: any) => {
+    if (!place || !place.address_components) return;
+  
+    let county = "";
+    let city = "";
+    let postalCode = "";
+    let state = ""; // NEW: Add state field
+  
+    console.log("Address Components:", place.address_components);
+  
+    place.address_components.forEach((component) => {
+      if (component.types.includes("administrative_area_level_1")) {
+        state = component.long_name; // State or main administrative region
       }
+      if (component.types.includes("administrative_area_level_2")) {
+        county = component.long_name; // County (if available)
+      }
+      if (component.types.includes("locality")) {
+        city = component.long_name;
+      }
+      if (component.types.includes("postal_code")) {
+        postalCode = component.long_name;
+      }
+    });
   
-      setIsSubmitting(true);
-      try {
-        const formattedData = {
-          title: values.title,
-          description: values.description,
-          property_type: values.houseType,
-          price: '0',
-          city: values.city || 'Unknown City',
-          state: values.county,
-          owners_contact: values.phone,
-          country: 'Kenya',
-          postal_code: values.poBox || '00000',
-          address: values.location,
-          features: values.features,
-          amenities: [],
-          water_charges: parseFloat(values.waterCharges || '0'),
-          garbage_charges: parseFloat(values.garbageFees || '0'),
-          security_charges: parseFloat(values.securityFees || '0'),
-          other_charges: parseFloat(values.otherFees || '0'),
-          water_deposit: parseFloat(values.waterDeposit || '0'),
-          is_available: true,
-          is_approved: true,
-          featured: true,
-          rent_price: parseFloat(values.rent),
-          deposit_amount: parseFloat(values.deposit),
-          main_image_url: uploadedFiles.coverImage
-            ? { id: 'main-image', url: uploadedFiles.coverImage }
-            : null,
-          images: (uploadedFiles.otherMedia || []).map((url, idx) => ({
-            id: `img-${idx + 1}`,
-            url,
-          })),
-          posted_by: session?.user?.user_id,
-          managed_by: values.managedBy,
-        };
+    // If county is missing, fallback to state
+    if (!county) {
+      county = state;
+    }
   
-        console.log(formattedData, 'formatted data');
+    // Update only location fields without overriding other form values
+    formik.setFieldValue("location", place.formatted_address || "");
+    formik.setFieldValue("county", county);
+    formik.setFieldValue("city", city);
+    formik.setFieldValue("poBox", postalCode);
+    formik.setFieldValue("state", state); // NEW: Ensure state is captured
+  };
   
-        const response = await fetch(`${baseUrl}listing/property`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${session?.user?.accessToken}`,
-          },
-          body: JSON.stringify(formattedData),
-        });
   
-        console.log(response, 'this is a response from post');
   
-        if (!response.ok) {
-          const errorDetails = await response.text();
-  
-          throw new Error(
-            `Failed to create property: ${response.status}, ${errorDetails}`
-          );
+    const formik = useFormik({
+      initialValues: {
+        title: "",
+        features: [] as number[],
+        houseType: "",
+        county: "",
+        city: "",
+        poBox: "",
+        location: "",
+        managedBy: "",
+        phone: "",
+        state: "",
+        rent: "",
+        deposit: "",
+        garbageFees: "",
+        securityFees: "",
+        waterCharges: "",
+        waterDeposit: "",
+        otherFees: "",
+        description: "",
+      },
+      validationSchema: Yup.object({
+        title: Yup.string().required("Title is required"),
+        houseType: Yup.string().required("House type is required"),
+       
+        managedBy: Yup.string().required("Manager is required"),
+        phone: Yup.string()
+          .matches(/^\d{10}$/, "Phone number must be exactly 10 digits, no country code")
+          .required("Phone number is required"),
+        rent: Yup.number().required("Rent price is required").positive("Rent must be a positive value"),
+        deposit: Yup.number().required("Deposit amount is required").positive("Deposit must be a positive value"),
+        description: Yup.string().required("Description is required"),
+      }),
+      onSubmit: async (values) => {
+        if (!uploadedFiles.coverImage) {
+          toast.error("Please upload a cover image before submitting.");
+          return;
         }
   
-        const responseData = await response.json();
-        toast.success('Property created successfully:', responseData);
+        setIsSubmitting(true);
   
-        setIsSuccessModalOpen(true);
-        setIsSubmitting(false); // End loading
-        router.push('/rentershub/properties'); // Redirect after success
-      } catch (error) {
-        toast.error('Error submitting property');
-        alert('Failed to submit property. Please try again.');
-      }
-    },
-  });
+        try {
+          const formattedData = {
+            title: values.title,
+            description: values.description,
+            property_type: values.houseType,
+            price: "0",
+            city: values.city || "Unknown City",
+            state: values.state || values.county,
+            owners_contact: values.phone,
+            country: "Kenya",
+            postal_code: values.poBox || "00000",
+            address: values.location,
+            features: values.features,
+            amenities: [],
+            water_charges: parseFloat(values.waterCharges || "0"),
+            garbage_charges: parseFloat(values.garbageFees || "0"),
+            security_charges: parseFloat(values.securityFees || "0"),
+            other_charges: parseFloat(values.otherFees || "0"),
+            water_deposit: parseFloat(values.waterDeposit || "0"),
+            is_available: true,
+            is_approved: true,
+            featured: true,
+            rent_price: parseFloat(values.rent),
+            deposit_amount: parseFloat(values.deposit),
+            main_image_url: uploadedFiles.coverImage ? { id: "main-image", url: uploadedFiles.coverImage } : null,
+            images: (uploadedFiles.otherMedia || []).map((url, idx) => ({
+              id: `img-${idx + 1}`,
+              url,
+            })),
+            posted_by: session?.user?.user_id,
+            managed_by: values.managedBy,
+          };
+  
+          console.log("Formatted Data:", formattedData);
+  
+          const response = await fetch(`${baseUrl}listing/property`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${session?.user?.accessToken}`,
+            },
+            body: JSON.stringify(formattedData),
+          });
+  
+          if (!response.ok) {
+            const errorDetails = await response.text();
+            throw new Error(`Failed to create property: ${response.status}, ${errorDetails}`);
+          }
+  
+          const responseData = await response.json();
+          toast.success("Property created successfully:", responseData);
+  
+          setIsSuccessModalOpen(true);
+          router.push("/rentershub/properties");
+        } catch (error) {
+          console.error("Error submitting property:", error);
+          toast.error("Error submitting property. Please try again.");
+        } finally {
+          setIsSubmitting(false);
+        }
+      },
+    });
   
   
 
@@ -321,7 +354,7 @@ export default function AddPropertyPage() {
                       <p className="text-red-500 text-sm">{formik.errors.houseType}</p>
                     )}
                   </div>
-                  <div>
+                  {/* <div>
                     <Label htmlFor="county">County</Label>
                     <Select
                       onValueChange={(value) => formik.setFieldValue('county', value)}
@@ -341,23 +374,20 @@ export default function AddPropertyPage() {
                     {formik.touched.county && formik.errors.county && (
                       <p className="text-red-500 text-sm">{formik.errors.county}</p>
                     )}
-                  </div>
+                  </div> */}
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
-                <Label htmlFor="location">Location</Label>
-                <Input
-                  id="location"
-                  name="location"
-                  placeholder="e.g., Kabiria, Dagoretti near Fremo Hospital"
-                  value={formik.values.location}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  required
-                />
-                {formik.touched.location && formik.errors.location && (
-                  <p className="text-red-500 text-sm">{formik.errors.location}</p>
-                )}
+              <label htmlFor="location">Location</label>
+      <Autocomplete
+        apiKey={GOOGLE_MAPS_API_KEY}
+        onPlaceSelected={(place) => handlePlaceSelect(place, formik)}
+        options={{ types: ["geocode"], componentRestrictions: { country: "KE" } }}
+        className="w-full px-3 py-2 border rounded-lg"
+      />
+      {formik.touched.location && formik.errors.location && (
+        <p className="text-red-500 text-sm">{formik.errors.location}</p>
+      )}
               </div>
               <div>
                 <Label htmlFor="city">City</Label>
