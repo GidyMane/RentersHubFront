@@ -88,11 +88,14 @@ export default function PropertyDetails({
   managed_by,
   features,
 }: PropertyDetails) {
+  const [deleteMessage, setDeleteMessage] = useState("");
+const [isDeleting, setIsDeleting] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
   const [isEditing, setIsEditing] = useState(false)
   const [selectedFeatures, setSelectedFeatures] = useState<number[]>(property_features.map((f) => f.id))
   const [featureList, setFeatureList] = useState<Feature[]>(property_features)
   const [formData, setFormData] = useState({
+    
     title,
     description,
     price,
@@ -144,16 +147,14 @@ export default function PropertyDetails({
   };
   
 
-  const handleDelete = async (id: any) => {
-    console.log("Delete property", id);
-    setIsDeleteDialogOpen(false);
-  
+  const handleDelete = async () => {
     try {
-      const session = await getSession();
-      const userId = session?.user?.user_id;
+      setIsDeleting(true);
+      setDeleteMessage("");
   
-      if (!userId) {
-        throw new Error("User ID not found in session");
+      const session = await getSession();
+      if (!session?.user?.accessToken) {
+        throw new Error("User not authenticated");
       }
   
       const response = await axios.delete(`${baseUrl}listing/property/${id}/`, {
@@ -163,17 +164,27 @@ export default function PropertyDetails({
       });
   
       if (response.status === 204) {
-        console.log("Property deleted successfully");
-        setProperties((prevProperties) =>
-          prevProperties.filter((property: { id: number }) => property.id !== id)
-        ); // Remove deleted property from the list
+        setDeleteMessage("Property deleted successfully.");
+        
+        // Delay closing dialog and redirecting to ensure user sees the message
+        setTimeout(() => {
+          setDeleteMessage("");
+          setIsDeleteDialogOpen(false);
+          window.location.href = "/rentershub/properties"; // Redirect
+        }, 2000);
       } else {
-        console.log("Failed to delete property", response);
+        console.error("Failed to delete property", response);
+        setDeleteMessage("Failed to delete property.");
       }
     } catch (error) {
       console.error("Error deleting property:", error);
+      setDeleteMessage("Error deleting property.");
+    } finally {
+      setIsDeleting(false);
     }
   };
+  
+  
   
   
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -271,26 +282,36 @@ export default function PropertyDetails({
                     )}
                   </DropdownMenuItem>
                   <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
-                    <DialogTrigger asChild>
-                      <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-                        <Trash2 className="mr-2 h-4 w-4" />
-                        Delete
-                      </DropdownMenuItem>
-                    </DialogTrigger>
-                    <DialogContent>
-                      <DialogHeader>
-                        <DialogTitle>Are you sure you want to delete this property?</DialogTitle>
-                      </DialogHeader>
-                      <div className="flex justify-end gap-2 mt-4">
-                        <Button variant="outline" onClick={() => setIsDeleteDialogOpen(false)}>
-                          Cancel
-                        </Button>
-                        <Button variant="destructive" onClick={handleDelete}>
-                          Delete
-                        </Button>
-                      </div>
-                    </DialogContent>
-                  </Dialog>
+    <DialogTrigger asChild>
+      <DropdownMenuItem
+        onSelect={(e) => e.preventDefault()}
+        className="hover:bg-red-100 cursor-pointer transition"
+      >
+        <Trash2 className="mr-2 h-4 w-4" />
+        Delete
+      </DropdownMenuItem>
+    </DialogTrigger>
+
+    <DialogContent>
+      <DialogHeader>
+        <DialogTitle>Are you sure you want to delete this property?</DialogTitle>
+      </DialogHeader>
+      <div className="flex justify-end gap-2 mt-4">
+        <Button variant="outline" onClick={() => setIsDeleteDialogOpen(false)}>
+          Cancel
+        </Button>
+        <Button
+          variant="destructive"
+          onClick={handleDelete}
+          disabled={isDeleting}
+          className={`transition ${isDeleting ? "opacity-70 cursor-not-allowed" : ""}`}
+        >
+          {isDeleting ? "Deleting..." : "Delete"}
+        </Button>
+      </div>
+      {deleteMessage && <p className="text-green-600 mt-2">{deleteMessage}</p>}
+    </DialogContent>
+  </Dialog>
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
