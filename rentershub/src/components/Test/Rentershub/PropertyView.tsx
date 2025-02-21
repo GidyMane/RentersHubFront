@@ -114,13 +114,35 @@ export default function PropertyDetails({
 
   console.log(formData, "data ya form")
 
-  const handleEdit = () => {
+  const handleEdit = async () => {
     if (isEditing) {
-      // Save changes
-      console.log("Saving changes", formData)
+      try {
+        const session = await getSession();
+        if (!session?.user?.accessToken) throw new Error("User not authenticated");
+  
+        const response = await axios.put(
+          `${baseUrl}listing/property/${id}/`, 
+          formData,
+          {
+            headers: {
+              Authorization: `Bearer ${session.user.accessToken}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        console.log(formData, "form data")
+        if (response.status === 200) {
+          console.log("Property updated successfully", response.data);
+        } else {
+          console.error("Failed to update property", response);
+        }
+      } catch (error) {
+        console.error("Error updating property:", error);
+      }
     }
-    setIsEditing(!isEditing)
-  }
+    setIsEditing(!isEditing);
+  };
+  
 
   const handleDelete = async (id: any) => {
     console.log("Delete property", id);
@@ -153,7 +175,7 @@ export default function PropertyDetails({
     }
   };
   
-
+  
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData((prev) => ({
       ...prev,
