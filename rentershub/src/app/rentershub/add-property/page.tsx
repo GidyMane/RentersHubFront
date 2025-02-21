@@ -38,8 +38,14 @@ export default function AddPropertyPage() {
   const [uploadedFiles, setUploadedFiles] = useState<{
     coverImage?: string;
     otherMedia: string[];
+    coverImageLoading?: boolean;
+    otherMediaLoading?: boolean;
+    uploadProgress?: number;
   }>({
     otherMedia: [],
+    coverImageLoading: false,
+    otherMediaLoading: false,
+    uploadProgress: 0,
   });
   const { edgestore } = useEdgeStore();
   const GOOGLE_MAPS_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!
@@ -98,48 +104,51 @@ export default function AddPropertyPage() {
 
   const handleFilesSelected = async (files: File[], isCoverImage: boolean) => {
     const validTypes = isCoverImage
-      ? ['image/jpeg', 'image/png', 'image/jpg']
-      : ['image/jpeg', 'image/png', 'image/jpg', 'video/mp4', 'video/webm'];
+      ? ["image/jpeg", "image/png", "image/jpg"]
+      : ["image/jpeg", "image/png", "image/jpg", "video/mp4", "video/webm"];
   
     const validFiles = files.filter((file) => validTypes.includes(file.type));
   
     if (validFiles.length !== files.length) {
-      alert('Some files have invalid types and will not be uploaded.');
+      alert("Some files have invalid types and will not be uploaded.");
     }
   
     const uploadedUrls: string[] = [];
+  
+    setUploadedFiles((prev) => ({
+      ...prev,
+      ...(isCoverImage ? { coverImageLoading: true } : { otherMediaLoading: true }),
+      uploadProgress: 0, // Reset progress before upload starts
+    }));
+  
     for (const file of validFiles) {
       try {
-        if (isCoverImage) {
-          setUploadedFiles((prev) => ({ ...prev, coverImageLoading: true }));
-        }
-  
         const res = await edgestore.publicFiles.upload({
           file,
           onProgressChange: (progress) => {
-            console.log(`Uploading ${file.name}: ${progress}%`);
+            setUploadedFiles((prev) => ({
+              ...prev,
+              uploadProgress: progress, // Update progress dynamically
+            }));
           },
         });
+  
         uploadedUrls.push(res.url);
       } catch (error) {
         console.error(`Error uploading ${file.name}:`, error);
-      } finally {
-        if (isCoverImage) {
-          setUploadedFiles((prev) => ({ ...prev, coverImageLoading: false }));
-        }
       }
     }
   
-    // Store the URLs in the respective fields
-    if (isCoverImage) {
-      setUploadedFiles((prev) => ({ ...prev, coverImage: uploadedUrls[0] }));
-    } else {
-      setUploadedFiles((prev) => ({
-        ...prev,
-        otherMedia: [...prev.otherMedia, ...uploadedUrls],
-      }));
-    }
+    setUploadedFiles((prev) => ({
+      ...prev,
+      ...(isCoverImage
+        ? { coverImage: uploadedUrls[0], coverImageLoading: false }
+        : { otherMedia: [...prev.otherMedia, ...uploadedUrls], otherMediaLoading: false }),
+      uploadProgress: 100, // Ensure progress is complete
+    }));
   };
+  
+  
   
 
   type FeatureId = number
@@ -601,20 +610,24 @@ export default function AddPropertyPage() {
             <Card>
   <CardContent className="p-6">
     <h3 className="text-lg font-semibold text-[#1C4532] mb-4">Cover Image</h3>
-    
-    {/* Conditionally render FileUploadZone based on whether the cover image is already selected */}
+
     {!uploadedFiles.coverImage ? (
-      <FileUploadZone
-        onFilesSelected={(files) => {
-          // Allow only one file to be uploaded
-          if (files.length === 1) {
-            handleFilesSelected(files, true);
-          } else {
-            alert("You can only upload one cover image.");
-          }
-        }}
-        
-      />
+      <>
+        <FileUploadZone
+          onFilesSelected={(files) => {
+            if (files.length === 1) {
+              handleFilesSelected(files, true);
+            } else {
+              alert("You can only upload one cover image.");
+            }
+          }}
+        />
+        {uploadedFiles.coverImageLoading && (
+          <div className="mt-2 text-sm text-blue-600">
+            Uploading... {uploadedFiles.uploadProgress}%
+          </div>
+        )}
+      </>
     ) : (
       <div className="border p-4 rounded-lg bg-gray-100">
         <p className="text-sm text-gray-500">Cover image selected.</p>
@@ -622,17 +635,9 @@ export default function AddPropertyPage() {
           src={uploadedFiles.coverImage}
           alt="Cover"
           className="mt-2 w-32 h-32 object-cover"
-          
         />
-        
-        {/* Allow the user to remove the image and upload a new one */}
         <button
-          onClick={() => {
-            setUploadedFiles(prev => ({
-              ...prev,
-              coverImage: ''
-            }));
-          }}
+          onClick={() => setUploadedFiles((prev) => ({ ...prev, coverImage: "" }))}
           className="mt-2 text-sm text-red-600 hover:underline"
         >
           Remove Image
@@ -645,19 +650,48 @@ export default function AddPropertyPage() {
 
             {/* Property Images & Videos */}
            
-<Card>
+            <Card>
   <CardContent className="p-6">
     <h3 className="text-lg font-semibold text-[#1C4532] mb-4">Property Images & Videos</h3>
+    
+    {/* Upload Zone */}
     <FileUploadZone onFilesSelected={(files) => handleFilesSelected(files, false)} />
-    {uploadedFiles.otherMedia.map((url, idx) => (
-      <div key={idx}>
-        {url.endsWith('.mp4') ? (
-          <video src={url} controls className="w-32 h-32" />
-        ) : (
-          <img src={url} alt={`Media ${idx}`} className="w-32 h-32" />
-        )}
+
+    {/* Upload Progress */}
+    {uploadedFiles.otherMediaLoading && (
+      <div className="mt-4 flex items-center space-x-2 text-blue-600">
+        <div className="w-5 h-5 border-2 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+        <span>Uploading... {uploadedFiles.uploadProgress}%</span>
       </div>
-    ))}
+    )}
+
+    {/* Media Grid */}
+    <div className="mt-4 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      {uploadedFiles.otherMedia.map((url, idx) => (
+        <div key={idx} className="relative group border rounded-lg overflow-hidden shadow-md">
+          {url.endsWith(".mp4") ? (
+            <video src={url} controls className="w-full h-32 object-cover" />
+          ) : (
+            <img src={url} alt={`Media ${idx}`} className="w-full h-32 object-cover" />
+          )}
+
+          {/* Overlay with Remove Button */}
+          <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-40 flex items-center justify-center transition-opacity">
+            <button
+              onClick={() =>
+                setUploadedFiles((prev) => ({
+                  ...prev,
+                  otherMedia: prev.otherMedia.filter((_, i) => i !== idx),
+                }))
+              }
+              className="hidden group-hover:block bg-red-500 text-white text-xs px-2 py-1 rounded shadow-md hover:bg-red-600 transition"
+            >
+              Remove
+            </button>
+          </div>
+        </div>
+      ))}
+    </div>
   </CardContent>
 </Card>
 

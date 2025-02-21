@@ -84,6 +84,7 @@ export function FileUploadZone({ onFilesSelected }: FileUploadZoneProps) {
                 </button>
               </div>
               <Progress value={progress} className="h-2" />
+              Working on it {progress} %
             </div>
           ))}
         </div>
