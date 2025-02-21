@@ -354,7 +354,41 @@ export default function AddPropertyPage() {
                       <p className="text-red-500 text-sm">{formik.errors.houseType}</p>
                     )}
                   </div>
-                  <div>
+                  
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+              <label htmlFor="location">Location</label>
+      <Autocomplete
+        apiKey={GOOGLE_MAPS_API_KEY}
+        onPlaceSelected={(place) => handlePlaceSelect(place, formik)}
+        options={{ types: ["geocode"], componentRestrictions: { country: "KE" } }}
+        className="w-full px-3 py-2 border rounded-lg"
+      />
+      {formik.touched.location && formik.errors.location && (
+        <p className="text-red-500 text-sm">{formik.errors.location}</p>
+      )}
+              </div>
+              
+              <div>
+                <Label htmlFor="city">City</Label>
+                <Input
+                  id="city"
+                  name="city"
+                  placeholder="e.g., Nairobi"
+                  value={formik.values.city}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  required
+                />
+                {formik.touched.city && formik.errors.city && (
+                  <p className="text-red-500 text-sm">{formik.errors.city}</p>
+                )}
+              </div>
+              
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
                     <Label htmlFor="county">County</Label>
                     <Select
                       onValueChange={(value) => formik.setFieldValue('county', value)}
@@ -375,36 +409,7 @@ export default function AddPropertyPage() {
                       <p className="text-red-500 text-sm">{formik.errors.county}</p>
                     )}
                   </div>
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div>
-              <label htmlFor="location">Location</label>
-      <Autocomplete
-        apiKey={GOOGLE_MAPS_API_KEY}
-        onPlaceSelected={(place) => handlePlaceSelect(place, formik)}
-        options={{ types: ["geocode"], componentRestrictions: { country: "KE" } }}
-        className="w-full px-3 py-2 border rounded-lg"
-      />
-      {formik.touched.location && formik.errors.location && (
-        <p className="text-red-500 text-sm">{formik.errors.location}</p>
-      )}
-              </div>
-              <div>
-                <Label htmlFor="city">City</Label>
-                <Input
-                  id="city"
-                  name="city"
-                  placeholder="e.g., Nairobi"
-                  value={formik.values.city}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  required
-                />
-                {formik.touched.city && formik.errors.city && (
-                  <p className="text-red-500 text-sm">{formik.errors.city}</p>
-                )}
-              </div>
-              <div>
+                  <div>
                 <Label htmlFor="postal_code">Po Box</Label>
                 <Input
                   id="poBox"
@@ -419,8 +424,7 @@ export default function AddPropertyPage() {
                   <p className="text-red-500 text-sm">{formik.errors.poBox}</p>
                 )}
               </div>
-            </div>
-
+              </div>
 
                 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
