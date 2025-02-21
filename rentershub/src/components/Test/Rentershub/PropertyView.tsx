@@ -54,6 +54,7 @@ interface PropertyDetails {
   managed_by: string
   space_types: string[]
   propertytype:{id:number, name:string};
+  property_features: Feature[]
 }
 
 export default function PropertyDetails({
@@ -78,7 +79,7 @@ export default function PropertyDetails({
   deposit_amount,
   main_image_url,
   images,
- 
+  property_features,
   water_charges,
   water_deposit,
   garbage_charges,
@@ -89,8 +90,8 @@ export default function PropertyDetails({
 }: PropertyDetails) {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
   const [isEditing, setIsEditing] = useState(false)
-  const [selectedFeatures, setSelectedFeatures] = useState<number[]>(features.map((f) => f.id))
-  const [featureList, setFeatureList] = useState<Feature[]>(features)
+  const [selectedFeatures, setSelectedFeatures] = useState<number[]>(property_features.map((f) => f.id))
+  const [featureList, setFeatureList] = useState<Feature[]>(property_features)
   const [formData, setFormData] = useState({
     title,
     description,
@@ -108,6 +109,7 @@ export default function PropertyDetails({
     bathrooms,
     parking_spaces,
     main_image_url,
+    property_features,
   })
 
   console.log(formData, "data ya form")
