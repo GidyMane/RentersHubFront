@@ -322,12 +322,7 @@ export default function PropertyDetails({
                   <span className="text-sm">{formData?.propertytype?.name || "Not specified"}</span>
                 </div>
               </div>
-              {/* <div className="col-span-1">{renderEditableInput("size", formData.size, "Size", "sq ft")}</div>
-              <div className="col-span-1">{renderEditableInput("bedrooms", formData.bedrooms, "Bedrooms")}</div>
-              <div className="col-span-1">{renderEditableInput("bathrooms", formData.bathrooms, "Bathrooms")}</div>
-              <div className="col-span-1">
-                {renderEditableInput("parking_spaces", formData.parking_spaces, "Parking Spaces")}
-              </div> */}
+              
             </div>
           </div>
         </div>
