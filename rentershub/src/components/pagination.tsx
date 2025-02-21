@@ -26,7 +26,7 @@ export function Pagination({ count, previous, next, updatePage }: PaginationProp
 
     useEffect(() => {
         let start = Math.max(1, currentPage - Math.floor(visiblePageCount / 2));
-        let end = Math.min(count, start + visiblePageCount - 1);
+        const end = Math.min(count, start + visiblePageCount - 1);
 
         if (end - start < visiblePageCount - 1) {
             start = Math.max(1, end - visiblePageCount + 1);
@@ -38,7 +38,7 @@ export function Pagination({ count, previous, next, updatePage }: PaginationProp
     const handlePageChange = async (newPage: number) => {
         if (newPage < 1 || newPage > count) return;
 
-        let newOffset = (newPage - 1) * limit;
+        const newOffset = (newPage - 1) * limit;
         params.set("offset", newOffset.toString());
         params.set("page", newPage.toString());
 
