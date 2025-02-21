@@ -354,7 +354,7 @@ export default function AddPropertyPage() {
                       <p className="text-red-500 text-sm">{formik.errors.houseType}</p>
                     )}
                   </div>
-                  {/* <div>
+                  <div>
                     <Label htmlFor="county">County</Label>
                     <Select
                       onValueChange={(value) => formik.setFieldValue('county', value)}
@@ -374,7 +374,7 @@ export default function AddPropertyPage() {
                     {formik.touched.county && formik.errors.county && (
                       <p className="text-red-500 text-sm">{formik.errors.county}</p>
                     )}
-                  </div> */}
+                  </div>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
