@@ -168,6 +168,7 @@ export default function PropertyDetail({
   const [isGridView, setIsGridView] = useState(true);
   const [isShared, setIsShared] = useState(false);
   const [isSharing, setIsSharing] = useState(false);
+  
 
   // console.log(similarproperties)
 
@@ -185,6 +186,8 @@ export default function PropertyDetail({
     triggerOnce: true,
     threshold: 0.1,
   });
+
+  
 
 
 
@@ -490,7 +493,7 @@ export default function PropertyDetail({
       <div className="grid grid-cols-1 gap-4">
         {property.property_features.map((feature) => (
           <div key={feature.id} className="flex items-center gap-2">
-            <Check className="w-4 h-4 text-green-500 flex-shrink-0" /> 
+            <Check className="w-6 h-6 text-green-500 flex-shrink-0" /> 
             <span className="text-base">{feature.name}</span>
           </div>
         ))}
