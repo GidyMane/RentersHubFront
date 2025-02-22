@@ -9,7 +9,6 @@ import { Button } from "@/components/ui/button"
 import { Loader2, MapPin } from "lucide-react"
 import { useDebounce } from "@/hooks/use-debounce"
 
-// You'll need to replace this with your actual Google Maps API key
 const GOOGLE_MAPS_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!
 
 interface PlacePrediction {
@@ -49,14 +48,20 @@ export function PlacesAutocomplete() {
   useEffect(() => {
     if (debouncedInput && autocompleteService.current) {
       setIsLoading(true)
-      autocompleteService.current.getPlacePredictions({ input: debouncedInput }, (results, status) => {
-        setIsLoading(false)
-        if (status === google.maps.places.PlacesServiceStatus.OK && results) {
-          setPredictions(results)
-        } else {
-          setPredictions([])
+      autocompleteService.current.getPlacePredictions(
+        { 
+          input: debouncedInput, 
+          componentRestrictions: { country: "KE" } // Restrict to Kenya
+        }, 
+        (results, status) => {
+          setIsLoading(false)
+          if (status === google.maps.places.PlacesServiceStatus.OK && results) {
+            setPredictions(results)
+          } else {
+            setPredictions([])
+          }
         }
-      })
+      )
     } else {
       setPredictions([])
     }
@@ -111,8 +116,6 @@ export function PlacesAutocomplete() {
           ))}
         </ul>
       )}
-      {/* {selectedPrediction && <p className="mt-2 text-gray-700">Selected: {selectedPrediction.description}</p>} */}
     </div>
   )
 }
-

@@ -4,5 +4,5 @@ import { revalidatePath } from "next/cache"
 
 export const updatePage = async () => {
 
-    revalidatePath("/")
+    revalidatePath("/Testclient")
 }
