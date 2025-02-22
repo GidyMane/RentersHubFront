@@ -21,8 +21,8 @@ const menuItems = [
   { icon: Building, label: 'My Properties', href: '/rentershub/properties' },
   { icon: PlusSquare, label: 'Add Property', href: '/rentershub/add-property' },
   { icon: User, label: 'Profile', href: '/rentershub/profile' },
-  { icon: Settings, label: 'Settings', href: '/rentershub/settings' },
-  { icon: HelpCircle, label: 'Help & Support', href: '/rentershub/support' },
+  // { icon: Settings, label: 'Settings', href: '/rentershub/settings' },
+  // { icon: HelpCircle, label: 'Help & Support', href: '/rentershub/support' },
 ]
 
 export function Sidebar({ isOpen, toggleSidebar }: SidebarProps) {
