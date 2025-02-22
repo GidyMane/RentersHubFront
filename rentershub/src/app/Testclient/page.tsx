@@ -32,11 +32,10 @@ const page = async (props: {
   // Fetch properties asynchronously
   const properties = await fetchProperties()
 
-  const resetFilters = () => {}
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="h-[100vh] relative w-full px-6">
+    <div className="h-full w-full bg-background">
+      <div className="h-screen relative w-full ">
         <FullScreenCarousel propertytype={propertytypes} />
         {/*
         <div className="absolute -bottom-10 z-30 flex justify-center mx-auto inset-x-0">

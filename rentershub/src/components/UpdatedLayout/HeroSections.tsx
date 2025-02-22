@@ -57,7 +57,7 @@ export function FullScreenCarousel({ propertytype }: { propertytype: any }) {
     }, [emblaApi, onSelect])
 
     return (
-        <div className="relative rounded h-full w-full md:overflow-hidden">
+        <div className="relative rounded h-full w-full overflow-x-hidden">
             <div className="absolute inset-0 z-20 bg-gradient-to-r from-black/50 to-transparent">
                 <div className="container mx-auto flex flex-col md:mt-20 mt-10 items-center justify-center px-4">
                     <motion.div
@@ -69,7 +69,7 @@ export function FullScreenCarousel({ propertytype }: { propertytype: any }) {
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.6, delay: 0.4 }}
-                            className="mb-6 text-4xl md:text-5xl lg:text-6xl font-bold leading-tight"
+                            className="mb-2 text-4xl md:text-4xl lg:text-6xl font-bold leading-tight"
                         >
                             The Place Where Smart Kenyans Come To Find Houses
                         </motion.h1>

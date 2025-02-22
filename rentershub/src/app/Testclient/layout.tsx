@@ -27,7 +27,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (    
-        <div className="relative">
+        <div className="relative w-full">
           <Suspense fallback={<Loader className='animate animate-spin text-secondary400' />}>  
             
                 <Toaster
