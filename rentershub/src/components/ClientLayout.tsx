@@ -12,6 +12,13 @@ import { Card, CardContent } from '@/components/ui/card';
 import { User, Building, Phone, Mail, Lock, UserPlus, CheckCircle2, ArrowLeft, ArrowRight } from 'lucide-react';
 import Image from 'next/image';
 import { baseUrl } from '@/utils/constants';
+import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSeparator,
+  InputOTPSlot,
+} from "@/components/ui/input-otp"
+
 
 
 interface Role {
@@ -33,6 +40,7 @@ const SignUpForm = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+
   
 
   const totalSteps = 4;
@@ -192,14 +200,21 @@ const SignUpForm = () => {
                       <span className="text-gray-500">+254</span>
                     </div>
                     <Input
-                      id="phone"
-                      type="tel"
-                      placeholder="7XXXXXXXX"
-                      value={phone}
-                      onChange={(e) => setPhone(e.target.value.replace(/[^0-9]/g, '').slice(0, 9))}
-                      className="rounded-l-none flex-1"
-                      required
-                    />
+  id="phone"
+  type="tel"
+  placeholder="7XXXXXXXX"
+  value={phone}
+  onChange={(e) => {
+    let input = e.target.value.replace(/[^0-9]/g, ''); // Remove non-numeric characters
+    if (input.startsWith('0')) {
+      input = input.slice(1); // Remove the leading zero
+    }
+    setPhone(input.slice(0, 9)); // Limit to 9 digits
+  }}
+  className="rounded-l-none flex-1"
+  required
+/>
+
                   </div>
                 </div>
                 <Button
@@ -213,41 +228,34 @@ const SignUpForm = () => {
               </form>
             )}
 
-            {step === 3 && (
-              <form className="space-y-6">
-                <div className="space-y-2">
-                  <Label htmlFor="otp" className="text-sm font-medium">Enter OTP</Label>
-                  <div className="flex justify-between">
-                    {[...Array(6)].map((_, index) => (
-                      <Input
-                        key={index}
-                        type="text"
-                        maxLength={1}
-                        className="w-10 h-12 text-center text-2xl"
-                        value={otp[index] || ''}
-                        onChange={(e) => {
-                          const newOtp = otp.split('');
-                          newOtp[index] = e.target.value;
-                          setOtp(newOtp.join(''));
-                          if (e.target.value && e.target.nextElementSibling) {
-                            (e.target.nextElementSibling as HTMLInputElement).focus();
-                          }
-                        }}
-                        required
-                      />
-                    ))}
-                  </div>
-                </div>
-                <Button
-                  type="button"
-                  onClick={handleVerifyOtp}
-                  className="w-full bg-[#1C4532] hover:bg-[#153726] text-white"
-                  disabled={isLoading || otp.length !== 6}
-                >
-                  {isLoading ? 'Verifying...' : 'Verify OTP'}
-                </Button>
-              </form>
-            )}
+{step === 3 && (
+  <form className="space-y-6">
+    <div className="space-y-2 ">
+      <Label htmlFor="otp" className="text-sm font-medium">Enter OTP</Label>
+      <InputOTP maxLength={6} value={otp} onChange={(value) => setOtp(value)}>
+        <InputOTPGroup>
+          <InputOTPSlot index={0} />
+          <InputOTPSlot index={1} />
+          <InputOTPSlot index={2} />
+        </InputOTPGroup>
+        <InputOTPSeparator />
+        <InputOTPGroup>
+          <InputOTPSlot index={3} />
+          <InputOTPSlot index={4} />
+          <InputOTPSlot index={5} />
+        </InputOTPGroup>
+      </InputOTP>
+    </div>
+    <Button
+      type="button"
+      onClick={handleVerifyOtp}
+      className="w-full bg-[#1C4532] hover:bg-[#153726] text-white"
+      disabled={isLoading || otp.length !== 6}
+    >
+      {isLoading ? 'Verifying...' : 'Verify OTP'}
+    </Button>
+  </form>
+)}
 
             {step === 4 && (
               <form onSubmit={handleSubmit} className="space-y-4">
@@ -351,11 +359,12 @@ const SignUpForm = () => {
                   <ArrowLeft className="mr-2 h-4 w-4" /> Back
                 </Button>
               )}
-              {step < totalSteps && step !== 3 && (
-                <Button type="button" onClick={nextStep} className="ml-auto flex items-center">
-                  Next <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-              )}
+              {step < totalSteps && step !== 2 && step !== 3 && (
+  <Button type="button" onClick={nextStep} className="ml-auto flex items-center">
+    Next <ArrowRight className="ml-2 h-4 w-4" />
+  </Button>
+)}
+
             </div>
 
             <div className="mt-6 text-center">
