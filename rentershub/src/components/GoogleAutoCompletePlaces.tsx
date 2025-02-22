@@ -1,9 +1,7 @@
 "use client"
 
 import type React from "react"
-
 import { useState, useEffect, useRef } from "react"
-
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Loader2, MapPin } from "lucide-react"
@@ -46,7 +44,7 @@ export function PlacesAutocomplete() {
   }, [])
 
   useEffect(() => {
-    if (debouncedInput && autocompleteService.current) {
+    if (debouncedInput && autocompleteService.current && !selectedPrediction) {
       setIsLoading(true)
       autocompleteService.current.getPlacePredictions(
         { 
@@ -65,7 +63,7 @@ export function PlacesAutocomplete() {
     } else {
       setPredictions([])
     }
-  }, [debouncedInput])
+  }, [debouncedInput, selectedPrediction])
 
   function initAutocompleteService() {
     if (window.google) {
@@ -75,13 +73,13 @@ export function PlacesAutocomplete() {
 
   function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
     setInput(e.target.value)
-    setSelectedPrediction(null)
+    setSelectedPrediction(null) // Allows suggestions to reappear if user types again
   }
 
   function handlePredictionClick(prediction: PlacePrediction) {
     setInput(prediction.description)
-    setPredictions([])
-    setSelectedPrediction(prediction)
+    setPredictions([]) // Hide suggestions after selecting
+    setSelectedPrediction(prediction) // Mark as selected
   }
 
   return (
@@ -89,7 +87,7 @@ export function PlacesAutocomplete() {
       <div className="relative">
         <Input
           type="text"
-          placeholder="eg; westlands nairobi"
+          placeholder="e.g., Westlands, Nairobi"
           name="address"
           value={input}
           onChange={handleInputChange}
@@ -102,12 +100,12 @@ export function PlacesAutocomplete() {
           <Loader2 className="h-4 w-4 animate-spin" />
         </Button>
       )}
-      {predictions.length > 0 && (
+      {predictions.length > 0 && !selectedPrediction && (
         <ul className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
           {predictions.map((prediction) => (
             <li
               key={prediction.place_id}
-              className="relative cursor-default select-none py-2 pl-3 pr-9 text-gray-900 hover:bg-gray-100"
+              className="relative cursor-pointer select-none py-2 pl-3 pr-9 text-gray-900 hover:bg-gray-100"
               onClick={() => handlePredictionClick(prediction)}
             >
               <span>{prediction.structured_formatting.main_text}</span>
