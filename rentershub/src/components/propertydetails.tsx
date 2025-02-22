@@ -565,21 +565,21 @@ export default function PropertyDetail({
         </div>
 
         <div className="bg-secondary overflow-hidden z-20">
-          <MapContainer
-            center={position}
-            zoom={13}
-            style={{ height: "100%", width: "100%" }}
-          >
-            <TileLayer
-              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            />
-            <Marker position={position}>
-  <Popup>{property?.address || "Property Location"}</Popup>
-</Marker>
+  <MapContainer
+    center={position}
+    zoom={13}
+    className="w-full h-[300px] md:h-[400px] lg:h-[500px]" // Adjust height for different screens
+  >
+    <TileLayer
+      url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+      attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    />
+    <Marker position={position}>
+      <Popup>{property?.address || "Property Location"}</Popup>
+    </Marker>
+  </MapContainer>
+</div>
 
-          </MapContainer>
-        </div>
       </div>
 
       {/* similar listings */}
