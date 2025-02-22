@@ -94,13 +94,13 @@ const page = async (props: {
                 or contact our office for further assistance.
               </p>
 
-              <div className="flex gap-4 mt-4">
+              <div className="flex flex-col md:flex-row gap-6 mt-6 w-full justify-center">
                 {/* Call Button */}
                 <a
                   href="tel:+254731352350"
-                  className="px-4 py-2 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 transition"
+                  className="px-6 py-3 text-lg font-semibold rounded-lg bg-blue-600 text-white shadow-md hover:bg-blue-700 transition transform hover:scale-105"
                 >
-                  Call Customer Care
+                  📞 Call Customer Care
                 </a>
 
                 {/* WhatsApp Button */}
@@ -108,9 +108,9 @@ const page = async (props: {
                   href={whatsappLink}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-4 py-2 bg-green-500 text-white font-semibold rounded-md hover:bg-green-600 transition"
+                  className="px-6 py-3 text-lg font-semibold rounded-lg bg-green-500 text-white shadow-md hover:bg-green-600 transition transform hover:scale-105"
                 >
-                  WhatsApp Customer Care
+                  💬 WhatsApp Us
                 </a>
               </div>
             </div>
