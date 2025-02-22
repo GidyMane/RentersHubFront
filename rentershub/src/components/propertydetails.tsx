@@ -87,6 +87,7 @@ export interface PropertyData {
   area: string;
   state: string;
   country: string;
+  location_coords: string;
   county: string;
   latitude: string;
   longitude: string;
@@ -164,7 +165,10 @@ export default function PropertyDetail({
   similarproperties: SimilarProperty
 }) {
   const [selectedImage, setSelectedImage] = useState(0);
-  const position: [number, number] = [-1.2345, 36.80271]; // Latitude and Longitude for Runda, Nairobi
+  const position: [number, number] = property?.location_coords
+  ? [Number(property.location_coords[1]), Number(property.location_coords[0])] // Convert strings to numbers
+  : [-1.2345, 36.80271]; // Default fallback coordinates
+
   const [isGridView, setIsGridView] = useState(true);
   const [isShared, setIsShared] = useState(false);
   const [isSharing, setIsSharing] = useState(false);
@@ -511,22 +515,17 @@ export default function PropertyDetail({
             <CardHeader className="flex flex-row items-center justify-between">
               <CardTitle>Address</CardTitle>
               <Button
-                variant="secondary"
-                onClick={() => {
-                  const { city, area, county, country, latitude, longitude } =
-                    property?.data?.property || {};
-                  const address = `${city}, ${area}, ${county}, ${country}`;
-                  const mapsUrl =
-                    latitude && longitude
-                      ? `https://www.google.com/maps?q=${latitude},${longitude}`
-                      : `https://www.google.com/maps/search/?q=${address}`;
+  variant="secondary"
+  onClick={() => {
+    const [latitude, longitude] = position;
+    const mapsUrl = `https://www.google.com/maps?q=${latitude},${longitude}`;
+    window.open(mapsUrl, "_blank");
+  }}
+>
+  <MapPin className="mr-2 h-4 w-4" />
+  Open on Google Maps
+</Button>
 
-                  window.open(mapsUrl, "_blank");
-                }}
-              >
-                <MapPin className="mr-2 h-4 w-4" />
-                Open on Google Maps
-              </Button>
             </CardHeader>
             <CardContent className="grid gap-6">
               <div className="grid gap-4">
@@ -576,8 +575,9 @@ export default function PropertyDetail({
               attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             />
             <Marker position={position}>
-              <Popup>A property in {property?.address}</Popup>
-            </Marker>
+  <Popup>{property?.address || "Property Location"}</Popup>
+</Marker>
+
           </MapContainer>
         </div>
       </div>
