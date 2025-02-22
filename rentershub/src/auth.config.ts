@@ -80,6 +80,7 @@ export default {
               accessToken: user.result.tokens.access,
               refreshToken: user.result.tokens.refresh,
               user_id: user.result.user_id,
+              role: user.result.role,
             };
           }
         } catch (error: any) {
@@ -129,7 +130,8 @@ export default {
       if (user){
         token.accessToken= user.accessToken,
         token.refreshToken= user.refreshToken,
-        token.user_id = user.user_id as unknown as number
+        token.user_id = user.user_id as unknown as number,
+        token.role = user.role
       }
   
 
@@ -139,14 +141,16 @@ export default {
       
     },
     session: async ({ session, token }) => {
-      // console.log(token)
+      console.log(token, "itpoken")
       return {
         ...session,
         user: {
           ...session?.user, 
-          accessToken : token.accessToken,
-          refreshToken: token.refreshToken,
-          user_id: token.user_id as number
+          // accessToken : token.accessToken,
+          // refreshToken: token.refreshToken,
+          user_id: token.user_id as number,
+          ...token
+          
 
           
         }

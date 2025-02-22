@@ -21,26 +21,38 @@ const LoginForm = () => {
     e.preventDefault();
     const payload = { contact, password };
     setIsLoading(true);
-
+  
     try {
       const response = await signIn('credentials', {
         contact: payload.contact,
         password: payload.password,
         redirect: false,
+        
       });
-
+  
       console.log(response, 'response login');
-
+  
       if (response?.ok) {
-        // Handle configuration error case
-        if (response.error === 'Configuration') {
-          toast.warning('Your account is awaiting admin approval. Please wait until it is approved.');
+        // Fetch session data to get user details
+        const session = await fetch('/api/auth/session').then((res) => res.json());
+        console.log(session, 'session data');
+  
+        if (session?.user?.role) {
+          const userRole = session.user.role;
+
+  
+          if (userRole === 'ADMIN') {
+            router.push('/admin');
+          } else if (['LANDLORD', 'GROUND AGENT'].includes(userRole)) {
+            router.push('/rentershub/Dashboard');
+          } else {
+            router.push('/'); // Default redirect if role is unknown
+          }
         } else {
-          toast.success('Login successful!');
-          router.push('/rentershub/Dashboard');
+          toast.error('Unable to retrieve user role.');
         }
       } else {
-        // Handle other error cases
+        // Handle error cases
         if (response?.error) {
           if (response.error.includes('Invalid credentials')) {
             toast.error('Wrong password or invalid credentials.');
@@ -60,6 +72,8 @@ const LoginForm = () => {
       setIsLoading(false);
     }
   };
+  
+  
 
   return (
     <>
