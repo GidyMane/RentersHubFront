@@ -40,7 +40,7 @@ export default auth(async (req) => {
   // Restrict /admin access only to Admins
   if (isAdminRoute) {
     if (req.auth.user.role !== "ADMIN") {
-      return Response.redirect(new URL("/", nextUrl)); // Redirect unauthorized users
+      return Response.redirect(new URL("/login", nextUrl)); // Redirect unauthorized users
     }
     return null; // Allow access to Admins
   }
@@ -48,7 +48,7 @@ export default auth(async (req) => {
   // Restrict /rentershub access only to Landlords and Ground Agents
   if (isRentersHubRoute) {
     if (!["LANDLORD", "GROUND AGENT"].includes(req.auth.user.role)) {
-      return Response.redirect(new URL("/", nextUrl)); // Redirect unauthorized users
+      return Response.redirect(new URL("/login", nextUrl)); // Redirect unauthorized users
     }
     return null; // Allow access to Landlords & Ground Agents
   }
