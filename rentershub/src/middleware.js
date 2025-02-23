@@ -2,7 +2,7 @@ import { NextRequest } from "next/server";
 import authConfig from "./auth.config";
 import NextAuth from "next-auth";
 
-const publicRoutes = ["/successmessage", "/Terms-and-Conditions"];
+const publicRoutes = ["/successmessage", "/Terms-and-Conditions", "/"];
 const authRoutes = ["/login"];
 const apiAuthPrefix = "/api/auth";
 const DEFAULT_LOGIN_REDIRECT = "/";
