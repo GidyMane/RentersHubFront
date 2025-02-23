@@ -68,3 +68,7 @@ export const config = {
     "/Terms-and-conditions",
   ],
 };
+
+
+
+
