@@ -5,7 +5,11 @@ import { Checkbox } from "@/components/ui/checkbox"
 import DataTableCheckBox from "@/components/globalcomponents/DataTableCheckBox"
 import { DataTableRowActions } from "../ApprovedProperties/data-table-row-actions"
 import { DataTableColumnHeader } from "../ApprovedProperties/data-table-column-header"
-import { removefeature } from "@/actions/landlord"
+import { ApproveUser, removefeature } from "@/actions/landlord"
+import { useMutation } from "@tanstack/react-query"
+import toast from "react-hot-toast"
+import { Button } from "@/components/ui/button"
+import { Loader } from "lucide-react"
 
 
 
@@ -14,16 +18,16 @@ import { removefeature } from "@/actions/landlord"
 
 export type Landlords = {
 
-    pk: number;
+    id: number;
     first_name: string;
     last_name: string;
     email: string;
-    contact:string;
-    role_name: {role:string;};
-    username:string;
+    contact: string;
+    role_name: { role: string; };
+    username: string;
     status: string;
-    terms_and_conditions:string;
-    
+    terms_and_conditions: string;
+
 
 }
 
@@ -32,18 +36,18 @@ export type Landlords = {
 
 
 export const columns: ColumnDef<Landlords>[] = [
-    // {
-    //     id: "select",
-    //     header: ({ table }) => (
-    //         <DataTableCheckBox table={table} deletefunc={removefeature} />
-    //     ),
-    //     cell: ({ row }) => (
-    //         <DataTableCheckBox row={row} deletefunc={removefeature} />
+    {
+        id: "select",
+        header: ({ table }) => (
+            <DataTableCheckBox table={table} deletefunc={removefeature} />
+        ),
+        cell: ({ row }) => (
+            <DataTableCheckBox row={row} deletefunc={removefeature} />
 
-    //     ),
-    //     enableSorting: false,
-    //     enableHiding: false,
-    // },
+        ),
+        enableSorting: false,
+        enableHiding: false,
+    },
     // {
     //     accessorKey: "pk",
     //     header: ({ column }) => (
@@ -77,7 +81,7 @@ export const columns: ColumnDef<Landlords>[] = [
             return (
                 <div className="flex space-x-2">
                     <span className="max-w-[500px] truncate font-medium">
-                         {row.getValue("last_name")}
+                        {row.getValue("last_name")}
                     </span>
                 </div>
             );
@@ -151,10 +155,52 @@ export const columns: ColumnDef<Landlords>[] = [
     //     },
     // },
     {
+        id: "approval",
+        cell: ({ row }) => {
+            return (
+               <>
+               <ApproveButton row={row}/>
+               </>
+            )
+        },
+    },
+    {
         id: "actions",
-        cell: ({ row }) => <DataTableRowActions row={row} page={"pendinggroundagents"} />,
+        cell: ({ row }) => <DataTableRowActions row={row} page={"pendinglandlords"} />,
     },
 
 ]
 
 
+function ApproveButton({ row }: { row: any }) {
+
+    const approvemutation = useMutation({
+        mutationFn: async (values: { id: number; approval_status: string }) => {
+            const res = await ApproveUser(values)
+            return res
+        },
+        onSuccess(data, variables, context) {
+            if (data[1] == 200) {
+                toast.success("Approved Successfully")
+
+            } else {
+                toast.error("Something went wrong try again")
+            }
+        },
+    })
+
+    return (
+        <div onClick={async () => {
+            approvemutation.mutateAsync({
+                id: row.original.id as number,
+                approval_status: "APPROVED"
+            })
+
+
+
+        }} className="group">
+            <Button variant="outline" className="group-hover:bg-primary group-hover:cursor-pointer">{approvemutation.isPending ? <Loader className="animate animate-spin" /> : "Approve User"}</Button>
+
+        </div>
+    )
+}

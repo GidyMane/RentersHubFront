@@ -14,7 +14,7 @@ import { removefeature } from "@/actions/landlord"
 
 export type Landlords = {
 
-    pk: number;
+    id: number;
     first_name: string;
     last_name: string;
     email: string;
@@ -32,18 +32,18 @@ export type Landlords = {
 
 
 export const columns: ColumnDef<Landlords>[] = [
-    // {
-    //     id: "select",
-    //     header: ({ table }) => (
-    //         <DataTableCheckBox table={table} deletefunc={removefeature} />
-    //     ),
-    //     cell: ({ row }) => (
-    //         <DataTableCheckBox row={row} deletefunc={removefeature} />
+    {
+        id: "select",
+        header: ({ table }) => (
+            <DataTableCheckBox table={table} deletefunc={removefeature} />
+        ),
+        cell: ({ row }) => (
+            <DataTableCheckBox row={row} deletefunc={removefeature} />
 
-    //     ),
-    //     enableSorting: false,
-    //     enableHiding: false,
-    // },
+        ),
+        enableSorting: false,
+        enableHiding: false,
+    },
     // {
     //     accessorKey: "pk",
     //     header: ({ column }) => (

@@ -11,11 +11,11 @@ import React, { useEffect } from 'react'
 import { toast } from 'react-hot-toast'
 import * as Yup from "yup"
 
-const EditLandlord = () => {
+const EditGroundAgent = () => {
     const editdata = useAppSelector((state) => state.property.editdata)
     const dispatch = useAppDispatch()
 
-    console.log(editdata, "editing")
+    // console.log(editdata, "editing")
 
     const formik = useFormik({
         initialValues: {
@@ -49,7 +49,7 @@ const EditLandlord = () => {
         },
         onSuccess(data: any, variables, context) {
             if (data[1] == 200) {
-                toast.success("GroundAgent updated successfully")
+                toast.success("Landlord updated successfully")
                 dispatch(clearEditData())
             } else {
                 toast.error("Something went wrong!")
@@ -75,6 +75,8 @@ const EditLandlord = () => {
 
     return (
         <div className='w-full flex flex-col'>
+            <h3 className='my-4'>Edit Ground agent</h3>
+            <p className='text-muted-foreground my-4'>You can change the status of the ground agent or any other relevant field</p>
             <div className='flex justify-end items-center gap-2'>
          
                 <Button variant={"ghost"} className='flex items-center justify-center font-semibold' onClick={()=>{
@@ -181,11 +183,11 @@ const EditLandlord = () => {
 
 
                 <Button type="submit" disabled={mutation.isPending} className="w-full bg-primary text-white">
-                    {mutation.isPending ? <Ellipsis className="animate-pulse" /> : "Update Agent"}
+                    {mutation.isPending ? <Ellipsis className="animate-pulse" /> : "Update GroundAgent"}
                 </Button>
             </form>
         </div>
     )
 }
 
-export default EditLandlord
+export default EditGroundAgent
