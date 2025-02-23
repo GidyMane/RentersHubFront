@@ -312,7 +312,7 @@ export default function AddPropertyPage() {
   }
 
   return (
-    <DashboardLayout>
+    
       <div className="p-4 sm:p-6 lg:p-8">
         <div className="max-w-4xl mx-auto">
           <h1 className="text-2xl sm:text-3xl font-bold text-[#1C4532] mb-6">Add New Property</h1>
@@ -716,6 +716,6 @@ export default function AddPropertyPage() {
           />
         </div>
       </div>
-    </DashboardLayout>
+   
   );
 }

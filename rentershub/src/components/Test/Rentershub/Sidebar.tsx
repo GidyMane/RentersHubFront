@@ -32,7 +32,7 @@ export function Sidebar({ isOpen, toggleSidebar }: SidebarProps) {
   return (
     <div
       className={cn(
-        "fixed inset-y-0 left-0 z-50 w-64 bg-[#1C4532] dark:bg-[#153726] text-white transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0",
+        "h-full z-50 w-64 bg-[#1C4532] dark:bg-[#153726] text-white transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0",
         isOpen ? "translate-x-0" : "-translate-x-full"
       )}
     >

@@ -70,7 +70,7 @@ export function Navbar({ toggleSidebar }: NavbarProps) {
   }, []);
 
   return (
-    <header className="sticky top-0 z-40 bg-white border-b shadow-sm">
+    <header className="top-0 z-40 bg-primary w-full border-b shadow-sm">
       <div className="container mx-auto px-4">
         <div className="flex h-16 items-center justify-between">
           <div className="flex items-center">
