@@ -38,28 +38,29 @@ export function DataTableViewOptions<TData>({
   console.log("Delete Type:", deleteType); // Debug log
 
   let url = ""
-  if (deleteType === "approvedlandlords") {
-    url = baseUrl + `accounts/user/`
-  } else if (pathname === "/intime-admin/managefeatures") {
-    deleteType = "feature"
-  } else if (pathname === "/intime-admin/managelisting") {
-    deleteType = "property"
-  } else if (pathname === "/intime-admin/blogs") {
-    deleteType = "blog"
-  } else if (pathname === "/intime-admin/users") {
-    deleteType = "company"
-  } else if (pathname === "/intime-admin/requestaccess") {
-    deleteType = "requestuser"
-  } else if (pathname === "/intime-admin/testimonials") {
-    deleteType = "testimonial"
-  }
+  
 
   // Mutation for handling deletion
   const mutation = useMutation({
     mutationFn: async (ids: string[]) => {
       const promises = ids.map(async (id) => {
         if (session) {
-          const res = await axios.delete(url + `${id}/${deleteType}`, {
+          if (deleteType === "approvedlandlords") {
+            url = baseUrl + `accounts/user/${id}/delete`
+          } else if (pathname === "/intime-admin/managefeatures") {
+            deleteType = "feature"
+          } else if (pathname === "/intime-admin/managelisting") {
+            deleteType = "property"
+          } else if (pathname === "/intime-admin/blogs") {
+            deleteType = "blog"
+          } else if (pathname === "/intime-admin/users") {
+            deleteType = "company"
+          } else if (pathname === "/intime-admin/requestaccess") {
+            deleteType = "requestuser"
+          } else if (pathname === "/intime-admin/testimonials") {
+            deleteType = "testimonial"
+          }
+          const res = await axios.delete(url, {
             headers: {
               "Authorization": session?.user?.accessToken
             }
