@@ -9,19 +9,21 @@ import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
-  DropdownMenuLabel,  
+  DropdownMenuLabel,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu"
 import { useMutation } from "@tanstack/react-query"
 import toast from "react-hot-toast"
 import { Ellipsis } from "lucide-react"
-import { baseUrl } from "@/lib/globalvariables"
 import { RevalidatePath } from "./RevalidateCustomPath"
+import { baseUrl } from "@/utils/constants"
+import axios from "axios"
+import { useSession } from "next-auth/react"
 
 interface DataTableViewOptionsProps<TData> {
   table: Table<TData>
-  deleteType: "propertytype" | "feature" | "property" | "blog" | "testimonial" | "company" | "requestuser" // API endpoint type
-  pathname:string;
+  deleteType: "approvedlandlords" | "feature" | "property" | "blog" | "testimonial" | "company" | "requestuser" // API endpoint type
+  pathname: string;
 }
 
 export function DataTableViewOptions<TData>({
@@ -30,52 +32,78 @@ export function DataTableViewOptions<TData>({
   pathname
 }: DataTableViewOptionsProps<TData>) {
 
-  // console.log("Base URL:", baseUrl); // Debug log
-  // console.log("Delete Type:", deleteType); // Debug log
+  const { data: session } = useSession()
+
+  console.log("Base URL:", baseUrl); // Debug log
+  console.log("Delete Type:", deleteType); // Debug log
+
+  let url = ""
+  if (deleteType === "approvedlandlords") {
+    url = baseUrl + `accounts/user/`
+  } else if (pathname === "/intime-admin/managefeatures") {
+    deleteType = "feature"
+  } else if (pathname === "/intime-admin/managelisting") {
+    deleteType = "property"
+  } else if (pathname === "/intime-admin/blogs") {
+    deleteType = "blog"
+  } else if (pathname === "/intime-admin/users") {
+    deleteType = "company"
+  } else if (pathname === "/intime-admin/requestaccess") {
+    deleteType = "requestuser"
+  } else if (pathname === "/intime-admin/testimonials") {
+    deleteType = "testimonial"
+  }
 
   // Mutation for handling deletion
-  // const mutation = useMutation({
-  //   mutationFn: async (ids: string[]) => {
-  //     const promises = ids.map(async (id) => {
-  //       const res = await fetch(`${baseUrl}${id}/${deleteType}`, {
-  //         method: "DELETE",
-  //       })
-  //       if(res.status == 204){
-  //         RevalidatePath(pathname)
-  //       }
-  //       return { id, status: res.status }
-  //     })
-  //     return Promise.all(promises)
-  //   },
-  //   onSuccess(data) {
-  //     const failed = data.filter((result) => result.status !== 204)
-  //     if (failed.length === 0) {
-  //       toast.success("Data deleted successfully")
-  //     } else {
-  //       toast.error("Some items could not be deleted")
-  //     }
-  //   },
-  //   onError() {
-  //     toast.error("Something went wrong while deleting data")
-  //   },
-  // })
+  const mutation = useMutation({
+    mutationFn: async (ids: string[]) => {
+      const promises = ids.map(async (id) => {
+        if (session) {
+          const res = await axios.delete(url + `${id}/${deleteType}`, {
+            headers: {
+              "Authorization": session?.user?.accessToken
+            }
+          })
+          if (res.status == 204) {
+            RevalidatePath(pathname)
+          }
+          return { id, status: res.status }
+        }else{
+          throw new Error("Not authorized")
+        }
+
+      })
+      return Promise.all(promises)
+    },
+    onSuccess(data) {
+      const failed = data.filter((result) => result.status !== 204)
+      if (failed.length === 0) {
+        toast.success("Data deleted successfully")
+      } else {
+        toast.error("Some items could not be deleted")
+      }
+    },
+    onError() {
+      toast.error("Something went wrong while deleting data")
+    },
+  })
 
   // Handle delete button click
-  // const handleDelete = () => {
-  //   const selectedRows = table
-  //     .getSelectedRowModel()
-  //     .rows.map((row:any) => row.original.id) // Assuming each row has an `id`
-  //   if (selectedRows.length > 0) {
-  //     mutation.mutate(selectedRows)
-  //   } else {
-  //     toast.error("No items selected for deletion")
-  //   }
-  // }
+  const handleDelete = () => {
+    const selectedRows = table
+      .getSelectedRowModel()
+      .rows.map((row: any) => row.original.id) // Assuming each row has an `id`
+    if (selectedRows.length > 0) {
+      mutation.mutate(selectedRows)
+    } else {
+      toast.error("No items selected for deletion")
+    }
+  }
 
   return (
     <div className="flex gap-2 items-center justify-center">
       {/* Delete Button */}
-      {/* <Button
+      <Button
         onClick={handleDelete}
         disabled={
           (!table.getIsSomeRowsSelected() &&
@@ -89,7 +117,7 @@ export function DataTableViewOptions<TData>({
         ) : (
           "Delete"
         )}
-      </Button> */}
+      </Button>
 
       {/* Dropdown Menu */}
       <DropdownMenu>

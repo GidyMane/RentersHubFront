@@ -20,7 +20,7 @@ export const getLandlords = async () => {
             },
         });
 
-        console.log(res, "landlord");
+        // console.log(res, "landlord");
         return [res.status, res.data.result];
     } catch (error: any) {
         console.error("Error fetching landlords:", error);

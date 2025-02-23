@@ -6,13 +6,13 @@ import { revalidatePath } from "next/cache";
 import { auth } from "@/auth"; // Import auth to get session
 
 export const updateUser = async (user: {
-  pk: number;
+  id: number;
   first_name: string;
   last_name: string;
   email: string;
   contact: string;
   username: string;
-  status: string;
+  approval_status: string;
 }) => {
   try {
     // Get the session and access token
@@ -24,14 +24,14 @@ export const updateUser = async (user: {
     }
 
     const data = await axios.patch(
-      `${baseUrl}accounts/update/user/${user.pk}`,
+      `${baseUrl}accounts/update/user/${user.id}`,
       {
         first_name: user.first_name,
         last_name: user.last_name,
         email: user.email,
         contact: user.contact,
         username: user.username,
-        status: user.status,
+        approval_status: user.approval_status,
       },
       {
         headers: {
@@ -41,10 +41,13 @@ export const updateUser = async (user: {
       }
     );
 
+
+    console.log(data, "data")
+
     if (data.status == 200) {
       revalidatePath("/admin/approvedlandlords");
     }
-    return [data?.data?.data, 200];
+    return [data.data, data.status];
   } catch (e: any) {
     return [e.message, 400];
   }

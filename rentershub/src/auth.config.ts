@@ -65,7 +65,7 @@ export default {
             }
           );
       
-          console.dir(res);
+          // console.dir(res);
       
           // Check if the response is successful
           if (res.status === 200) {
@@ -141,7 +141,7 @@ export default {
       
     },
     session: async ({ session, token }) => {
-      console.log(token, "itpoken")
+      // console.log(token, "itpoken")
       return {
         ...session,
         user: {
