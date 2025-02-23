@@ -8,7 +8,7 @@ import { PlacesAutocomplete } from './GoogleAutoCompletePlaces'
 import { updatePage } from '../../data-access/actions/updatePage'
 
 
-const SearchForm = ({ propertytypes }: { propertytypes: any }) => {
+const SearchForm = ({ propertytypes, api_key }: { propertytypes: any; api_key:string; }) => {
     const handleRevalidate = async () => {
         await updatePage()
     }
@@ -20,7 +20,7 @@ const SearchForm = ({ propertytypes }: { propertytypes: any }) => {
 
                 <div className='flex flex-col gap-2'>
                     <label htmlFor="" className='cursor-none  font-medium   '>Location</label>
-                    <PlacesAutocomplete />
+                    <PlacesAutocomplete GOOGLE_MAPS_API_KEY={api_key} />
                 </div>
 
 

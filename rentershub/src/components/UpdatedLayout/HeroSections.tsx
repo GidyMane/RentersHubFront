@@ -19,7 +19,7 @@ const images = [
     "/uthiru.jpg?height=1080&width=1920",
 ]
 
-export function FullScreenCarousel({ propertytype }: { propertytype: any }) {
+export function FullScreenCarousel({ propertytype, api_key }: { propertytype: any, api_key:string; }) {
     const autoplay = Autoplay({ stopOnInteraction: true, delay: 4000 });
     const [emblaRef, emblaApi] = useEmblaCarousel({
         loop: true,
@@ -89,7 +89,7 @@ export function FullScreenCarousel({ propertytype }: { propertytype: any }) {
                         className="bg-white/40 shadow-md h-fit w-full md:w-fit p-2"
                     >
                         <div className="bg-white w-full h-full p-4">
-                            <SearchForm propertytypes={propertytype} />
+                            <SearchForm api_key={api_key} propertytypes={propertytype} />
                         </div>
                     </motion.div>
                 </div>

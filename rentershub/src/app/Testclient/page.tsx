@@ -15,6 +15,9 @@ import PropertyRender from "@/components/PropertyRender";
 import { Pagination } from "@/components/pagination";
 import { updatePage } from "../../../data-access/actions/updatePage";
 
+const key = process.env.GOOGLE_MAPS_API_KEY!
+
+
 const page = async (props: {
   searchParams: Promise<{ limit: number; offset: number; address: string; propertytype_name: string; rent_price_max: number }>
 }) => {
@@ -44,7 +47,7 @@ const page = async (props: {
   return (
     <div className="h-full w-full bg-background">
       <div className="h-screen relative w-full ">
-        <FullScreenCarousel propertytype={propertytypes} />
+        <FullScreenCarousel propertytype={propertytypes} api_key={key}/>
       </div>
       <div className='flex items-center justify-center md:px-10'>
         <div className='my-10'>

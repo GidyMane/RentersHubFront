@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button"
 import { Loader2, MapPin } from "lucide-react"
 import { useDebounce } from "@/hooks/use-debounce"
 
-const GOOGLE_MAPS_API_KEY = process.env.GOOGLE_MAPS_API_KEY!
 
 interface PlacePrediction {
   place_id: string
@@ -18,7 +17,7 @@ interface PlacePrediction {
   }
 }
 
-export function PlacesAutocomplete() {
+export function PlacesAutocomplete({GOOGLE_MAPS_API_KEY}:{GOOGLE_MAPS_API_KEY:string}) {
   const [input, setInput] = useState("")
   const [predictions, setPredictions] = useState<PlacePrediction[]>([])
   const [isLoading, setIsLoading] = useState(false)
