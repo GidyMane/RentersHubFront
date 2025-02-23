@@ -19,14 +19,14 @@ const EditLandlord = () => {
 
     const formik = useFormik({
         initialValues: {
-            pk: 0,
+            id: 0,
             first_name: '',
             last_name: '',
             email: '',
             contact: '',
             role_name: { role: '' }, // Read-only
             username: '',
-            status: '',
+            approval_status: '',
         },
         validationSchema: Yup.object().shape({
             first_name: Yup.string().required(),
@@ -34,7 +34,7 @@ const EditLandlord = () => {
             email: Yup.string().email().required(),
             contact: Yup.string().required(),
             username: Yup.string().required(),
-            status: Yup.string().required(),
+            approval_status: Yup.string().required(),
         }),
         onSubmit(values, formikHelpers) {
             mutation.mutateAsync({ ...values })
@@ -43,7 +43,7 @@ const EditLandlord = () => {
 
     // Mutation to handle feature submission
     const mutation = useMutation({
-        mutationFn: async (values: { pk: number; first_name: string; last_name: string; email: string; contact: string; username: string; status: string }) => {
+        mutationFn: async (values: { id: number; first_name: string; last_name: string; email: string; contact: string; username: string; approval_status: string }) => {
             const res = await updateUser(values)
             return res
         },
@@ -62,14 +62,14 @@ const EditLandlord = () => {
 
     useEffect(() => {
         formik.setValues({
-            pk: editdata.pk,
+            id: editdata.pk,
             first_name: editdata.first_name,
             last_name: editdata.last_name,
             email: editdata.email,
             contact: editdata.contact,
             role_name: { role: editdata.role_name.role }, // Read-only
             username: editdata.username,
-            status: editdata.status,
+            approval_status: editdata.status,
         })
     }, [editdata])
 
@@ -150,14 +150,14 @@ const EditLandlord = () => {
                 {/* Status */}
              
 <div>
-    <label htmlFor="status" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+    <label htmlFor="approval_status" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
         Status
     </label>
     <select
         onChange={formik.handleChange}
         onBlur={formik.handleBlur}
-        name="status"
-        value={formik.values.status}
+        name="approval_status"
+        value={formik.values.approval_status}
         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary300 focus:border-primary300 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary300 dark:focus:border-primary300"
         required
     >
@@ -166,8 +166,8 @@ const EditLandlord = () => {
         <option value="Pending">Pending</option>
         <option value="Rejected">Rejected</option>
     </select>
-    {formik.errors.status && formik.touched.status && (
-        <div className="text-red-500">{formik.errors.status}</div>
+    {formik.errors.approval_status && formik.touched.approval_status && (
+        <div className="text-red-500">{formik.errors.approval_status}</div>
     )}
 </div>
 
