@@ -2,28 +2,35 @@
 
 import { baseUrl } from "@/utils/constants";
 import axios from "axios";
-import { auth } from "@/auth"; // Assuming auth is correctly imported
+import { auth } from "@/auth"; // Ensure auth is correctly imported
 
-export const getLandlords = async () => {
+// Generic function to fetch landlords by status
+const fetchLandlordsByStatus = async (status: "approved" | "pending") => {
     try {
-        const session = await auth(); // Get the session
-        const accessToken = session?.user?.accessToken; // Extract access token
+        const session = await auth(); // Get user session
+        const accessToken = session?.user?.accessToken; // Extract token
 
         if (!accessToken) {
             return [401, "Unauthorized: No access token found"];
         }
 
-        const res = await axios.get(`${baseUrl}accounts/users?status=approved&role=Landlord`, {
+        const res = await axios.get(`${baseUrl}accounts/users?status=${status}&role=Landlord`, {
             headers: {
-                Authorization: `Bearer ${accessToken}`, // Attach the token
+                Authorization: `Bearer ${accessToken}`, // Attach token
                 "Content-Type": "application/json",
             },
         });
 
-        console.log(res, "landlord");
+        console.log(res, `${status} landlords`);
         return [res.status, res.data.result];
     } catch (error: any) {
-        console.error("Error fetching landlords:", error);
+        console.error(`Error fetching ${status} landlords:`, error);
         return [400, error?.response?.data?.message || error?.message || "An error occurred"];
     }
 };
+
+// Fetch approved landlords
+export const getLandlords = async () => fetchLandlordsByStatus("approved");
+
+// Fetch pending landlords
+export const getPendingLandlords = async () => fetchLandlordsByStatus("pending");
