@@ -3,14 +3,16 @@ import { getpropertyfeatures } from '@/actions/property'
 import { Loader } from 'lucide-react'
 import React, { Suspense } from 'react'
 
-import { getApprovedGroundAgents } from '../../../../data-access/actions/getgroundagents'
-import PageView from '@/components/admin/approvedgroundagents/PageView'
+
+
+import { getPendingGroundAgents } from '../../../../data-access/actions/getgroundagents'
+import PageView from '@/components/admin/pendinggroundagents/PageView'
 
 export const dynamic = "force-dynamic"
 
 
 const page = async () => {
-    const landlords = await getApprovedGroundAgents() ?? []    
+    const landlords = await getPendingGroundAgents() ?? []    
     
     return (
         <div className='col-span-3 container'>

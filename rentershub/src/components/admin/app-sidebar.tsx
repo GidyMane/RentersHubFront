@@ -85,7 +85,21 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         url: "/admin/pendinglandlords",
         icon: "/access.png",
 
-      }
+      },
+      {
+
+        title: "Approved GroundAgents",
+        url: "/admin/approvedgroundagents",
+        icon: "/users.png",
+
+      },
+      {
+
+        title: "Pending GroundAgents",
+        url: "/admin/pendinggroundagents",
+        icon: "/access.png",
+
+      },
 
       
     ],
