@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -15,11 +15,12 @@ import {
   Camera,
   Check,
   Share2,
-  
+
   Building2,
   User,
   Maximize2,
   Cctv,
+  Loader,
 } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
@@ -33,6 +34,7 @@ import toast, { ToastBar, Toaster } from "react-hot-toast";
 import CallLandlordForm from "./CallLandlord";
 import ChatWithLandlord from "./ChatLandlord";
 import ShareButton from "./ShareWhatsapp";
+import PropertyRender from "./PropertyRender";
 
 
 
@@ -72,10 +74,10 @@ export type SimilarPropertyData = {
   name: string;
   county: string;
   images: ImageData[];
-  bedrooms:number;
-  size:string;
-  saleType:string;
-  price:number;
+  bedrooms: number;
+  size: string;
+  saleType: string;
+  price: number;
   propertyType: PropertyType;
 }
 export interface PropertyData {
@@ -115,27 +117,27 @@ export interface PropertyResponse {
   status: string;
   data: {
     property: PropertyData;
-   
+
   };
   title: string;
-  propertytype:{id:number, name:string};
-  updated_at: string;  
-  description: string; 
+  propertytype: { id: number, name: string };
+  updated_at: string;
+  description: string;
   city: string;
   state: string;
   country: string;
   postal_code: string;
   address: string;
   location: string
-  location_coords: string  
+  location_coords: string
   is_available: boolean
   is_approved: boolean
   featured: boolean
   rent_price: string
   deposit_amount: string
-  main_image_url:{id:string, url:string}
+  main_image_url: { id: string, url: string }
   images: Image[];
-  features: {id:number, name:string}
+  features: { id: number, name: string }
   water_charges: string
   water_deposit: string
   garbage_charges: string
@@ -143,18 +145,15 @@ export interface PropertyResponse {
   other_charges: string
   posted_by: number
   managed_by: string
-  property_features: {id:number, name:string}
+  property_features: { id: number, name: string }
   owners_contact: string
 
- 
+
 
 
 }
 
-export interface SimilarProperty {
-  status: string;
-  data: SimilarPropertyData[]
-}
+
 
 
 export default function PropertyDetail({
@@ -162,17 +161,17 @@ export default function PropertyDetail({
   similarproperties
 }: {
   property: PropertyResponse;
-  similarproperties: SimilarProperty
+  similarproperties: any
 }) {
   const [selectedImage, setSelectedImage] = useState(0);
   const position: [number, number] = property?.location_coords
-  ? [Number(property.location_coords[1]), Number(property.location_coords[0])] // Convert strings to numbers
-  : [-1.2345, 36.80271]; // Default fallback coordinates
+    ? [Number(property.location_coords[1]), Number(property.location_coords[0])] // Convert strings to numbers
+    : [-1.2345, 36.80271]; // Default fallback coordinates
 
   const [isGridView, setIsGridView] = useState(true);
   const [isShared, setIsShared] = useState(false);
   const [isSharing, setIsSharing] = useState(false);
-  
+
 
   // console.log(similarproperties)
 
@@ -182,7 +181,7 @@ export default function PropertyDetail({
     property?.main_image_url?.url ?? "", // Main image first
     ...(Array.isArray(property?.images) ? property.images.map((img: { url: string }) => img.url) : []),
   ].filter(Boolean); // Remove null/undefined/empty values
-  
+
 
   // const features = Array.isArray(property?.property_features) ? property.property_features : [];
 
@@ -191,7 +190,7 @@ export default function PropertyDetail({
     threshold: 0.1,
   });
 
-  
+
 
 
 
@@ -217,7 +216,7 @@ export default function PropertyDetail({
 
   return (
     <div className="mx-auto ">
-      <div className="grid lg:grid-cols-[1fr_400px] gap-8 px-4 py-8 container">
+      <div className="grid lg:grid-cols-[1fr_400px] gap-8 md:px-10 px-4 py-8 container">
         <div className="space-y-6">
           {/* Header */}
           {property && (
@@ -227,7 +226,7 @@ export default function PropertyDetail({
                   <Badge className="bg-green-500 hover:bg-green-600">
                     AVAILABLE
                   </Badge>
-                )}                
+                )}
               </div>
               <h1 className="text-3xl font-bold">
                 {property.title}
@@ -263,47 +262,47 @@ export default function PropertyDetail({
 
           {/* Image Gallery */}
           <div className="space-y-2">
-  <Dialog>
-    <DialogTrigger asChild>
-      <div className="relative aspect-video cursor-pointer group">
-        {images.length > 0 ? (
-          <Image
-            src={images[selectedImage]}
-            alt="Property"
-            fill
-            className="object-cover rounded-lg"
-          />
-        ) : (
-          <div className="flex items-center justify-center h-48 bg-gray-200 rounded-lg">
-            <p className="text-gray-500">No images available</p>
+            <Dialog>
+              <DialogTrigger asChild>
+                <div className="relative aspect-video cursor-pointer group">
+                  {images.length > 0 ? (
+                    <Image
+                      src={images[selectedImage]}
+                      alt="Property"
+                      fill
+                      className="object-cover rounded-lg"
+                    />
+                  ) : (
+                    <div className="flex items-center justify-center h-48 bg-gray-200 rounded-lg">
+                      <p className="text-gray-500">No images available</p>
+                    </div>
+                  )}
+                  <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg" />
+                  <div className="absolute bottom-4 right-4 bg-black/50 text-white px-3 py-1 rounded-full text-sm">
+                    <Camera className="w-4 h-4 inline mr-2" />
+                    View all photos
+                  </div>
+                </div>
+              </DialogTrigger>
+
+              <DialogContent className="max-w-4xl">
+                <DialogTitle className="text-lg font-semibold">Property Images</DialogTitle>
+                <div className="grid grid-cols-2 gap-2">
+                  {images.map((src, idx) => (
+                    <Image
+                      key={idx}
+                      src={src}
+                      alt={`Property ${idx + 1}`}
+                      width={400}
+                      height={300}
+                      className="rounded-lg"
+                    />
+                  ))}
+                </div>
+              </DialogContent>
+
+            </Dialog>
           </div>
-        )}
-        <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg" />
-        <div className="absolute bottom-4 right-4 bg-black/50 text-white px-3 py-1 rounded-full text-sm">
-          <Camera className="w-4 h-4 inline mr-2" />
-          View all photos
-        </div>
-      </div>
-    </DialogTrigger>
-
-    <DialogContent className="max-w-4xl">
-  <DialogTitle className="text-lg font-semibold">Property Images</DialogTitle>
-  <div className="grid grid-cols-2 gap-2">
-    {images.map((src, idx) => (
-      <Image
-        key={idx}
-        src={src}
-        alt={`Property ${idx + 1}`}
-        width={400}
-        height={300}
-        className="rounded-lg"
-      />
-    ))}
-  </div>
-</DialogContent>
-
-  </Dialog>
-</div>
 
           {/* Property Details */}
           <div className="grid grid-cols-2 gap-4">
@@ -378,15 +377,15 @@ export default function PropertyDetail({
                   Send Message
                 </Button> */}
 
-                <CallLandlordForm landlordPhone={property?.owners_contact}/>
-                <ChatWithLandlord landlordPhone={property?.owners_contact}/>
+                <CallLandlordForm landlordPhone={property?.owners_contact} />
+                <ChatWithLandlord landlordPhone={property?.owners_contact} />
                 {/* <ShareButton propertyLink={""}/> */}
-                <ShareButton propertyLink={window.location.href}/>
+                <ShareButton propertyLink={window.location.href} />
               </form>
 
-              
+
             </CardContent>
-            
+
           </Card>
         </div>
       </div>
@@ -405,39 +404,39 @@ export default function PropertyDetail({
               <ul className="list-disc list-inside space-y-1 text-muted">
                 <li>{`Rent Amount 
                      -  ${new Intl.NumberFormat("en-US", {
-                    style: "currency",
-                    currency: "KES",
-                  }).format(Number(property?.rent_price))}`}</li>
+                  style: "currency",
+                  currency: "KES",
+                }).format(Number(property?.rent_price))}`}</li>
                 <li>{`Deposit Amount 
                      -  ${new Intl.NumberFormat("en-US", {
-                    style: "currency",
-                    currency: "KES",
-                  }).format(Number(property?.deposit_amount))}`}</li>
-                  <li>{`Water Charges 
+                  style: "currency",
+                  currency: "KES",
+                }).format(Number(property?.deposit_amount))}`}</li>
+                <li>{`Water Charges 
                      -  ${new Intl.NumberFormat("en-US", {
-                    style: "currency",
-                    currency: "KES",
-                  }).format(Number(property?.water_charges))}per unit`}</li>
-                   <li>{`Water Deposit 
+                  style: "currency",
+                  currency: "KES",
+                }).format(Number(property?.water_charges))}per unit`}</li>
+                <li>{`Water Deposit 
                      -  ${new Intl.NumberFormat("en-US", {
-                    style: "currency",
-                    currency: "KES",
-                  }).format(Number(property?.water_deposit))}per unit`}</li>
-                  <li>{`Garbage Changes 
+                  style: "currency",
+                  currency: "KES",
+                }).format(Number(property?.water_deposit))}per unit`}</li>
+                <li>{`Garbage Changes 
                      -  ${new Intl.NumberFormat("en-US", {
-                    style: "currency",
-                    currency: "KES",
-                  }).format(Number(property?.garbage_charges))}`}</li>
-                  <li>{`Security Charges 
+                  style: "currency",
+                  currency: "KES",
+                }).format(Number(property?.garbage_charges))}`}</li>
+                <li>{`Security Charges 
                      -  ${new Intl.NumberFormat("en-US", {
-                    style: "currency",
-                    currency: "KES",
-                  }).format(Number(property?.security_charges))}`}</li>
-                  <li>{`Other Charges 
+                  style: "currency",
+                  currency: "KES",
+                }).format(Number(property?.security_charges))}`}</li>
+                <li>{`Other Charges 
                      -  ${new Intl.NumberFormat("en-US", {
-                    style: "currency",
-                    currency: "KES",
-                  }).format(Number(property?.other_charges))}`}</li>  
+                  style: "currency",
+                  currency: "KES",
+                }).format(Number(property?.other_charges))}`}</li>
               </ul>
             </div>
           </div>
@@ -487,23 +486,23 @@ export default function PropertyDetail({
           </div>
         </div>
         <div className="bg-secondary50/90 px-4 py-8 md:container">
-  {/* Features */}
-  <div className="space-y-4 bg-secondary50/90 my-10 p-4">
-    <h2 className="text-2xl font-semibold">Features</h2>
-    {property?.property_features && Array.isArray(property.property_features) ? (
-      <div className="grid grid-cols-1 gap-4">
-        {property.property_features.map((feature) => (
-          <div key={feature.id} className="flex items-center gap-2">
-            <Check className="w-6 h-6 text-green-500 flex-shrink-0" /> 
-            <span className="text-base">{feature.name}</span>
+          {/* Features */}
+          <div className="space-y-4 bg-secondary50/90 my-10 p-4">
+            <h2 className="text-2xl font-semibold">Features</h2>
+            {property?.property_features && Array.isArray(property.property_features) ? (
+              <div className="grid grid-cols-1 gap-4">
+                {property.property_features.map((feature) => (
+                  <div key={feature.id} className="flex items-center gap-2">
+                    <Check className="w-6 h-6 text-green-500 flex-shrink-0" />
+                    <span className="text-base">{feature.name}</span>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p>No features available</p>
+            )}
           </div>
-        ))}
-      </div>
-    ) : (
-      <p>No features available</p>
-    )}
-  </div>
-</div>
+        </div>
 
 
         {/* address and maps */}
@@ -512,16 +511,16 @@ export default function PropertyDetail({
             <CardHeader className="flex flex-row items-center justify-between">
               <CardTitle>Address</CardTitle>
               <Button
-  variant="secondary"
-  onClick={() => {
-    const [latitude, longitude] = position;
-    const mapsUrl = `https://www.google.com/maps?q=${latitude},${longitude}`;
-    window.open(mapsUrl, "_blank");
-  }}
->
-  <MapPin className="mr-2 h-4 w-4" />
-  Open on Google Maps
-</Button>
+                variant="secondary"
+                onClick={() => {
+                  const [latitude, longitude] = position;
+                  const mapsUrl = `https://www.google.com/maps?q=${latitude},${longitude}`;
+                  window.open(mapsUrl, "_blank");
+                }}
+              >
+                <MapPin className="mr-2 h-4 w-4" />
+                Open on Google Maps
+              </Button>
 
             </CardHeader>
             <CardContent className="grid gap-6">
@@ -562,30 +561,40 @@ export default function PropertyDetail({
         </div>
 
         <div className="bg-secondary overflow-hidden z-20">
-  <MapContainer
-    center={position}
-    zoom={13}
-    className="w-full h-[300px] md:h-[400px] lg:h-[500px]" // Adjust height for different screens
-  >
-    <TileLayer
-      url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-      attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    />
-    <Marker position={position}>
-      <Popup>{property?.address || "Property Location"}</Popup>
-    </Marker>
-  </MapContainer>
-</div>
+          <MapContainer
+            center={position}
+            zoom={13}
+            className="w-full h-[300px] md:h-[400px] lg:h-[500px]" // Adjust height for different screens
+          >
+            <TileLayer
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            />
+            <Marker position={position}>
+              <Popup>{property?.address || "Property Location"}</Popup>
+            </Marker>
+          </MapContainer>
+        </div>
 
       </div>
 
       {/* similar listings */}
       <div className="bg-white my-10">
-        <div className="px-4 py-8 container">
+        <div className="py-8 md:px-10 px-4 container">
           <h3 className="text-3xl font-semibold my-6">Other Properties In the Same Area</h3>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
 
-          <p>No properties for now</p>
-          
+            <Suspense fallback={<Loader className="animate animate-spin" />}>
+              {similarproperties[0] == 200 && similarproperties[1].length > 0 ? similarproperties[1].map((property: any, idx: number) => (
+                <PropertyRender property={property} key={idx} />
+              )) : (
+                <p>No properties for now</p>
+
+              )}
+            </Suspense>
+          </div>
+
+
         </div>
       </div>
     </div>

@@ -1,4 +1,4 @@
-import { fetchPropertyById } from '@/actions/fetchproperties';
+import { fetchPropertyById, fetchSimilarProperties } from '@/actions/fetchproperties';
 import { getSimilarPropertyById } from '@/actions/property';
 import PropertyDetail from '@/components/propertydetails';
 import { Loader } from 'lucide-react';
@@ -12,12 +12,11 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
     return <p>Error: Invalid property ID</p>; // Handle invalid values safely
   }
 
-  const [property, similarProperties] = await Promise.all([
-    fetchPropertyById(numericId),
-    getSimilarPropertyById(numericId),
-  ]);
+ 
+  const property = await fetchPropertyById(numericId)
+  const similarProperties = await fetchSimilarProperties(property?.address ?? "")
 
-  console.log(property, "on the page");
+  // console.log(property, "on the page");
 
   return (
     <div className="w-full min-h-[50vh]">
