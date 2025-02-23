@@ -82,7 +82,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       {
 
         title: "Pending Landlords",
-        url: "/admin/requestaccess",
+        url: "/admin/pendinglandlords",
         icon: "/access.png",
 
       }
