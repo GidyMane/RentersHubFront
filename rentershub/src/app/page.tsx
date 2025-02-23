@@ -1,7 +1,5 @@
-import { useState, useEffect, Suspense } from "react";
-import { Filters } from "@/components/Hunter/filters";
-import { PropertyCard } from "@/components/Hunter/PropertyCard";
-import { EmptyState } from "@/components/Hunter/empty-state";
+import { Suspense } from "react";
+
 import { FullScreenCarousel } from "@/components/UpdatedLayout/HeroSections";
 
 import { Property } from "@/types/property";
@@ -16,6 +14,7 @@ import { getproperties } from "../../data-access/actions/getProperties";
 import { updatePage } from "../../data-access/actions/updatePage";
 
 const key = process.env.GOOGLE_MAPS_API_KEY!
+export const dynamic = "force-dynamic"
 
 
 const page = async (props: {
@@ -45,51 +44,53 @@ const page = async (props: {
   ]);
 
   return (
-    <div className="h-full w-full bg-background">
-      <div className="h-screen relative w-full ">
-        <Suspense fallback={<Loader className='animate animate-spin text-secondary400' />}>
+    <Suspense>
+      <div className="h-full w-full bg-background">
+        <div className="h-screen relative w-full ">
+          <Suspense fallback={<Loader className='animate animate-spin text-secondary400' />}>
 
-          <FullScreenCarousel propertytype={propertytypes} api_key={key} />
-        </Suspense>
-      </div>
-      <div className='flex items-center justify-center md:px-10'>
-        <div className='my-10'>
-          <h2 className='text-gray-800 text-3xl font-semibold text-balance'>Available Houses</h2>
-          <p className='my-4 text-muted text-md text-center'>Verified by our team</p>
+            <FullScreenCarousel propertytype={propertytypes} api_key={key} />
+          </Suspense>
+        </div>
+        <div className='flex items-center justify-center md:px-10'>
+          <div className='my-10'>
+            <h2 className='text-gray-800 text-3xl font-semibold text-balance'>Available Houses</h2>
+            <p className='my-4 text-muted text-md text-center'>Verified by our team</p>
+          </div>
+        </div>
+        <div className="grid grid-cols-1 mt-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:px-16 px-6">
+          <Suspense fallback={<div className='col-span-1 md:col-span-2 lg:col-span-3 xl:col-span-4 flex items-center justify-center my-4'>
+            <Loader className='text-primary w-6 h-6 animate-spin' />
+          </div>}>
+            {apiproperties[0] == 200 && apiproperties[1].results.length > 0 ? apiproperties[1].results.map((property: any, idx: number) => (
+              <PropertyRender property={property} key={idx} />
+            )) : (
+              <div className="flex flex-col items-center justify-center bg-white p-8 rounded-xl shadow-lg w-full md:w-3/5 mx-auto text-center">
+                <h2 className="text-2xl font-bold text-red-600">🚨 No Listings Available!</h2>
+                <p className="mt-4 text-gray-700 text-lg leading-relaxed">
+                  Hello. Landlords and Property Agents have not yet posted such a house in this location.<br />
+                  Please try searching for another house or a different location.<br />
+                  Alternatively, you can contact our office for assistance.
+                </p>
+                <div className="flex flex-col md:flex-row gap-6 mt-6 w-full justify-center">
+                  <a href="tel:+254731352350" className="px-6 py-3 text-lg font-semibold rounded-lg bg-blue-600 text-white shadow-md hover:bg-blue-700 transition transform hover:scale-105">
+                    📞 Call Customer Care
+                  </a>
+                  <a href={whatsappLink} target="_blank" rel="noopener noreferrer" className="px-6 py-3 text-lg font-semibold rounded-lg bg-green-500 text-white shadow-md hover:bg-green-600 transition transform hover:scale-105">
+                    💬 WhatsApp Us
+                  </a>
+                </div>
+              </div>
+            )}
+          </Suspense>
+        </div>
+        <div>
+          {apiproperties[0] == 200 && apiproperties[1]?.results.length > 0 && (
+            <Pagination count={apiproperties[0] == 200 ? Math.round(apiproperties[1].count / 20) : 0} previous={""} next={""} updatePage={updatePage} />
+          )}
         </div>
       </div>
-      <div className="grid grid-cols-1 mt-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:px-16 px-6">
-        <Suspense fallback={<div className='col-span-1 md:col-span-2 lg:col-span-3 xl:col-span-4 flex items-center justify-center my-4'>
-          <Loader className='text-primary w-6 h-6 animate-spin' />
-        </div>}>
-          {apiproperties[0] == 200 && apiproperties[1].results.length > 0 ? apiproperties[1].results.map((property: any, idx: number) => (
-            <PropertyRender property={property} key={idx} />
-          )) : (
-            <div className="flex flex-col items-center justify-center bg-white p-8 rounded-xl shadow-lg w-full md:w-3/5 mx-auto text-center">
-              <h2 className="text-2xl font-bold text-red-600">🚨 No Listings Available!</h2>
-              <p className="mt-4 text-gray-700 text-lg leading-relaxed">
-                Hello. Landlords and Property Agents have not yet posted such a house in this location.<br />
-                Please try searching for another house or a different location.<br />
-                Alternatively, you can contact our office for assistance.
-              </p>
-              <div className="flex flex-col md:flex-row gap-6 mt-6 w-full justify-center">
-                <a href="tel:+254731352350" className="px-6 py-3 text-lg font-semibold rounded-lg bg-blue-600 text-white shadow-md hover:bg-blue-700 transition transform hover:scale-105">
-                  📞 Call Customer Care
-                </a>
-                <a href={whatsappLink} target="_blank" rel="noopener noreferrer" className="px-6 py-3 text-lg font-semibold rounded-lg bg-green-500 text-white shadow-md hover:bg-green-600 transition transform hover:scale-105">
-                  💬 WhatsApp Us
-                </a>
-              </div>
-            </div>
-          )}
-        </Suspense>
-      </div>
-      <div>
-        {apiproperties[0] == 200 && apiproperties[1]?.results.length > 0 && (
-          <Pagination count={apiproperties[0] == 200 ? Math.round(apiproperties[1].count / 20) : 0} previous={""} next={""} updatePage={updatePage} />
-        )}
-      </div>
-    </div>
+    </Suspense>
   );
 };
 

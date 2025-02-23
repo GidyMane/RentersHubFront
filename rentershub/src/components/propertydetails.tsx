@@ -28,7 +28,6 @@ import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { PropertyCarousel } from "./Cards";
 import { useInView } from "react-intersection-observer";
 import toast, { ToastBar, Toaster } from "react-hot-toast";
 import CallLandlordForm from "./CallLandlord";

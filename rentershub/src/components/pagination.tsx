@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
@@ -47,73 +47,75 @@ export function Pagination({ count, previous, next, updatePage }: PaginationProp
     };
 
     return (
-        <div className="flex items-center justify-between px-4 py-3 sm:px-6">
-            <div className="flex flex-1 justify-between sm:hidden">
-                <Button onClick={() => handlePageChange(currentPage - 1)} disabled={!previous} variant="outline">
-                    Previous
-                </Button>
-                <Button onClick={() => handlePageChange(currentPage + 1)} disabled={!next} variant="outline">
-                    Next
-                </Button>
-            </div>
-            <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
-                <div>
-                    <p className="text-sm text-gray-700">
-                        Showing page <span className="font-medium">{currentPage}</span> of{" "}
-                        <span className="font-medium">{count}</span>
-                    </p>
+        <Suspense>
+            <div className="flex items-center justify-between px-4 py-3 sm:px-6">
+                <div className="flex flex-1 justify-between sm:hidden">
+                    <Button onClick={() => handlePageChange(currentPage - 1)} disabled={!previous} variant="outline">
+                        Previous
+                    </Button>
+                    <Button onClick={() => handlePageChange(currentPage + 1)} disabled={!next} variant="outline">
+                        Next
+                    </Button>
                 </div>
-                <div>
-                    <nav className="isolate inline-flex -space-x-px rounded-md shadow-sm" aria-label="Pagination">
-                        <Button
-                            onClick={() => handlePageChange(currentPage - 1)}
-                            disabled={!previous}
-                            variant="outline"
-                            className="rounded-l-md"
-                        >
-                            <ChevronLeft className="h-5 w-5" aria-hidden="true" />
-                        </Button>
-
-                        {visiblePages[0] > 1 && (
-                            <>
-                                <Button onClick={() => handlePageChange(1)} variant="outline">
-                                    1
-                                </Button>
-                                {visiblePages[0] > 2 && <span className="px-2">...</span>}
-                            </>
-                        )}
-
-                        {visiblePages.map((page) => (
+                <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
+                    <div>
+                        <p className="text-sm text-gray-700">
+                            Showing page <span className="font-medium">{currentPage}</span> of{" "}
+                            <span className="font-medium">{count}</span>
+                        </p>
+                    </div>
+                    <div>
+                        <nav className="isolate inline-flex -space-x-px rounded-md shadow-sm" aria-label="Pagination">
                             <Button
-                                key={page}
-                                onClick={() => handlePageChange(page)}
-                                variant={currentPage === page ? "default" : "outline"}
-                                className={`${currentPage === page ? "z-10" : ""} px-4 mx-1 py-2`}
+                                onClick={() => handlePageChange(currentPage - 1)}
+                                disabled={!previous}
+                                variant="outline"
+                                className="rounded-l-md"
                             >
-                                {page}
+                                <ChevronLeft className="h-5 w-5" aria-hidden="true" />
                             </Button>
-                        ))}
 
-                        {visiblePages[visiblePages.length - 1] < count && (
-                            <>
-                                {visiblePages[visiblePages.length - 1] < count - 1 && <span className="px-2">...</span>}
-                                <Button onClick={() => handlePageChange(count)} variant="outline">
-                                    {count}
+                            {visiblePages[0] > 1 && (
+                                <>
+                                    <Button onClick={() => handlePageChange(1)} variant="outline">
+                                        1
+                                    </Button>
+                                    {visiblePages[0] > 2 && <span className="px-2">...</span>}
+                                </>
+                            )}
+
+                            {visiblePages.map((page) => (
+                                <Button
+                                    key={page}
+                                    onClick={() => handlePageChange(page)}
+                                    variant={currentPage === page ? "default" : "outline"}
+                                    className={`${currentPage === page ? "z-10" : ""} px-4 mx-1 py-2`}
+                                >
+                                    {page}
                                 </Button>
-                            </>
-                        )}
+                            ))}
 
-                        <Button
-                            onClick={() => handlePageChange(currentPage + 1)}
-                            disabled={!next}
-                            variant="outline"
-                            className="rounded-r-md"
-                        >
-                            <ChevronRight className="h-5 w-5" aria-hidden="true" />
-                        </Button>
-                    </nav>
+                            {visiblePages[visiblePages.length - 1] < count && (
+                                <>
+                                    {visiblePages[visiblePages.length - 1] < count - 1 && <span className="px-2">...</span>}
+                                    <Button onClick={() => handlePageChange(count)} variant="outline">
+                                        {count}
+                                    </Button>
+                                </>
+                            )}
+
+                            <Button
+                                onClick={() => handlePageChange(currentPage + 1)}
+                                disabled={!next}
+                                variant="outline"
+                                className="rounded-r-md"
+                            >
+                                <ChevronRight className="h-5 w-5" aria-hidden="true" />
+                            </Button>
+                        </nav>
+                    </div>
                 </div>
             </div>
-        </div>
+        </Suspense>
     );
 }
