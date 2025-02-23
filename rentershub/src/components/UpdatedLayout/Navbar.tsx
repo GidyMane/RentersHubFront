@@ -61,7 +61,7 @@ const Navbar = () => {
         </div>
     )
 
-    if (path.includes("admin") || path.startsWith("/rentershub") || path.includes("/login")) {
+    if (path.includes("admin") || path.startsWith("/rentershub") || path.includes("/login") || path.includes("/signup") || path.includes("/successmessage")) {
         return null
     }
 
