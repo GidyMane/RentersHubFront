@@ -44,7 +44,7 @@ export function PropertyCard({
       transition={{ duration: 0.8, ease: "easeIn" }}
     >
       <Card className="overflow-hidden group cursor-pointer transition-shadow hover:shadow-lg">
-        <Link href={`//property/${id}`}>
+        <Link href={`/property/${id}`}>
           <div className="relative">
             <Image
               src={imageUrl || "/placeholder.svg"}
