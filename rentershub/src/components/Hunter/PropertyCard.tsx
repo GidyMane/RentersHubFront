@@ -22,7 +22,7 @@ interface PropertyCardProps {
 }
 
 function handleShare(id: string, title: string) {
-  const url = `https://wa.me/?text=Check out this property: ${title} - ${window.location.origin}//property/${id}`;
+  const url = `https://wa.me/?text=Check out this property: ${title} - ${window.location.origin}/property/${id}`;
   window.open(url, '_blank');
 }
 
