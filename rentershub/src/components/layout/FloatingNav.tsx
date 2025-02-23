@@ -29,7 +29,7 @@ export function FloatingNavDemo() {
         },
     ];
 
-    if (path.includes("admin") || path.startsWith("/rentershub")) {
+    if (path.includes("admin") || path.startsWith("/rentershub") || path.includes("/login")) {
         return null;
     }
 
