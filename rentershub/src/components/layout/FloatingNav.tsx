@@ -29,7 +29,7 @@ export function FloatingNavDemo() {
         },
     ];
 
-    if (path.includes("intime-admin") || path.startsWith("/intimehomes")) {
+    if (path.includes("admin") || path.startsWith("/rentershub")) {
         return null;
     }
 
