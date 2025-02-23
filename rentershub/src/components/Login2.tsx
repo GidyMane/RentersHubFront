@@ -49,7 +49,7 @@ const LoginForm = () => {
             router.push('/'); // Default redirect if role is unknown
           }
         } else {
-          toast.error('Unable to retrieve user role.');
+          toast.warning('Your account is pending approval. Please wait for admin approval.');
         }
       } else {
         // Handle error cases

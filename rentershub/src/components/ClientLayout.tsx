@@ -41,6 +41,9 @@ const SignUpForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
+
+  
+
   
 
   const totalSteps = 4;
