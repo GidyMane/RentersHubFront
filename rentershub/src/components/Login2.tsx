@@ -46,7 +46,7 @@ const LoginForm = () => {
           } else if (['LANDLORD', 'GROUND AGENT'].includes(userRole)) {
             router.push('/rentershub/Dashboard');
           } else {
-            router.push('/'); // Default redirect if role is unknown
+            router.push('/Testclient'); // Default redirect if role is unknown
           }
         } else {
           toast.warning('Your account is pending approval. Please wait for admin approval.');
