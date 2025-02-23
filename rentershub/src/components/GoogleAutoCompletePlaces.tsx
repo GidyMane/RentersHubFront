@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Loader2, MapPin } from "lucide-react"
 import { useDebounce } from "@/hooks/use-debounce"
 
-const GOOGLE_MAPS_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!
+const GOOGLE_MAPS_API_KEY = process.env.GOOGLE_MAPS_API_KEY!
 
 interface PlacePrediction {
   place_id: string

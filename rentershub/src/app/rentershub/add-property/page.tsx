@@ -48,7 +48,7 @@ export default function AddPropertyPage() {
     uploadProgress: 0,
   });
   const { edgestore } = useEdgeStore();
-  const GOOGLE_MAPS_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!
+  const GOOGLE_MAPS_API_KEY = process.env.GOOGLE_MAPS_API_KEY!
 
   const COUNTIES = [
   'Baringo', 'Bomet', 'Bungoma', 'Busia', 'Elgeyo Marakwet', 'Embu', 'Garissa', 
