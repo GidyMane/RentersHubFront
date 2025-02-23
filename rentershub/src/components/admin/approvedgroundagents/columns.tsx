@@ -152,7 +152,7 @@ export const columns: ColumnDef<Landlords>[] = [
     // },
     {
         id: "actions",
-        cell: ({ row }) => <DataTableRowActions row={row} page={"approvedlandlords"} />,
+        cell: ({ row }) => <DataTableRowActions row={row} page={"approvedgroundagents"} />,
     },
 
 ]

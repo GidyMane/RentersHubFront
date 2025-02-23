@@ -49,7 +49,7 @@ const EditLandlord = () => {
         },
         onSuccess(data: any, variables, context) {
             if (data[1] == 201) {
-                toast.success("Landlord updated successfully")
+                toast.success("Agent updated successfully")
                 dispatch(clearEditData())
             } else {
                 toast.error("Something went wrong!")
