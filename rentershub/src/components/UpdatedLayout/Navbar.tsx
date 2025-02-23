@@ -6,7 +6,7 @@ import { ChevronDown, CircleUserRound, Dock, Facebook, Instagram, Menu, X } from
 import React from 'react'
 import { Button } from '../ui/button'
 import Link from 'next/link'
-import { usePathname, useSearchParams } from 'next/navigation'
+import { usePathname } from 'next/navigation'
 import Image from 'next/image' // Importing the Image component
 
 const Navbar = () => {
@@ -14,15 +14,10 @@ const Navbar = () => {
     const [isMobile, setIsMobile] = useState(false)
     const path = usePathname()
 
-    const searchparams = useSearchParams()
-    const url = new URLSearchParams(searchparams)
+    
+    
 
-    url.forEach((v, k) => {
-        url.delete(k)
-    })
-
-    url.set("limit", "200")
-    url.set("page", "0")
+  
 
     useEffect(() => {
         if (typeof window === "undefined") return;

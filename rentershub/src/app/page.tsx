@@ -3,7 +3,7 @@ import { Filters } from "@/components/Hunter/filters";
 import { PropertyCard } from "@/components/Hunter/PropertyCard";
 import { EmptyState } from "@/components/Hunter/empty-state";
 import { FullScreenCarousel } from "@/components/UpdatedLayout/HeroSections";
-import HeroSearchBar from "@/components/UpdatedLayout/HeroSearchBar";
+
 import { Property } from "@/types/property";
 import { fetchProperties } from "@/actions/fetchproperties";
 import { motion } from "framer-motion";
