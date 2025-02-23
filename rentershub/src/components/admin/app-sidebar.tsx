@@ -47,7 +47,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       {
 
         title: "Pending Houses",
-        url: "/rentershub/managefeatures",
+        url: "/admin/managefeatures",
         icon: "/feature.png",
 
       },
@@ -82,7 +82,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       {
 
         title: "Pending Landlords",
-        url: "/intime-admin/requestaccess",
+        url: "/admin/requestaccess",
         icon: "/access.png",
 
       }

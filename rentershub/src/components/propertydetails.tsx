@@ -227,17 +227,14 @@ export default function PropertyDetail({
                   <Badge className="bg-green-500 hover:bg-green-600">
                     AVAILABLE
                   </Badge>
-                )}
-                <Badge variant="secondary">
-                  {property?.is_available}
-                </Badge>
+                )}                
               </div>
               <h1 className="text-3xl font-bold">
                 {property.title}
               </h1>
               <div className="flex items-center text-muted">
                 <MapPin className="w-4 h-4 mr-2" />
-                {`${property.address}, ${property.city}, ${property.state}, ${property.country}`}
+                {`${property.address}, ${property.state}`}
               </div>
               <div className="flex items-center justify-between">
                 <div className="text-3xl font-bold">
