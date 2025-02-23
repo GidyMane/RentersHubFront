@@ -41,7 +41,44 @@ export const updateProperty = async (property: {
       }
     );
 
-    console.log(data, "data");
+    // console.log(data, "data");
+
+    if (data.status == 200) {
+      revalidatePath("/admin/properties");
+    }
+    return [data.data, data.status];
+  } catch (e: any) {
+    return [e.message, 400];
+  }
+};
+
+export const ApproveProperty = async (property: {
+  id: number;
+  is_approved:boolean
+}) => {
+  try {
+    // Get the session and access token
+    const session = await auth();
+    const accessToken = session?.user?.accessToken;
+
+    if (!accessToken) {
+      return ["Unauthorized: No access token", 401];
+    }
+
+    const data = await axios.patch(
+      `${baseUrl}listing/property/${property.id}/`,
+      {
+       is_approved:property.is_approved
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    // console.log(data, "data");
 
     if (data.status == 200) {
       revalidatePath("/admin/properties");
