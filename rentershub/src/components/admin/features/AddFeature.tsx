@@ -1,5 +1,5 @@
 
-import { createfeature } from '@/actions/feature'
+import { createfeature } from '@/actions/landlord'
 import { Button } from '@/components/ui/button'
 import { useMutation } from '@tanstack/react-query'
 import { useFormik } from 'formik'

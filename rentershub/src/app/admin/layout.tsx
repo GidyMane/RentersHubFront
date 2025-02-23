@@ -28,7 +28,7 @@ export default function DashboardLayout({
 }>) {
   return (
     <div className="relative h-screen bg-white m-0" >
-      
+        
         <AdminLayout>
         <ReduxProvider>
           

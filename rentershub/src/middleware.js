@@ -63,6 +63,7 @@ export const config = {
     "/successmessage",
     "/login",
     "/properties",
+    "/admin",
     "/admin/:path*",
     "/rentershub/:path*",
     "/Terms-and-conditions",

@@ -8,6 +8,8 @@ import Navbar from "@/components/UpdatedLayout/Navbar";
 import { FloatingNavDemo } from "@/components/layout/FloatingNav";
 import Footer from "@/components/layout/enhancedfooter";
 import { Toaster } from "react-hot-toast";
+import { QueryProvider } from "@/providers/TarnstackProvider";
+
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -34,6 +36,7 @@ export default function RootLayout({
     <AuthProvider>
       <SessionProvider>
         {/* <ToastContainer /> */}
+        <QueryProvider>
         <EdgeStoreProvider>
           <html lang="en" suppressHydrationWarning>
             <body
@@ -68,6 +71,7 @@ export default function RootLayout({
             </body>
           </html>
         </EdgeStoreProvider>
+        </QueryProvider>
       </SessionProvider>
     </AuthProvider>
   );

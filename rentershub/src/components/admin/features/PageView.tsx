@@ -13,15 +13,16 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog"
 import AddFeature from './AddFeature'
-import EditFeature from './EditFeature'
+
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
 import { clearEditData } from '@/store/slices/PropertySlice'
+import EditLandlord from './EditLandlord'
 
 
 const PageView = ({ landlords }: { landlords: any }) => {
-//     const page = useAppSelector((state) => state.property.page)
-//     const isedit = useAppSelector((state) => state.property.isedit)
-//     const dispatch = useAppDispatch()
+    const page = useAppSelector((state) => state.property.page)
+    const isedit = useAppSelector((state) => state.property.isedit)
+    const dispatch = useAppDispatch()
 
 
 // console.log(landlords, "landlords")
@@ -54,19 +55,19 @@ const PageView = ({ landlords }: { landlords: any }) => {
                 </Dialog> */}
 
 
-                {/* <Dialog open={page == "features" && isedit} onOpenChange={() => {
+                <Dialog open={page == "approvedlandlords" && isedit} onOpenChange={() => {
                     dispatch(clearEditData())
                 }}>
 
                     <DialogContent>
                         <DialogHeader>
-                            <DialogTitle>Update Feature Listing</DialogTitle>
+                            <DialogTitle>Update Landlords</DialogTitle>
                             <DialogDescription>
-                                <EditFeature />
+                                <EditLandlord />
                             </DialogDescription>
                         </DialogHeader>
                     </DialogContent>
-                </Dialog> */}
+                </Dialog>
 
 
             </div>

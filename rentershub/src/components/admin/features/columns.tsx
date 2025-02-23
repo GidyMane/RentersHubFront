@@ -5,7 +5,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 import DataTableCheckBox from "@/components/globalcomponents/DataTableCheckBox"
 import { DataTableRowActions } from "../ApprovedProperties/data-table-row-actions"
 import { DataTableColumnHeader } from "../ApprovedProperties/data-table-column-header"
-import { removefeature } from "@/actions/feature"
+import { removefeature } from "@/actions/landlord"
 
 
 
@@ -152,7 +152,7 @@ export const columns: ColumnDef<Landlords>[] = [
     // },
     {
         id: "actions",
-        cell: ({ row }) => <DataTableRowActions row={row} page={"features"} />,
+        cell: ({ row }) => <DataTableRowActions row={row} page={"approvedlandlords"} />,
     },
 
 ]
