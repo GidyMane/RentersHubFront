@@ -11,7 +11,7 @@ import React, { useEffect } from 'react'
 import { toast } from 'react-hot-toast'
 import * as Yup from "yup"
 
-const EditLandlord = () => {
+const EditPendingLandlord = () => {
     const editdata = useAppSelector((state) => state.property.editdata)
     const dispatch = useAppDispatch()
 
@@ -188,4 +188,4 @@ const EditLandlord = () => {
     )
 }
 
-export default EditLandlord
+export default EditPendingLandlord

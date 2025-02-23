@@ -55,6 +55,46 @@ export const updateUser = async (user: {
 
 
 
+export const ApproveUser = async (user: {
+  id:number;
+  approval_status: string;
+}) => {
+  try {
+    // Get the session and access token
+    const session = await auth();
+    const accessToken = session?.user?.accessToken;
+
+    if (!accessToken) {
+      return ["Unauthorized: No access token", 401];
+    }
+
+    const data = await axios.patch(
+      `${baseUrl}accounts/update/user/${user.id}`,
+      {
+        approval_status: user.approval_status,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+
+    // console.log(data, "data")
+
+    if (data.status == 200) {
+      revalidatePath("/admin/approvedlandlords"); revalidatePath("/admin/pendinglandlords"); revalidatePath("/admin/approvedgroundagents"); revalidatePath("/admin/pendinggroundagents");
+    }
+    return [data.data, data.status];
+  } catch (e: any) {
+    return [e.message, 400];
+  }
+};
+
+
+
 export const removefeature = async (feature: any) => {
   // const { isAuthenticated } = getKindeServerSession()
   //console.log(feature, "fetures");

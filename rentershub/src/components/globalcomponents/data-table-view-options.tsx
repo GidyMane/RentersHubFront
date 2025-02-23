@@ -22,7 +22,7 @@ import { useSession } from "next-auth/react"
 
 interface DataTableViewOptionsProps<TData> {
   table: Table<TData>
-  deleteType: "approvedlandlords" | "feature" | "property" | "blog" | "testimonial" | "company" | "requestuser" // API endpoint type
+  deleteType: "approvedlandlords" | "pendinglandlords" | "property" | "blog" | "testimonial" | "company" | "requestuser" // API endpoint type
   pathname: string;
 }
 
@@ -34,8 +34,8 @@ export function DataTableViewOptions<TData>({
 
   const { data: session } = useSession()
 
-  console.log("Base URL:", baseUrl); // Debug log
-  console.log("Delete Type:", deleteType); // Debug log
+  // console.log("Base URL:", baseUrl); // Debug log
+  // console.log("Delete Type:", deleteType); // Debug log
 
   let url = ""
   
@@ -45,10 +45,9 @@ export function DataTableViewOptions<TData>({
     mutationFn: async (ids: string[]) => {
       const promises = ids.map(async (id) => {
         if (session) {
-          if (deleteType === "approvedlandlords") {
+          if (deleteType === "approvedlandlords" || deleteType === "pendinglandlords" ) {
             url = baseUrl + `accounts/user/${id}/delete`
-          } else if (pathname === "/intime-admin/managefeatures") {
-            deleteType = "feature"
+          
           } else if (pathname === "/intime-admin/managelisting") {
             deleteType = "property"
           } else if (pathname === "/intime-admin/blogs") {

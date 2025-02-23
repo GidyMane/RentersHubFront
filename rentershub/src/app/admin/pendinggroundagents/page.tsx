@@ -6,7 +6,7 @@ import React, { Suspense } from 'react'
 
 
 import { getPendingGroundAgents } from '../../../../data-access/actions/getgroundagents'
-import PageView from '@/components/admin/pendinggroundagents/PageView'
+import HandlePageView from '@/components/admin/pendinggroundagents/HandlePageView'
 
 export const dynamic = "force-dynamic"
 
@@ -18,7 +18,7 @@ const page = async () => {
         <div className='col-span-3 container'>
             <Suspense fallback={<Loader className='animate animate-spin text-secondary400'/>}>
 
-            <PageView landlords={landlords[1] ?? []} />
+            <HandlePageView landlords={landlords[1] ?? []} />
             </Suspense>
         </div>
     )

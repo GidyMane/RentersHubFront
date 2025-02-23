@@ -34,3 +34,6 @@ export const getLandlords = async () => fetchLandlordsByStatus("approved");
 
 // Fetch pending landlords
 export const getPendingLandlords = async () => fetchLandlordsByStatus("pending");
+
+
+

@@ -21,12 +21,12 @@ export function DataTableToolbar<TData>({
   const pathname = usePathname() // Access the current path
 
   // Determine the correct deleteType based on the current path
-  let deleteType: "approvedlandlords" | "feature" | "property" | "company" | "testimonial" |"requestuser" | "blog" = "approvedlandlords" // Default value
+  let deleteType: "approvedlandlords" | "pendinglandlords" | "property" | "company" | "testimonial" |"requestuser" | "blog" = "approvedlandlords" // Default value
 
   if (pathname === "/admin/approvedlandlords") {
     deleteType = "approvedlandlords"
   } else if (pathname === "/intime-admin/managefeatures") {
-    deleteType = "feature"
+    deleteType = "pendinglandlords"
   } else if (pathname === "/intime-admin/managelisting") {
     deleteType = "property"
   }else if (pathname === "/intime-admin/blogs") {
