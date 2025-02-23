@@ -40,14 +40,14 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       {
 
         title: "Approved Houses",
-        url: "/admin/approvedproperties",
+        url: "/admin/approvedproperty",
         icon: "/property.png"
 
       },
       {
 
         title: "Pending Houses",
-        url: "/admin/managefeatures",
+        url: "/admin/pendingproperties",
         icon: "/feature.png",
 
       },
