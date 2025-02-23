@@ -16,8 +16,12 @@ export type Property = {
 
 
         id: number;
-        name: string;
-        propertytype: string | null;
+        title: string;        
+        propertytype:  {
+            id: number;
+            name: string;
+        };
+        postedby: string;
         price: string;
         city: string;
         state: string;
@@ -75,35 +79,35 @@ export type Property = {
             enableHiding: false,
         },
         {
-            accessorKey: "name",
+            accessorKey: "title",
             header: ({ column }) => (
                 <DataTableColumnHeader column={column} title="Post Name" />
             ),
             cell: ({ row }) => (
                 <span className="max-w-[500px] truncate font-medium">
-                    {row.getValue("name")}
+                    {row.getValue("title")}
                 </span>
             ),
         },
         {
-            accessorKey: "propertytype",
+            accessorKey: "propertytype.name",
             header: ({ column }) => (
                 <DataTableColumnHeader column={column} title="House Type" />
             ),
             cell: ({ row }) => (
                 <span className="max-w-[500px] truncate font-medium">
-                    {row.getValue("propertytype") || "N/A"}
+                    {row.original.propertytype.name|| "N/A"}
                 </span>
             ),
         },
         {
-            accessorKey: "posted_by",
+            accessorKey: "postedby",
             header: ({ column }) => (
                 <DataTableColumnHeader column={column} title="Posted By" />
             ),
             cell: ({ row }) => (
                 <span className="max-w-[500px] truncate font-medium">
-                    {row.getValue("posted_by")}
+                    {row.getValue("postedby")}
                 </span>
             ),
         },
