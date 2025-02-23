@@ -45,7 +45,7 @@ export const updateUser = async (user: {
     console.log(data, "data")
 
     if (data.status == 200) {
-      revalidatePath("/admin/approvedlandlords");
+      revalidatePath("/admin/approvedlandlords"); revalidatePath("/admin/pendinglandlords"); revalidatePath("/admin/approvedgroundagents"); revalidatePath("/admin/pendinggroundagents");
     }
     return [data.data, data.status];
   } catch (e: any) {
