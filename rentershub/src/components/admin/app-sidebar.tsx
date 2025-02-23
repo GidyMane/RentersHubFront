@@ -20,11 +20,12 @@ import { usePathname } from "next/navigation"
 import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs"
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
 import { useSession } from "next-auth/react"
+import { useUser } from "@/actions/useUser"
 
 
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-
+  const { user } = useUser()
   const pathname = usePathname()
   const { data:session } = useSession();
 
@@ -144,18 +145,16 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 
           </ul>
         </div >
-        <div className="sticky  border-e inset-y-0 border-gray-100">
+        <div className="sticky border-e inset-y-0 border-gray-100">
           <Link href="#" className="flex items-center gap-2 bg-white p-4 hover:bg-gray-50">
             <Avatar>
-              <AvatarImage src="" />
-              <AvatarFallback>{session?.user?.name?.charAt(0).toUpperCase()}</AvatarFallback>
+              <AvatarImage src={user.avatar} />
+              <AvatarFallback>{user.name.charAt(0).toUpperCase()}</AvatarFallback>
             </Avatar>
-
             <div>
               <p className="text-xs">
-                <strong className="block font-medium">{session?.user?.name ?? "user"}</strong>
-
-                <span> {session?.user?.email ?? "adminq@rentershub.com"}</span>
+                <strong className="block font-medium">{user.name ?? "User"}</strong>
+                <span>{user.email ?? "admin@rentershub.com"}</span>
               </p>
             </div>
           </Link>
