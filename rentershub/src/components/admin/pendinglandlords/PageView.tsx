@@ -57,7 +57,7 @@ const PageView = ({ landlords }: { landlords: any }) => {
                 </Dialog> */}
 
 
-                <Dialog open={page == "approvedlandlords" && isedit} onOpenChange={() => {
+                <Dialog open={page == "pendinglandlords" && isedit} onOpenChange={() => {
                     dispatch(clearEditData())
                 }}>
 

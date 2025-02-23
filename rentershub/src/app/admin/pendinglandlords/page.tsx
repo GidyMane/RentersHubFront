@@ -1,8 +1,9 @@
 import { getpropertyfeatures } from '@/actions/property'
-import PageView from '@/components/admin/features/PageView'
+
 import { Loader } from 'lucide-react'
 import React, { Suspense } from 'react'
 import { getPendingLandlords } from '../../../../data-access/actions/getlandlords'
+import PageView from '@/components/admin/pendinglandlords/PageView'
 
 export const dynamic = "force-dynamic"
 
