@@ -12,149 +12,139 @@ import { removefeature } from "@/actions/landlord"
 
 
 
-export type Landlords = {
+export type Property = {
 
-    id: number;
-    first_name: string;
-    last_name: string;
-    email: string;
-    contact:string;
-    role_name: {role:string;};
-    username:string;
-    status: string;
-    terms_and_conditions:string;
+
+        id: number;
+        name: string;
+        propertytype: string | null;
+        price: string;
+        city: string;
+        state: string;
+        country: string;
+        postal_code: string;
+        address: string;
+        location: string; // SRID-based format
+        location_coords: [number, number]; // [longitude, latitude]
+        size: number;
+        bedrooms: number;
+        bathrooms: number;
+        parking_spaces: number;
+        is_available: boolean;
+        is_approved: boolean;
+        featured: boolean;
+        rent_price: string;
+        deposit_amount: string;
+        main_image_url: {
+            id: string;
+            url: string;
+        };
+        images: {
+            id: string;
+            url: string;
+        }[];
+        features: {
+            id: number;
+            name: string;
+            propertytype: string | null;
+        }[];
+        amenities: any[]; // Adjust if amenities have a known structure
+        water_charges: string;
+        water_deposit: string;
+        garbage_charges: string;
+        security_charges: string;
+        other_charges: string;
+        posted_by: number;
+        owners_contact: string;
+        managed_by: string;
+        space_types: any[]; // Adjust if space_types have a known structure
+        updated_at: string; // ISO timestamp
+    }
     
-
-}
-
-
-
-
-
-export const columns: ColumnDef<Landlords>[] = [
-    {
-        id: "select",
-        header: ({ table }) => (
-            <DataTableCheckBox table={table} deletefunc={removefeature} />
-        ),
-        cell: ({ row }) => (
-            <DataTableCheckBox row={row} deletefunc={removefeature} />
-
-        ),
-        enableSorting: false,
-        enableHiding: false,
-    },
-    // {
-    //     accessorKey: "pk",
-    //     header: ({ column }) => (
-    //         <DataTableColumnHeader column={column} title="Landlord ID" />
-    //     ),
-    //     cell: ({ row }) => <div className="w-[80px]">{row.getValue("pk")}</div>,
-    //     enableSorting: false,
-    //     enableHiding: false,
-    // },
-    {
-        accessorKey: "first_name",
-        header: ({ column }) => (
-            <DataTableColumnHeader column={column} title="First Name" />
-        ),
-        cell: ({ row }) => {
-            return (
-                <div className="flex space-x-2">
-                    <span className="max-w-[500px] truncate font-medium">
-                        {row.getValue("first_name")}
-                    </span>
-                </div>
-            );
+    
+    export const columns: ColumnDef<Property>[] = [
+        {
+            id: "select",
+            header: ({ table }) => (
+                <DataTableCheckBox table={table} deletefunc={removefeature} />
+            ),
+            cell: ({ row }) => (
+                <DataTableCheckBox row={row} deletefunc={removefeature} />
+            ),
+            enableSorting: false,
+            enableHiding: false,
         },
-    },
-    {
-        accessorKey: "last_name",
-        header: ({ column }) => (
-            <DataTableColumnHeader column={column} title="Last Name" />
-        ),
-        cell: ({ row }) => {
-            return (
-                <div className="flex space-x-2">
-                    <span className="max-w-[500px] truncate font-medium">
-                         {row.getValue("last_name")}
-                    </span>
-                </div>
-            );
+        {
+            accessorKey: "name",
+            header: ({ column }) => (
+                <DataTableColumnHeader column={column} title="Post Name" />
+            ),
+            cell: ({ row }) => (
+                <span className="max-w-[500px] truncate font-medium">
+                    {row.getValue("name")}
+                </span>
+            ),
         },
-    },
-    {
-        accessorKey: "email",
-        header: ({ column }) => (
-            <DataTableColumnHeader column={column} title="Email" />
-        ),
-        cell: ({ row }) => {
-            return (
-                <div className="flex space-x-2">
-                    <span className="max-w-[500px] truncate font-medium">
-                        {row.getValue("email")}
-                    </span>
-                </div>
-            );
+        {
+            accessorKey: "propertytype",
+            header: ({ column }) => (
+                <DataTableColumnHeader column={column} title="House Type" />
+            ),
+            cell: ({ row }) => (
+                <span className="max-w-[500px] truncate font-medium">
+                    {row.getValue("propertytype") || "N/A"}
+                </span>
+            ),
         },
-    },
-    {
-        accessorKey: "contact",
-        header: ({ column }) => (
-            <DataTableColumnHeader column={column} title="contact" />
-        ),
-        cell: ({ row }) => {
-            return (
-                <div className="flex space-x-2">
-                    <span className="max-w-[500px] truncate font-medium">
-                        {row.getValue("contact")}
-                    </span>
-                </div>
-            );
+        {
+            accessorKey: "posted_by",
+            header: ({ column }) => (
+                <DataTableColumnHeader column={column} title="Posted By" />
+            ),
+            cell: ({ row }) => (
+                <span className="max-w-[500px] truncate font-medium">
+                    {row.getValue("posted_by")}
+                </span>
+            ),
         },
-    },
-    {
-        accessorKey: "status",
-        header: ({ column }) => (
-            <DataTableColumnHeader column={column} title="Status" />
-        ),
-        cell: ({ row }) => {
-            return (
-                <div className="flex space-x-2">
-                    <span className="max-w-[500px] truncate font-medium">
-                        <Badge
-
-                            variant="outline"
-                            className={`cursor-pointer transition-colorsbg-background
-                                `}
-                        >
-                            {row.getValue("status")}
-                        </Badge>
-                    </span>
-                </div>
-            )
+        {
+            accessorKey: "managed_by",
+            header: ({ column }) => (
+                <DataTableColumnHeader column={column} title="Managed By" />
+            ),
+            cell: ({ row }) => (
+                <span className="max-w-[500px] truncate font-medium">
+                    {row.getValue("managed_by")}
+                </span>
+            ),
         },
-    },
-    // {
-    //     accessorKey: "description",
-    //     header: ({ column }) => (
-    //         <DataTableColumnHeader column={column} title="Description" />
-    //     ),
-    //     cell: ({ row }) => {
-    //         return (
-    //             <div className="flex space-x-2">
-    //                 <span className="max-w-[500px] truncate font-medium">
-    //                     {row.getValue("description")}
-    //                 </span>
-    //             </div>
-    //         )
-    //     },
-    // },
-    {
-        id: "actions",
-        cell: ({ row }) => <DataTableRowActions row={row} page={"approvedlandlords"} />,
-    },
-
-]
+        {
+            accessorKey: "address",
+            header: ({ column }) => (
+                <DataTableColumnHeader column={column} title="Location" />
+            ),
+            cell: ({ row }) => (
+                <span className="max-w-[500px] truncate font-medium">
+                    {row.getValue("address")}
+                </span>
+            ),
+        },
+        {
+            accessorKey: "rent_price",
+            header: ({ column }) => (
+                <DataTableColumnHeader column={column} title="Rent Price" />
+            ),
+            cell: ({ row }) => (
+                <span className="max-w-[500px] truncate font-medium">
+                    Ksh {row.getValue("rent_price")}
+                </span>
+            ),
+        },
+        {
+            id: "actions",
+            cell: ({ row }) => <DataTableRowActions row={row} page={"properties"} />,
+        },
+    ];
+    
 
 

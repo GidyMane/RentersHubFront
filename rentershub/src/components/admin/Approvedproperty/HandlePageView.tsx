@@ -1,10 +1,12 @@
 "use client"
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
 import React, { Suspense } from 'react'
-import EditLandlord from './EditLandlord'
+
+
 import { DataTable } from '@/components/globalcomponents/data-table'
 import { Loader } from 'lucide-react'
 import { columns } from './columns'
+import EditProperty from './EditProperty'
 
 const HandlePageView = ({ landlords }: { landlords: any }) => {
     const page = useAppSelector((state) => state.property.page)
@@ -13,10 +15,10 @@ const HandlePageView = ({ landlords }: { landlords: any }) => {
 
     return (
         <div className='flex flex-col gap-4'>
-                <h1 className="text-2xl font-bold mb-5">Approved Landlords</h1>
+                <h1 className="text-2xl font-bold mb-5">Approved Properties</h1>
 
                 {isedit ? (
-                    <EditLandlord />
+                    <EditProperty />
                 ) : (
                     <div className='w-full'>
                         <Suspense fallback={<Loader className='animate animate-spin text-secondary300' />}>
