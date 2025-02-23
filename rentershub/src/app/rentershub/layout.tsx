@@ -15,7 +15,7 @@ export default function RootLayout({
  
    return (
     
-     <div className="flex h-screen bg-gray-100 relative">
+     <div className="h-screen  bg-gray-100 relative">
      
            <DashboardLayout>
             

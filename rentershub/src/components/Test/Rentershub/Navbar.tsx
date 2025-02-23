@@ -20,9 +20,10 @@ import { baseUrl } from '@/utils/constants'
 
 interface NavbarProps {
   toggleSidebar: () => void
+  isOpen:boolean
 }
 
-export function Navbar({ toggleSidebar }: NavbarProps) {
+export function Navbar({ toggleSidebar, isOpen }: NavbarProps) {
   const [user, setUser] = useState<{ name: string, email: string, avatar?: string }>({
     name: '',
     email: '',
@@ -70,7 +71,7 @@ export function Navbar({ toggleSidebar }: NavbarProps) {
   }, []);
 
   return (
-    <header className="top-0 z-40 bg-primary w-full border-b shadow-sm">
+    <header className={`top-0 ${isOpen ? "z-30" :"z-50"} w-full bg-white sticky border-b shadow-sm`}>
       <div className="container mx-auto px-4">
         <div className="flex h-16 items-center justify-between">
           <div className="flex items-center">

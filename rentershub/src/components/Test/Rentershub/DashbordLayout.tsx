@@ -15,22 +15,22 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
 
   return (
     <>
-    <div className='flex justify-between w-full'>
+      <div className='flex justify-start items-start w-full'>
 
 
-      <div className='h-screen'>
-      <Sidebar isOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
-      </div>
+        <div className='fixed w-64 h-screen z-40'>
+          <Sidebar isOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
+        </div>
 
 
-      <div className="flex flex-col w-full relative">
-        <Navbar toggleSidebar={toggleSidebar} />
-        <main className="flex-1 bg-gray-100">
-          <div className="container mx-auto px-4 py-6">
+        <div className="flex flex-col relative md:ml-64 w-full">
+          <Navbar toggleSidebar={toggleSidebar} isOpen={sidebarOpen} />
+
+          <main className="bg-gray-100 overflow-y-auto container mx-auto">
             {children}
-          </div>
-        </main>
-      </div>
+
+          </main>
+        </div>
       </div>
     </>
   )
