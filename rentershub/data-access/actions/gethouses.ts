@@ -13,7 +13,7 @@ const fetchPropertiesByApproval = async (isApproved: boolean) => {
         });
 
         console.log(res, `Properties (Approved: ${isApproved})`);
-        return [res.status, res.data.result];
+        return [res.status, res.data.results];
     } catch (error: any) {
         console.error(`Error fetching properties (Approved: ${isApproved}):`, error);
         return [400, error?.response?.data?.message || error?.message || "An error occurred"];

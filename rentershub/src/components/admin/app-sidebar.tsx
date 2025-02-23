@@ -40,7 +40,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       {
 
         title: "Approved Houses",
-        url: "/admin/approvedproperties",
+        url: "/admin/approvedproperty",
         icon: "/property.png"
 
       },
