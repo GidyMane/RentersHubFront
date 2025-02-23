@@ -36,7 +36,7 @@ export default function Footer() {
                     <div className="grid grid-cols-2 gap-8">
                         <nav>
                             <ul className="space-y-2">
-                                <li><Link href="/Testclient" className="hover:text-gray-300">Vacant Houses</Link></li>
+                                <li><Link href="/" className="hover:text-gray-300">Vacant Houses</Link></li>
                                 <li><Link href="/rentershub/Dashboard" className="hover:text-gray-300">Manage Properties</Link></li>
                                 <li><a href="https://api.whatsapp.com/send?phone=254731352350&text=Hello.%20I%20am%20from%20the%20website,%20https://rentershub.co.ke%20and%20I%20am%20searching%20for%20a%20vacant%20house" target="_blank" rel="noopener noreferrer" className="hover:text-gray-300">Chat with Us</a></li>
                             </ul>

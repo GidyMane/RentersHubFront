@@ -4,7 +4,10 @@ import "./globals.css";
 import { AuthProvider } from "@/providers/KindeAuthProvider";
 import { SessionProvider } from "@/context/SessionProvider";
 import { EdgeStoreProvider } from "../lib/edgestore";
-import { ToastContainer } from "react-toastify";
+import Navbar from "@/components/UpdatedLayout/Navbar";
+import { FloatingNavDemo } from "@/components/layout/FloatingNav";
+import Footer from "@/components/layout/enhancedfooter";
+import { Toaster } from "react-hot-toast";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -28,15 +31,40 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <AuthProvider>      
+    <AuthProvider>
       <SessionProvider>
-      {/* <ToastContainer /> */}
+        {/* <ToastContainer /> */}
         <EdgeStoreProvider>
           <html lang="en" suppressHydrationWarning>
             <body
               className={`${geistSans.variable} ${geistMono.variable} antialiased`}
             >
-              {children}
+              <div className="relative w-full">
+
+                <Toaster
+                  position="top-center"
+                  reverseOrder={false}
+                  gutter={8}
+                  containerClassName=""
+                  containerStyle={{}}
+                  toastOptions={{
+                    className: '',
+                    duration: 5000,
+                  }}
+                />
+                <div className="top-0">
+                  <Navbar />
+                </div>
+
+                  {children}
+             
+
+                <FloatingNavDemo />
+                <div className="bottom-0 rounded-lg">
+                  <Footer />
+                </div>
+
+              </div>
             </body>
           </html>
         </EdgeStoreProvider>

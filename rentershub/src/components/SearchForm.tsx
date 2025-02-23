@@ -15,7 +15,7 @@ const SearchForm = ({ propertytypes, api_key }: { propertytypes: any; api_key:st
     return (
         <>
 
-            <Form action={'/Testclient'} className='flex md:flex-row flex-col gap-4 md:items-center md:justify-center w-full'>
+            <Form action={'/'} className='flex md:flex-row flex-col gap-4 md:items-center md:justify-center w-full'>
 
 
                 <div className='flex flex-col gap-2'>

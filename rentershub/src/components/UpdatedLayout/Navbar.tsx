@@ -92,7 +92,7 @@ const Navbar = () => {
                                 </Button>
                             </div>
 
-                            <NavItem href="/Testclient">Vacant Houses</NavItem>
+                            <NavItem href="/">Vacant Houses</NavItem>
                             <NavItem href={`/rentershub/Dashboard`}>Post a House</NavItem>
                             <NavItem href="/admin">Manage Rentals</NavItem>
                             <a

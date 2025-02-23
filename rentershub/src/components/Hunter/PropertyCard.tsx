@@ -22,7 +22,7 @@ interface PropertyCardProps {
 }
 
 function handleShare(id: string, title: string) {
-  const url = `https://wa.me/?text=Check out this property: ${title} - ${window.location.origin}/Testclient/property/${id}`;
+  const url = `https://wa.me/?text=Check out this property: ${title} - ${window.location.origin}//property/${id}`;
   window.open(url, '_blank');
 }
 
@@ -44,7 +44,7 @@ export function PropertyCard({
       transition={{ duration: 0.8, ease: "easeIn" }}
     >
       <Card className="overflow-hidden group cursor-pointer transition-shadow hover:shadow-lg">
-        <Link href={`/Testclient/property/${id}`}>
+        <Link href={`//property/${id}`}>
           <div className="relative">
             <Image
               src={imageUrl || "/placeholder.svg"}
