@@ -29,7 +29,7 @@ const AdminLayout = ({ children }: { children: ReactNode }) => {
 
       
       <SidebarInset>
-        <header className="flex h-16 sticky top-0  w-full  justify-between shrink-0 bg-transparent backdrop-blur-md shadow-md items-center gap-2 border-b">
+        <header className="flex h-16 sticky top-0  w-full z-50 justify-between shrink-0 bg-transparent backdrop-blur-md shadow-md items-center gap-2 border-b">
           <div className="flex items-center gap-2 px-3">
             <SidebarTrigger />
             <Separator orientation="vertical" className="mr-2 h-4" />

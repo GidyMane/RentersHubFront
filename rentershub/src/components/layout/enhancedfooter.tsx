@@ -8,7 +8,7 @@ import { usePathname } from "next/navigation";
 export default function Footer() {
     const path = usePathname();
 
-    if (path.includes("intime-admin") || path.startsWith("/intimehomes")) {
+    if (path.includes("admin") || path.startsWith("/rentershub")) {
         return null;
     }
 
