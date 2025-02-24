@@ -62,7 +62,7 @@ export default function RootLayout({
                   {children}
              
 
-                <FloatingNavDemo />
+                {/* <FloatingNavDemo /> */}
                 <div className="bottom-0 rounded-lg">
                   <Footer />
                 </div>
