@@ -18,15 +18,11 @@ const SearchForm = ({ propertytypes, api_key }: { propertytypes: any; api_key:st
             <Form action={'/'} className='flex md:flex-row flex-col gap-4 md:items-center md:justify-center w-full'>
 
 
-                <div className='flex flex-col gap-2'>
-                    <label htmlFor="" className='cursor-none  font-medium   '>Location</label>
-                    <PlacesAutocomplete GOOGLE_MAPS_API_KEY={api_key} />
-                </div>
-
+                
 
 
                 <div className='flex flex-col gap-2'>
-                    <label htmlFor="" className='cursor-none  font-medium   '>House type</label>
+                    <label htmlFor="" className='cursor-none  font-medium   '>Select House type</label>
                     <Select name='propertytype_name' >
                         <SelectTrigger className="w-full border-primary">
                             <SelectValue placeholder="House type" className='text-secondary' />
@@ -45,8 +41,19 @@ const SearchForm = ({ propertytypes, api_key }: { propertytypes: any; api_key:st
                 </div>
 
                 <div className='flex flex-col gap-2'>
+                    <label htmlFor="" className='cursor-none  font-medium   '>Enter Location</label>
+                    <PlacesAutocomplete GOOGLE_MAPS_API_KEY={api_key} />
+                </div>
+
+
+                <div className='flex flex-col gap-2'>
                     <label htmlFor="" className='cursor-none font-medium   '>Rent Price</label>
                     <Input name='rent_price_max' className='relative p-2 focus:border-secondary border-primary placeholder:text-sm' type='number' placeholder='eg; 10,000' />
+                </div>
+
+                <div className='flex flex-col gap-2'>
+                    <label htmlFor="" className='cursor-none font-medium   '>Special Condition</label>
+                    <Input name='special_condition' className='relative p-2 focus:border-secondary border-primary placeholder:text-sm' type='text' placeholder='eg; With balcony' />
                 </div>
 
               
