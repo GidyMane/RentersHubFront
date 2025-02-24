@@ -68,9 +68,11 @@ const page = async (props: {
               <div className="flex flex-col items-center justify-center bg-white p-8 rounded-xl shadow-lg w-full md:w-3/5 mx-auto text-center">
                 <h2 className="text-2xl font-bold text-red-600">🚨 No Listings Available!</h2>
                 <p className="mt-4 text-gray-700 text-lg leading-relaxed">
-                  Hello. Landlords and Property Agents have not yet posted such a house in this location.<br />
-                  Please try searching for another house or a different location.<br />
-                  Alternatively, you can contact our office for assistance.
+                Hello. Landlords and Property Agents are yet to post such a 
+                house in that location.<br />
+                Please go back and search another house or a different location 
+                or.<br />
+                Contact our office for further assistance.
                 </p>
                 <div className="flex flex-col md:flex-row gap-6 mt-6 w-full justify-center">
                   <a href="tel:+254731352350" className="px-6 py-3 text-lg font-semibold rounded-lg bg-blue-600 text-white shadow-md hover:bg-blue-700 transition transform hover:scale-105">
