@@ -73,14 +73,14 @@ export function FullScreenCarousel({ propertytype, api_key }: { propertytype: an
                         >
                             The Place Where Smart Kenyans Come To Find Houses
                         </motion.h1>
-                        <motion.p
+                        {/* <motion.p
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.6, delay: 0.6 }}
                             className="mb-8 text-base md:text-lg lg:text-xl"
                         >
                             Finding your dream house is just a click away!
-                        </motion.p>
+                        </motion.p> */}
                     </motion.div>
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
