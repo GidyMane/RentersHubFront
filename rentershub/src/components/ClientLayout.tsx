@@ -263,7 +263,7 @@ const SignUpForm = () => {
             {step === 4 && (
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="email" className="text-sm font-medium">Email</Label>
+                  <Label htmlFor="email" className="text-sm font-medium">Email (optional)</Label>
                   <div className="relative">
                     <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                     <Input
@@ -273,7 +273,7 @@ const SignUpForm = () => {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       className="pl-10"
-                      required
+                      
                     />
                   </div>
                 </div>
