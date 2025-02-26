@@ -10,8 +10,9 @@ import { updatePage } from '../../data-access/actions/updatePage'
 
 const SearchForm = ({ propertytypes, api_key }: { propertytypes: any; api_key:string; }) => {
     const handleRevalidate = async () => {
-        await updatePage()
-    }
+        await updatePage();  // Fetch new results
+        document.getElementById("search-results")?.scrollIntoView({ behavior: "smooth" });
+    };
     return (
         <>
 
