@@ -21,7 +21,7 @@ const HandlePageView = ({ landlords }: { landlords: any }) => {
                 ) : (
                     <div className='w-full'>
                         <Suspense fallback={<Loader className='animate animate-spin text-secondary300' />}>
-                            <DataTable columns={columns} data={landlords} searchColumn={"email"}/>
+                            <DataTable columns={columns} data={landlords} searchColumn={"contact"}/>
                         </Suspense>
 
                     </div>
