@@ -152,8 +152,8 @@ const SignUpForm = () => {
         <Card className="w-full max-w-md">
           <CardContent className="pt-6">
             <div className="mb-6 text-center">
-              <h1 className="text-3xl font-bold text-[#1C4532]">Join RentersHub</h1>
-              <p className="text-gray-600 mt-2">Simplify your rental management journey</p>
+              <h1 className="text-3xl font-bold text-[#1C4532]">Join Renters Hub</h1>
+              <p className="text-gray-600 mt-2"></p>
             </div>
 
             <Progress value={(step / totalSteps) * 100} className="mb-6" />
