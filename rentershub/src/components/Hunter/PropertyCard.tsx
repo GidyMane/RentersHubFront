@@ -85,7 +85,7 @@ export function PropertyCard({
               <AvatarImage src="/placeholder-user.jpg" alt={managed_by} />
               <AvatarFallback>{managed_by[0]}</AvatarFallback>
             </Avatar>
-            <div className="text-sm font-medium">{managed_by}</div>
+            <div className="text-sm font-medium">Manged by {managed_by}</div>
           </div>
           {/* <div className="text-sm text-muted">
             {formatDistanceToNow(new Date(updated_at))}
