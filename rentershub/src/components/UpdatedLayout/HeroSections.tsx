@@ -9,16 +9,20 @@ import Autoplay from 'embla-carousel-autoplay'
 import { motion } from "framer-motion"
 import SearchForm from "../SearchForm"
 
-const images = [
-    "/interior.jpg?height=1080&width=1920",
-    "/kilimani.jpg?height=1080&width=1920",
-    "/interior3.jpg?height=1080&width=1920",
-    "/kabiria.jpg?height=1080&width=1920",
-    "/kilimani.jpg?height=1080&width=1920",
-    "/regen.jpg?height=1080&width=1920",
-    "/uthiru.jpg?height=1080&width=1920",
-]
+// const images = [
+//     "/interior.jpg?height=1080&width=1920",
+//     "/kilimani.jpg?height=1080&width=1920",
+//     "/interior3.jpg?height=1080&width=1920",
+//     "/kabiria.jpg?height=1080&width=1920",
+//     "/kilimani.jpg?height=1080&width=1920",
+//     "/regen.jpg?height=1080&width=1920",
+//     "/uthiru.jpg?height=1080&width=1920",
+// ]
 
+const images = [
+    "/regen.jpg?height=1080&width=1920",
+
+]
 export function FullScreenCarousel({ propertytype, api_key }: { propertytype: any, api_key:string; }) {
     const autoplay = Autoplay({ stopOnInteraction: true, delay: 4000 });
     const [emblaRef, emblaApi] = useEmblaCarousel({
