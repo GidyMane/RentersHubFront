@@ -13,7 +13,7 @@ const HandlePageView = ({ landlords }: { landlords: any }) => {
 
     return (
         <div className='flex flex-col gap-4'>
-                <h1 className="text-2xl font-bold mb-5">Approved GroundAgents</h1>
+                <h1 className="text-2xl font-bold mb-5">Approved Ground Agents</h1>
 
                 {isedit ? (
                     <EditLandlord />

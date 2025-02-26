@@ -89,14 +89,14 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       },
       {
 
-        title: "Approved GroundAgents",
+        title: "Approved Ground Agents",
         url: "/admin/approvedgroundagents",
         icon: "/users.png",
 
       },
       {
 
-        title: "Pending GroundAgents",
+        title: "Pending Ground Agents",
         url: "/admin/pendinggroundagents",
         icon: "/access.png",
 

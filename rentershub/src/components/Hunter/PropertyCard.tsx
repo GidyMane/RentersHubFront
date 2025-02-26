@@ -87,9 +87,9 @@ export function PropertyCard({
             </Avatar>
             <div className="text-sm font-medium">{managed_by}</div>
           </div>
-          <div className="text-sm text-muted">
+          {/* <div className="text-sm text-muted">
             {formatDistanceToNow(new Date(updated_at))}
-          </div>
+          </div> */}
         </CardFooter>
       </Card>
     </motion.div>
