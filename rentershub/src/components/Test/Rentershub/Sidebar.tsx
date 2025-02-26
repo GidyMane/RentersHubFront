@@ -49,7 +49,7 @@ export function Sidebar({ isOpen, toggleSidebar }: SidebarProps) {
               height={40}
               className="rounded-full"
             />
-            <span className="text-xl font-bold">RentersHub</span>
+            <span className="text-xl font-bold">Renters Hub</span>
           </Link>
           <Button variant="ghost" size="icon" onClick={toggleSidebar} className="lg:hidden">
             <X className="h-6 w-6" />

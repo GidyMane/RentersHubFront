@@ -20,7 +20,7 @@ const AuthForm = () => {
   return (
     <Card className="w-full max-w-md bg-white rounded-xl shadow-2xl overflow-hidden">
       <CardHeader className="bg-gradient-to-r from-[#2ba808] to-blue-600 text-white p-6">
-        <CardTitle className="text-2xl font-bold">Welcome to RentersHub</CardTitle>
+        <CardTitle className="text-2xl font-bold">Welcome to Renters Hub</CardTitle>
         <CardDescription className="text-white/80">Your gateway to smart Kenyan homes</CardDescription>
       </CardHeader>
       <CardContent className="p-6">

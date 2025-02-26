@@ -358,7 +358,7 @@ export default function PropertyDetail({
                   <User className="w-6 h-6" />
                 </div>
                 <div>
-                  <h3 className="font-semibold">RentersHub</h3>
+                  <h3 className="font-semibold">Renters Hub</h3>
                   <Button variant="link" className="h-auto p-0">
                     Connect with Us
                   </Button>

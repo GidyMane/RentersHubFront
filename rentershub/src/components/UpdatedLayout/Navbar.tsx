@@ -64,7 +64,7 @@ const Navbar = () => {
         <div className='my-4 flex items-center justify-between gap-2 w-full px-8'>
             <div className='flex gap-2 items-center justify-center'>
                 <Image src="/RH1.png" alt="RentersHub Logo" width={40} height={40}  />
-                <p className='text-headlineSmall text-secondary500 text-balance'>RentersHub</p>
+                <p className='text-headlineSmall text-secondary500 text-balance'>Renters Hub</p>
             </div>
 
             <div className='md:hidden flex'>
@@ -80,7 +80,7 @@ const Navbar = () => {
                             <div className='flex gap-2 items-center justify-center'>
                                 <div className='flex flex-col gap-2'>
                                     <Image src="/RH1.png" alt="RentersHub Logo" width={40} height={40}  />
-                                    <p className='text-headlineSmall text-secondary500 text-balance'>RentersHub</p>
+                                    <p className='text-headlineSmall text-secondary500 text-balance'>Renters Hub</p>
                                 </div>
                                 <Button variant="ghost" size="icon" className="self-end justify-end items-end flex mb-4" onClick={() => setIsMenuOpen(false)}>
                                     <X className="h-6 w-6" />

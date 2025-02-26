@@ -30,7 +30,7 @@ export default function Footer() {
                         <Image src="/RH1.png" alt="RentersHub Logo" width={50} height={50} />
                         <p className='text-headlineSmall text-secondary500 text-balance'>RentersHub</p>
                         <p className="text-sm mb-4">
-                            RentersHub: where we make it easy for Kenyans to find their dream houses.
+                            Renters Hub: where we make it easy for Kenyans to find their dream houses.
                         </p>
                     </div>
                     <div className="grid grid-cols-2 gap-8">
@@ -51,7 +51,7 @@ export default function Footer() {
 
                 <div className="flex flex-col md:flex-row justify-between items-center py-4">
                     <p className="text-sm">
-                        © {new Date().getFullYear()} RentersHub. All rights reserved.
+                        © {new Date().getFullYear()} Renters Hub. All rights reserved.
                     </p>
                 </div>
 

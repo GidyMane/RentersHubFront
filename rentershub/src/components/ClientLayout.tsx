@@ -393,7 +393,7 @@ const SignUpForm = () => {
             <br />
             Rental Business
             <br />
-            with RentersHub
+            with Renters Hub
           </h2>
           <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 w-full aspect-video relative overflow-hidden">
             <Image

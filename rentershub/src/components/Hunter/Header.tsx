@@ -7,7 +7,7 @@ export default function Header() {
     <header className="border-b bg-white">
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between mb-4">
-          <h1 className="text-2xl font-bold text-[#1C4532]">RentersHub</h1>
+          <h1 className="text-2xl font-bold text-[#1C4532]">Renters Hub</h1>
           <div className="flex items-center gap-4">
             <Button variant="ghost">Sign In</Button>
             <Button className="bg-[#1C4532] hover:bg-[#1C4532]/90">Sign Up</Button>

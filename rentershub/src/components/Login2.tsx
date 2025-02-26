@@ -81,7 +81,7 @@ const LoginForm = () => {
         <div className="flex-1 flex items-center justify-center p-8">
           <div className="w-full max-w-md space-y-8">
             <div className="space-y-2">
-              <h1 className="text-3xl font-bold text-[#1C4532]">Welcome RentersHub</h1>
+              <h1 className="text-3xl font-bold text-[#1C4532]">Welcome Renters Hub</h1>
               <p className="text-gray-600">Where Smart Kenyans Come to Find Homes</p>
             </div>
             <form onSubmit={handleSubmit} className="space-y-6">
@@ -150,7 +150,7 @@ const LoginForm = () => {
               />
             </div>
             <p className="text-lg">
-              RentersHub: Your all-in-one solution for efficient rental property management in Kenya.
+              Renters Hub: Your all-in-one solution for efficient rental property management in Kenya.
             </p>
           </div>
         </div>
