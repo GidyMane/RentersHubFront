@@ -594,7 +594,7 @@ export default function AddPropertyPage({GOOGLE_MAPS_API_KEY}:{GOOGLE_MAPS_API_K
             {/* Property Features */}
             <Card>
         <CardContent className="p-6">
-          <h3 className="text-lg font-semibold text-[#1C4532] mb-4">Property Features (Please tick as all the features that apply to your property)</h3>
+          <h3 className="text-lg font-semibold text-[#1C4532] mb-4">Property Features (Please tick all the features that apply to your property)</h3>
           <PropertyFeatures
             selectedFeatures={formik.values.features} // Pass selected IDs
             onFeatureToggle={handleFeatureToggle} // Pass toggle handler
