@@ -376,7 +376,7 @@ export default function PropertyDetail({
                   Send Message
                 </Button> */}
 
-                <CallLandlordForm landlordPhone={property?.owners_contact} />
+                <CallLandlordForm landlordPhone={property?.owners_contact} propertyId={""} />
                 <ChatWithLandlord landlordPhone={property?.owners_contact} propertyId={""} />
                 {/* <ShareButton propertyLink={""}/> */}
                 <ShareButton propertyLink={window.location.href} />

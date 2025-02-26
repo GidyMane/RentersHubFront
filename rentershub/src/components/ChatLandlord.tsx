@@ -24,7 +24,7 @@ const ChatWithLandlord = ({ landlordPhone, propertyId }: { landlordPhone: string
 
   // Validate phone number input
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const input = e.target.value;
+    const input = e.target.value.replace(/\D/g, '');
     setPhone(input);
 
     if (input.length < 10) {
