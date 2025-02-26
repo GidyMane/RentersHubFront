@@ -47,7 +47,7 @@ const SearchForm = ({ propertytypes, api_key }: { propertytypes: any; api_key:st
 
 
                 <div className='flex flex-col gap-2'>
-                    <label htmlFor="" className='cursor-none font-medium   '>Max Rent Price</label>
+                    <label htmlFor="" className='cursor-none font-medium   '>Max Rent Budget</label>
                     <Input name='rent_price_max' className='relative p-2 focus:border-secondary border-primary placeholder:text-sm' type='number' placeholder='eg; 10,000' />
                 </div>
 

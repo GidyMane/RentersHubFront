@@ -18,7 +18,7 @@ export const dynamic = "force-dynamic"
 
 
 const page = async (props: {
-  searchParams: Promise<{ limit: number; offset: number; address: string; propertytype_name: string; rent_price_max: number }>
+  searchParams: Promise<{ limit: number; offset: number; address: string; propertytype_name: string; rent_price_max: number; special_condition:string }>
 }) => {
   const params = await props.searchParams;
   const limit = params?.limit || 4;
@@ -26,6 +26,7 @@ const page = async (props: {
   const address = params?.address || null;
   const propertytype_name = params?.propertytype_name || null;
   const rent_price_max = params?.rent_price_max || null;
+  const special_condition = params?.special_condition || null;
 
   const formattedRentPrice = rent_price_max ? `KSh ${rent_price_max}/Month` : "Not specified";
   const whatsappMessage = encodeURIComponent(
@@ -33,13 +34,13 @@ const page = async (props: {
     `HOUSE TYPE: ${propertytype_name}\n` +
     `LOCATION: ${address}\n` +
     `MAX RENT BUDGET: ${formattedRentPrice}\n` +
-    `CONDITION: With WiFi Connection\n\n` +
+    `CONDITION: ${special_condition}\n` +
     `Please help me find the house. Thank you.`
   );
   const whatsappLink = `https://wa.me/254731352350?text=${whatsappMessage}`;
 
   const [apiproperties, propertytypes] = await Promise.all([
-    getproperties(limit, offset, address, propertytype_name, rent_price_max),
+    getproperties(limit, offset, address, propertytype_name, rent_price_max, special_condition),
     getpropertytype()
   ]);
 
