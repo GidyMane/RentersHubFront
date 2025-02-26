@@ -60,8 +60,8 @@ export function Pagination({ count, previous, next, updatePage }: PaginationProp
                 <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
                     <div>
                         <p className="text-sm text-gray-700">
-                            Showing page <span className="font-medium">{currentPage}</span> of{" "}
-                            <span className="font-medium">{count}</span>
+                            {/* Showing page <span className="font-medium">{currentPage}</span> of{" "} */}
+                            {/* <span className="font-medium">{count}</span> */}
                         </p>
                     </div>
                     <div>
