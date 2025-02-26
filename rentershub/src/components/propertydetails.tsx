@@ -377,7 +377,7 @@ export default function PropertyDetail({
                 </Button> */}
 
                 <CallLandlordForm landlordPhone={property?.owners_contact} />
-                <ChatWithLandlord landlordPhone={property?.owners_contact} />
+                <ChatWithLandlord landlordPhone={property?.owners_contact} propertyId={""} />
                 {/* <ShareButton propertyLink={""}/> */}
                 <ShareButton propertyLink={window.location.href} />
               </form>
