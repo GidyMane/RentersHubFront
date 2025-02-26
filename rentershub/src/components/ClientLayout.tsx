@@ -97,7 +97,7 @@ const SignUpForm = () => {
     setIsLoading(true);
     try {
       await axios.post(`${baseUrl}accounts/verify/otp`, { otp });
-      toast.success('Phone number verified successfully.');
+      toast.success('Renters Hub has received your application to advertise on the website. Please wait for verification and approval by the admin.');
       setStep(4);
     } catch (error) {
       toast.error('Invalid OTP. Please try again.');
