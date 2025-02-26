@@ -68,14 +68,14 @@ export function FullScreenCarousel({ propertytype, api_key }: { propertytype: an
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6 }}
-                        className="max-w-2xl text-white items-center justify-center flex flex-col">
+                        className="max-w-2xl text-white items-center justify-start flex flex-col">
                         <motion.h1
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.6, delay: 0.4 }}
-                            className="mb-2 text-4xl md:text-4xl lg:text-6xl font-bold leading-tight"
+                            className="mb-2 text-3xl md:text-4xl lg:text-4xl font-bold leading-tight"
                         >
-                            The Place Where Smart Kenyans Come To Find Houses
+                            The Place Where Kenyans Come To Find Vacant Houses
                         </motion.h1>
                         {/* <motion.p
                             initial={{ opacity: 0, y: 20 }}
