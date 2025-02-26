@@ -27,6 +27,7 @@ const page = async (props: {
   const propertytype_name = params?.propertytype_name || null;
   const rent_price_max = params?.rent_price_max || null;
   const special_condition = params?.special_condition || null;
+  
 
   const formattedRentPrice = rent_price_max ? `KSh ${rent_price_max}/Month` : "Not specified";
   const whatsappMessage = encodeURIComponent(
@@ -59,7 +60,7 @@ const page = async (props: {
             <p className='my-4 text-muted text-md text-center'>Verified by our team</p>
           </div>
         </div>
-        <div id="search-results" className="grid grid-cols-1 mt-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:px-16 px-6">
+        <div id="search-results" className="grid grid-cols-2 mt-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:px-16 px-6">
           <Suspense fallback={<div className='col-span-1 md:col-span-2 lg:col-span-3 xl:col-span-4 flex items-center justify-center my-4'>
             <Loader className='text-primary w-6 h-6 animate-spin' />
           </div>}>
