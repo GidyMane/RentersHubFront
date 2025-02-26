@@ -262,21 +262,6 @@ const SignUpForm = () => {
 
             {step === 4 && (
               <form onSubmit={handleSubmit} className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="email" className="text-sm font-medium">Email (optional)</Label>
-                  <div className="relative">
-                    <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-                    <Input
-                      id="email"
-                      type="email"
-                      placeholder="Enter your email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      className="pl-10"
-                      
-                    />
-                  </div>
-                </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label htmlFor="firstName" className="text-sm font-medium">First Name</Label>
@@ -316,6 +301,22 @@ const SignUpForm = () => {
                     />
                   </div>
                 </div>
+                <div className="space-y-2">
+                  <Label htmlFor="email" className="text-sm font-medium">Email (optional)</Label>
+                  <div className="relative">
+                    <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                    <Input
+                      id="email"
+                      type="email"
+                      placeholder="Enter your email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      className="pl-10"
+                      
+                    />
+                  </div>
+                </div>
+
                 <div className="space-y-2">
                   <Label htmlFor="password" className="text-sm font-medium">Password</Label>
                   <div className="relative">
@@ -391,7 +392,7 @@ const SignUpForm = () => {
           <h2 className="text-4xl font-serif italic">
             Streamline Your
             <br />
-            Rental Business
+            Rental
             <br />
             with Renters Hub
           </h2>
