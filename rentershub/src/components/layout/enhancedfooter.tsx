@@ -30,7 +30,7 @@ export default function Footer() {
                         <Image src="/RH1.png" alt="RentersHub Logo" width={50} height={50} />
                         <p className='text-headlineSmall text-secondary500 text-balance'>Renters Hub</p>
                         <p className="text-sm mb-4">
-                            Renters Hub: where we make it easy for Kenyans to find their dream houses.
+                            Renters Hub: The Place Where Kenyans Come To Find Vacant Houses.
                         </p>
                     </div>
                     <div className="grid grid-cols-2 gap-8">
