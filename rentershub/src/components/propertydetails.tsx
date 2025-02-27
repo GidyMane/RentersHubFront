@@ -220,46 +220,17 @@ export default function PropertyDetail({
           {/* Header */}
           {property && (
             <div className="space-y-4">
-              <div className="flex items-center gap-2">
+              {/* <div className="flex items-center gap-2">
                 {property.featured && (
                   <Badge className="bg-green-500 hover:bg-green-600">
                     AVAILABLE
                   </Badge>
                 )}
-              </div>
+              </div> */}
               <h1 className="text-3xl font-bold">
                 {property.title}
               </h1>
-              <div className="flex items-center text-muted">
-                <MapPin className="w-4 h-4 mr-2" />
-                {`${property.address}, ${property.state}`}
-              </div>
-              <div className="flex items-center justify-between">
-                <div className="text-3xl font-bold">
-                  {" "}
-                  <span className="text-primary">
-                    {new Intl.NumberFormat("en-US", {
-                      style: "currency",
-                      currency: "KES",
-                    }).format(Number(property.rent_price))}
-                  </span>
-                </div>
-                {/* <Button
-                  variant="outline"
-                  className="gap-2"
-                  onClick={handleShare}
-                >
-                  <Share2 className="w-4 h-4" />
-                  {isSharing ? "Sharing..." : "Share"}
-                </Button> */}
-                {/* {isShared && (
-                  <span className="text-green-500">Link Shared!</span>
-                )} */}
-              </div>
-            </div>
-          )}
-
-          {/* Image Gallery */}
+              {/* Image Gallery */}
           <div className="space-y-2">
             <Dialog>
               <DialogTrigger asChild>
@@ -302,6 +273,36 @@ export default function PropertyDetail({
 
             </Dialog>
           </div>
+              <div className="flex items-center text-black">
+                <MapPin className="w-4 h-4 mr-2" />
+                {`${property.address}, ${property.state}`}
+              </div>
+              <div className="flex items-center justify-between">
+                <div className="text-3xl font-bold">
+                  {" "}
+                  <span className="text-primary">
+                    {new Intl.NumberFormat("en-US", {
+                      style: "currency",
+                      currency: "KES",
+                    }).format(Number(property.rent_price))}
+                  </span>
+                </div>
+                {/* <Button
+                  variant="outline"
+                  className="gap-2"
+                  onClick={handleShare}
+                >
+                  <Share2 className="w-4 h-4" />
+                  {isSharing ? "Sharing..." : "Share"}
+                </Button> */}
+                {/* {isShared && (
+                  <span className="text-green-500">Link Shared!</span>
+                )} */}
+              </div>
+            </div>
+          )}
+
+          
 
           {/* Property Details */}
           <div className="grid grid-cols-2 gap-4">
@@ -400,7 +401,7 @@ export default function PropertyDetail({
             </p>
             <div className="space-y-2">
               <h3 className="font-semibold">Prices:</h3>
-              <ul className="list-disc list-inside space-y-1 text-muted">
+              <ul className="list-disc list-inside space-y-1 text-prices">
                 <li>{`Rent Amount 
                      -  ${new Intl.NumberFormat("en-US", {
                   style: "currency",
@@ -439,14 +440,14 @@ export default function PropertyDetail({
               </ul>
             </div>
           </div>
-          <div className="space-y-2 my-2 px-4 py-2">
-            <h3 className="text-lg font-semibold">Details</h3>
+          {/* <div className="space-y-2 my-2 px-4 py-2"> */}
+            {/* <h3 className="text-lg font-semibold">Details</h3>
             <div className="text-sm text-black">
               Updated on{" "}
               {property?.updated_at
                 ? new Date(property?.updated_at).toLocaleString()
                 : "N/A"}
-            </div>
+            </div> */}
             {/* <div className="grid gap-4 rounded-lg bg-white p-4">
               <div className="grid grid-cols-2 gap-4">
                 <div>
@@ -482,7 +483,7 @@ export default function PropertyDetail({
                 <div>{property?.data?.property?.bathrooms || "N/A"}</div>
               </div>
             </div> */}
-          </div>
+          {/* </div> */}
         </div>
         <div className="bg-secondary50/90 px-4 py-8 md:container">
           {/* Features */}
