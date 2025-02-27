@@ -111,7 +111,7 @@ export default function ProfilePage() {
   }
 
   return (
-    <DashboardLayout>
+   
       <div className="p-4 sm:p-6 lg:p-8">
         <ToastContainer />
         <div className="max-w-2xl mx-auto space-y-8">
@@ -166,6 +166,6 @@ export default function ProfilePage() {
           <ChangePassword />
         </div>
       </div>
-    </DashboardLayout>
+   
   )
 }
