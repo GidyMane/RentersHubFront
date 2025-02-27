@@ -417,7 +417,7 @@ export default function PropertyDetail({
                 </div>
 
                 <div className="h-[300px] w-full rounded-lg overflow-hidden">
-                  <MapContainer center={position} zoom={13} className="w-full h-full">
+                  <MapContainer center={position} zoom={13} className="w-full h-full z-0">
                     <TileLayer
                       url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                       attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
