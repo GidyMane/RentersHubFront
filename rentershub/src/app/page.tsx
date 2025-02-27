@@ -29,21 +29,21 @@ const page = async (props: {
   const rent_price_max = params?.rent_price_max || null;
   const special_condition = params?.special_condition || null; 
 
-  const formattedRentPrice = rent_price_max ? `KSh ${rent_price_max}/Month` : "Not specified";
+  const formattedRentPrice = rent_price_max ? `KSh ${rent_price_max} pm` : "Not specified";
 
 
   const messageParts = [`Hello. I am from the website, https://rentershub.co.ke and I am searching for a vacant house that meets this criterion:`];
 
 if (propertytype_name) messageParts.push(`HOUSE TYPE: ${propertytype_name}`);
 if (address) messageParts.push(`LOCATION: ${address}`);
-if (rent_price_max) messageParts.push(`MAX RENT BUDGET: KSh ${formattedRentPrice}Month`);
+if (rent_price_max) messageParts.push(`MAX RENT BUDGET: ${formattedRentPrice}`);
 if (special_condition) messageParts.push(`CONDITION: ${special_condition}`);
 
 
 messageParts.push(`Please help me find the house. Thank you.`);
 
 
-const whatsappMessage = encodeURIComponent(messageParts.join("\n"));
+const whatsappMessage = encodeURIComponent(messageParts.join("\n\n\n"));
   
   const whatsappLink = `https://wa.me/254731352350?text=${whatsappMessage}`;
 
