@@ -78,17 +78,17 @@ const whatsappMessage = encodeURIComponent(messageParts.join("\n"));
                 {/* <h2 className="text-2xl font-bold text-red-600">🚨 No Listings Available!</h2> */}
                 <p className="mt-4 text-gray-700 text-lg leading-relaxed">
                 Hello. Landlords and Property Agents are yet to post such a 
-                house in that location.<br />
+                house in that location.<br /><br/>
                 Please go back and search another house or a different location 
-                or.<br />
+                or.<br /><br/>
                 Contact our office for further assistance.
                 </p>
                 <div className="flex flex-col md:flex-row gap-6 mt-6 w-full justify-center">
                   <a href="tel:+254731352350" className="px-6 py-3 text-lg font-semibold rounded-lg bg-blue-600 text-white shadow-md hover:bg-blue-700 transition transform hover:scale-105">
-                    📞 Call Customer Care
+                    📞 Call Admin
                   </a>
                   <a href={whatsappLink} target="_blank" rel="noopener noreferrer" className="px-6 py-3 text-lg font-semibold rounded-lg bg-green-500 text-white shadow-md hover:bg-green-600 transition transform hover:scale-105">
-                    💬 WhatsApp Us
+                    💬 Chat With Admin
                   </a>
                 </div>
               </div>
