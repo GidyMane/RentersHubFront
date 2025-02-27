@@ -61,7 +61,7 @@ const Navbar = () => {
     }
 
     return (
-        <div className='my-4 flex items-center justify-between gap-2 w-full px-8'>
+        <div className='py-2 flex items-center justify-between gap-2 w-full px-8 fixed bg-white z-[100]'>
             <div className='flex gap-2 items-center justify-center'>
                 <Image src="/RH1.png" alt="RentersHub Logo" width={40} height={40}  />
                 <p className='text-headlineSmall text-secondary500 text-balance'>Renters Hub</p>

@@ -73,7 +73,7 @@ export function FullScreenCarousel({ propertytype, api_key }: { propertytype: an
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.6, delay: 0.4 }}
-                            className="mb-2 text-3xl md:text-4xl lg:text-4xl font-bold leading-tight"
+                            className="mb-2 text-3xl mt-20 md:text-4xl lg:text-4xl font-bold leading-tight"
                         >
                             The Place Where Kenyans Come To Find Vacant Houses
                         </motion.h1>
@@ -90,7 +90,7 @@ export function FullScreenCarousel({ propertytype, api_key }: { propertytype: an
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6, delay: 0.6 }}
-                        className="bg-white/40 shadow-md h-fit w-full md:w-fit p-2"
+                        className="bg-white/40 shadow-md h-fit w-full md:w-fit p-2 mt-10"
                     >
                         <div className="bg-white w-full h-full p-4">
                             <SearchForm api_key={api_key} propertytypes={propertytype} />

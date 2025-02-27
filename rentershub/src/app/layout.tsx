@@ -55,11 +55,14 @@ export default function RootLayout({
                     duration: 5000,
                   }}
                 />
-                <div className="top-0">
+                <div className="bg-white top-0">
                   <Navbar />
                 </div>
+                
 
                   {children}
+
+                  
              
 
                 {/* <FloatingNavDemo /> */}
