@@ -82,7 +82,7 @@ const LoginForm = () => {
           <div className="w-full max-w-md space-y-8">
             <div className="space-y-2">
               <h1 className="text-3xl font-bold text-[#1C4532]">Welcome Renters Hub</h1>
-              <p className="text-gray-600">Where Smart Kenyans Come to Find Homes</p>
+              <p className="text-gray-600">The Place Where Kenyans Come To Find Vacant Houses</p>
             </div>
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="space-y-2">
