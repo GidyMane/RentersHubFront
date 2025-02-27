@@ -67,7 +67,7 @@ const page = async (props: {
             {apiproperties[0] == 200 && apiproperties[1].results.length > 0 ? apiproperties[1].results.map((property: any, idx: number) => (
               <PropertyRender property={property} key={idx} />
             )) : (
-              <div className="flex flex-col items-center justify-center bg-white p-8 rounded-xl shadow-lg w-full md:w-3/5 mx-auto text-center">
+              <div className="col-span-full flex flex-col items-center justify-center bg-white p-8 rounded-xl shadow-lg w-full md:w-3/5 mx-auto text-center">
                 <h2 className="text-2xl font-bold text-red-600">🚨 No Listings Available!</h2>
                 <p className="mt-4 text-gray-700 text-lg leading-relaxed">
                 Hello. Landlords and Property Agents are yet to post such a 
