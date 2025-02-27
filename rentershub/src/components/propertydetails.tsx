@@ -216,7 +216,7 @@ export default function PropertyDetail({
               </button>
             </DialogTrigger>
             <DialogContent className="max-w-5xl w-[95vw] h-[90vh] flex flex-col">
-              <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center justify-between mb-2 mt-4">
                 <DialogTitle className="text-lg font-semibold">Property Images</DialogTitle>
                 <DialogClose asChild>
                   <Button variant="ghost" size="sm" className="rounded-full">
