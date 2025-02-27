@@ -124,7 +124,7 @@ export function Navbar({ toggleSidebar, isOpen }: NavbarProps) {
                 <DropdownMenuItem>
                 <Button
             variant="ghost"
-            className="w-full justify-start text-black-300 hover:bg-[#db3131] dark:hover:bg-[#df3535] hover:text-white"
+            className="w-full justify-start text-black-300 "
             onClick={async () => {
               await signOut()
             }}
