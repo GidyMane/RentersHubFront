@@ -56,7 +56,8 @@ export function Navbar({ toggleSidebar, isOpen }: NavbarProps) {
       const userData = data.result;
 
       setUser({
-        name: userData.first_name + ' ' + userData.username,
+        // name: userData.first_name + ' ' + userData.username,
+        name:  userData.username,
         email: userData.email,
         avatar: userData.avatar || "/placeholder.svg?height=32&width=32",
       });
