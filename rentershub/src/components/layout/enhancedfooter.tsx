@@ -42,9 +42,9 @@ export default function Footer() {
                             </ul>
                         </nav>
                         <nav>
-                            <ul className="space-y-2">
+                            {/* <ul className="space-y-2">
                                 <li><Link href="/admin" className="hover:text-gray-300">Admin panel</Link></li>
-                            </ul>
+                            </ul> */}
                         </nav>
                     </div>
                 </div>
