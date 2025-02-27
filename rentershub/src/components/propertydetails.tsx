@@ -268,8 +268,8 @@ export default function PropertyDetail({
             <div>
               <h1 className="text-2xl md:text-3xl font-bold">{property.title}</h1>
               <div className="flex items-center text-black mt-2">
-                <MapPin className="w-4 h-4 mr-2 flex-shrink-0" />
-                <span className="text-sm md:text-base">{`${property.address}, ${property.state}`}</span>
+                <MapPin className="w-4 h-4 mr-2 font-bold flex-shrink-0" />
+                <span className="text-sm font-bold md:text-base">{`${property.address}, ${property.state}`}</span>
               </div>
             </div>
             <div className="text-2xl md:text-3xl font-bold text-primary">{formatCurrency(property.rent_price)}</div>
@@ -285,34 +285,34 @@ export default function PropertyDetail({
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <div className="flex justify-between">
-                  <span className="text-black">Rent Amount:</span>
-                  <span className="font-medium">{formatCurrency(property?.rent_price)}</span>
+                  <span className="text-black font-bold">Rent Amount:</span>
+                  <span className="font-bold">{formatCurrency(property?.rent_price)}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-black">Deposit Amount:</span>
-                  <span className="font-medium">{formatCurrency(property?.deposit_amount)}</span>
+                  <span className="text-black font-bold">Deposit Amount:</span>
+                  <span className="font-bold">{formatCurrency(property?.deposit_amount)}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-black">Water Charges:</span>
-                  <span className="font-medium">{formatCurrency(property?.water_charges)} per unit</span>
+                  <span className="text-black font-bold">Water Charges:</span>
+                  <span className="font-bold">{formatCurrency(property?.water_charges)} per unit</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-black">Water Deposit:</span>
-                  <span className="font-medium">{formatCurrency(property?.water_deposit)}</span>
+                  <span className="text-black font-bold">Water Deposit:</span>
+                  <span className="font-bold">{formatCurrency(property?.water_deposit)}</span>
                 </div>
               </div>
               <div className="space-y-2">
                 <div className="flex justify-between">
-                  <span className="text-black">Garbage Charges:</span>
-                  <span className="font-medium">{formatCurrency(property?.garbage_charges)}</span>
+                  <span className="text-black font-bold">Garbage Charges:</span>
+                  <span className="font-bold">{formatCurrency(property?.garbage_charges)}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-black">Security Charges:</span>
-                  <span className="font-medium">{formatCurrency(property?.security_charges)}</span>
+                  <span className="text-black font-bold">Security Charges:</span>
+                  <span className="font-bold">{formatCurrency(property?.security_charges)}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-black">Other Charges:</span>
-                  <span className="font-medium">{formatCurrency(property?.other_charges)}</span>
+                  <span className="text-black font-bold">Other Charges:</span>
+                  <span className="font-bold">{formatCurrency(property?.other_charges)}</span>
                 </div>
               </div>
             </div>
@@ -330,8 +330,8 @@ export default function PropertyDetail({
                   <div className="flex items-center gap-2">
                     <Building2 className="w-4 h-4 text-muted" />
                     <div className="space-y-1">
-                      <p className="text-sm text-secondary">Property Type</p>
-                      <p className="font-medium">{property?.propertytype?.name}</p>
+                      <p className="text-sm font-bold text-secondary">Property Type</p>
+                      <p className="font-bold">{property?.propertytype?.name}</p>
                     </div>
                   </div>
                 </CardContent>
@@ -341,8 +341,8 @@ export default function PropertyDetail({
                   <div className="flex items-center gap-2">
                     <Cctv className="w-4 h-4 text-muted" />
                     <div className="space-y-1">
-                      <p className="text-sm text-secondary">Managed By</p>
-                      <p className="font-medium">{property?.managed_by}</p>
+                      <p className="text-sm font-bold text-secondary">Managed By</p>
+                      <p className="font-bold">{property?.managed_by}</p>
                     </div>
                   </div>
                 </CardContent>
@@ -355,7 +355,7 @@ export default function PropertyDetail({
                 <CardTitle>Description</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-black">{property?.description}</p>
+                <p className="text-black font-bold">{property?.description}</p>
               </CardContent>
             </Card>
 
@@ -366,7 +366,7 @@ export default function PropertyDetail({
               </CardHeader>
               <CardContent>
                 {property?.property_features && Array.isArray(property.property_features) ? (
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 font-bold md:grid-cols-2 gap-4">
                     {property.property_features.map((feature) => (
                       <div key={feature.id} className="flex items-center gap-2">
                         <Check className="w-5 h-5 text-green-500 flex-shrink-0" />
@@ -399,19 +399,19 @@ export default function PropertyDetail({
               <CardContent className="space-y-6">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <div className="text-sm font-medium text-muted">City</div>
+                    <div className="text-sm font-bold text-secondary">City</div>
                     <div>{property?.city}</div>
                   </div>
                   <div>
-                    <div className="text-sm font-medium text-muted">Area</div>
+                    <div className="text-sm font-bold text-secondary">Area</div>
                     <div>{property?.address}</div>
                   </div>
                   <div>
-                    <div className="text-sm font-medium text-muted">State/county</div>
+                    <div className="text-sm font-bold text-secondary">State/county</div>
                     <div>{property?.state}</div>
                   </div>
                   <div>
-                    <div className="text-sm font-medium text-muted">Country</div>
+                    <div className="text-sm font-bold text-secondary">Country</div>
                     <div>{property?.country}</div>
                   </div>
                 </div>
