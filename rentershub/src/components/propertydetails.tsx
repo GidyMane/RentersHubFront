@@ -169,7 +169,7 @@ export default function PropertyDetail({
     <div className="mx-auto">
       {/* Image Gallery - Full Width */}
       <div className="relative w-full">
-        <div className="relative aspect-[16/9] md:aspect-[21/9] w-full">
+        <div className="relative min-h-[400px] md:min-h-[500px] w-full">
           {images.length > 0 ? (
             <Image
               src={images[selectedImage] || "/placeholder.svg"}
