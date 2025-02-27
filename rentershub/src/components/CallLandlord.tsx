@@ -59,7 +59,7 @@ const CallLandlordForm = ({ landlordPhone, propertyId }: { landlordPhone: string
   // Function to send SMS
   const sendSmsToLandlord = async () => {
     try {
-      const response = await fetch("/api/send-sms", {
+      const response = await fetch("/api/sms/send-sms", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ phone: formattedPhone, message: landlordSmsMessage }),

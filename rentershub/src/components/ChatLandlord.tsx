@@ -39,10 +39,14 @@ const ChatWithLandlord = ({ landlordPhone, propertyId }: { landlordPhone: string
       setPhoneError("Phone number must be at least 10 digits.");
       return;
     }
-
+  
     setSubmitted(true);
     console.log("User Info Submitted:", { name, phone });
+  
+    // Send SMS to landlord after submission
+    sendSmsToLandlord();
   };
+  
 
   // Generate house link
   const houseLink = `https://rentershub.co.ke/properties-details.php?PropertyDetail=${propertyId}`;
@@ -59,18 +63,23 @@ Is it still available?`;
   // Function to send SMS
   const sendSmsToLandlord = async () => {
     try {
-      const response = await fetch("/api/send-sms", {
+      const response = await fetch("/api/sms/send-sms", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ phone: formattedPhone, message: landlordSmsMessage }),
       });
-
+  
       const data = await response.json();
-      console.log("SMS sent:", data);
+      if (data.success) {
+        console.log("SMS sent successfully:", data);
+      } else {
+        console.error("Failed to send SMS:", data.error);
+      }
     } catch (error) {
       console.error("Error sending SMS:", error);
     }
   };
+  
 
   // Handle WhatsApp button click
   const handleWhatsAppClick = () => {
