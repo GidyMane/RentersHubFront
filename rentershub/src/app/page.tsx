@@ -55,12 +55,12 @@ const page = async (props: {
           </Suspense>
         </div>
         <div className='flex items-center justify-center md:px-10'>
-          <div className='my-10'>
+          <div className='my-2'>
             <h2 className='text-gray-800 text-3xl font-semibold text-balance'>Available Houses</h2>
-            <p className='my-4 text-muted text-md text-center'>Verified by our team</p>
+            <p className='text-muted text-md text-center'>Verified by our team</p>
           </div>
         </div>
-        <div id="search-results" className="grid grid-cols-1 mt-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:px-16 px-6">
+        <div id="search-results" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:px-16 px-6">
           <Suspense fallback={<div className='col-span-1 md:col-span-2 lg:col-span-3 xl:col-span-4 flex items-center justify-center my-4'>
             <Loader className='text-primary w-6 h-6 animate-spin' />
           </div>}>
