@@ -17,6 +17,7 @@ const key = process.env.GOOGLE_MAPS_API_KEY!
 export const dynamic = "force-dynamic"
 
 
+
 const page = async (props: {
   searchParams: Promise<{ limit: number; offset: number; address: string; propertytype_name: string; rent_price_max: number; special_condition:string }>
 }) => {
@@ -26,18 +27,24 @@ const page = async (props: {
   const address = params?.address || null;
   const propertytype_name = params?.propertytype_name || null;
   const rent_price_max = params?.rent_price_max || null;
-  const special_condition = params?.special_condition || null;
-  
+  const special_condition = params?.special_condition || null; 
 
   const formattedRentPrice = rent_price_max ? `KSh ${rent_price_max}/Month` : "Not specified";
-  const whatsappMessage = encodeURIComponent(
-    `Hello. I am from the website, https://rentershub.co.ke and I am searching for a vacant house that meets this criterion:\n\n` +
-    `HOUSE TYPE: ${propertytype_name}\n` +
-    `LOCATION: ${address}\n` +
-    `MAX RENT BUDGET: ${formattedRentPrice}\n` +
-    `CONDITION: ${special_condition}\n` +
-    `Please help me find the house. Thank you.`
-  );
+
+
+  const messageParts = [`Hello. I am from the website, https://rentershub.co.ke and I am searching for a vacant house that meets this criterion:`];
+
+if (propertytype_name) messageParts.push(`HOUSE TYPE: ${propertytype_name}`);
+if (address) messageParts.push(`LOCATION: ${address}`);
+if (rent_price_max) messageParts.push(`MAX RENT BUDGET: KSh ${formattedRentPrice}Month`);
+if (special_condition) messageParts.push(`CONDITION: ${special_condition}`);
+
+
+messageParts.push(`Please help me find the house. Thank you.`);
+
+
+const whatsappMessage = encodeURIComponent(messageParts.join("\n"));
+  
   const whatsappLink = `https://wa.me/254731352350?text=${whatsappMessage}`;
 
   const [apiproperties, propertytypes] = await Promise.all([
