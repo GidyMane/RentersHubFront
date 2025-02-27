@@ -75,7 +75,7 @@ const whatsappMessage = encodeURIComponent(messageParts.join("\n"));
               <PropertyRender property={property} key={idx} />
             )) : (
               <div className="col-span-full flex flex-col items-center justify-center bg-white p-8 rounded-xl shadow-lg w-full md:w-3/5 mx-auto text-center">
-                <h2 className="text-2xl font-bold text-red-600">🚨 No Listings Available!</h2>
+                {/* <h2 className="text-2xl font-bold text-red-600">🚨 No Listings Available!</h2> */}
                 <p className="mt-4 text-gray-700 text-lg leading-relaxed">
                 Hello. Landlords and Property Agents are yet to post such a 
                 house in that location.<br />

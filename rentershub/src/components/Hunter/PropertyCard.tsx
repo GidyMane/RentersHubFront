@@ -78,8 +78,8 @@ export function PropertyCard({
                 {city}, {state}
               </span>
             </div>
-            <h3 className="text-xl font-bold text-primary mt-2">
-              {rentPrice.toLocaleString()} /PM
+            <h3 className="text font-bold text-primary mt-2">
+              {rentPrice.toLocaleString()} pm
             </h3>
           </div>
         </Link>
