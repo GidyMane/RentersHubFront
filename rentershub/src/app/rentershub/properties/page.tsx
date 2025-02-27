@@ -51,7 +51,7 @@ export default function PropertiesPage() {
   console.log(filteredProperties, "filter")
 
   return (
-    <DashboardLayout>
+    
       <div className="p-4 sm:p-6 lg:p-8">
         <div className="max-w-7xl mx-auto">
           <div className="flex justify-between items-center mb-6">
@@ -87,6 +87,6 @@ export default function PropertiesPage() {
           </div>
         </div>
       </div>
-    </DashboardLayout>
+    
   )
 }

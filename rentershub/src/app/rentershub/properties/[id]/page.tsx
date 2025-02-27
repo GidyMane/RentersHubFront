@@ -44,7 +44,7 @@ export default function PropertyPage() {
   }, [id])
 
   return (
-    <DashboardLayout>
+
       <div className="p-4 sm:p-6 lg:p-8">
         {loading && <p>Loading property details...</p>}
 
@@ -60,6 +60,6 @@ export default function PropertyPage() {
           <p className="text-gray-500">No property details available.</p>
         )}
       </div>
-    </DashboardLayout>
+
   )
 }
