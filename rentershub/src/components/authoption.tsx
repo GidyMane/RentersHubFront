@@ -1,5 +1,7 @@
 "use client"
 
+import type React from "react"
+
 import { useState } from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -9,7 +11,7 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import { useRouter } from "next/navigation"
 
 const AuthOptions: React.FC = () => {
-  const router = useRouter();
+  const router = useRouter()
   const [showLandlordTerms, setShowLandlordTerms] = useState(false)
   const [showAgentTerms, setShowAgentTerms] = useState(false)
   const [agreedLandlord, setAgreedLandlord] = useState(false)
@@ -41,56 +43,84 @@ const AuthOptions: React.FC = () => {
   `
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#1C4532] to-[#2A9D8F] flex items-center justify-center p-4">
-      <Card className="w-full max-w-3xl mx-auto shadow-2xl overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-[#1C4532] to-[#2A9D8F] mt-12 flex items-center justify-center p-4 md:p-8">
+      <Card className="w-full max-w-4xl mx-auto shadow-2xl overflow-hidden rounded-2xl border-0">
         <CardContent className="p-0">
-          <div className="bg-white p-8">
-            <div className="mb-8 text-center">
-              <h1 className="text-5xl font-bold text-[#1C4532] mb-4">Welcome to Renters Hub</h1>
+          <div className="bg-white p-6 md:p-10 relative">
+            {/* Decorative elements */}
+            <div className="absolute top-0 right-0 w-32 h-32 bg-[#E9F5F2] rounded-bl-full opacity-50 -z-10"></div>
+            <div className="absolute bottom-0 left-0 w-24 h-24 bg-[#E9F5F2] rounded-tr-full opacity-50 -z-10"></div>
+
+            <div className="mb-10 text-center">
+              <h1 className="text-4xl md:text-5xl font-bold text-[#1C4532] mb-4">Welcome to Renters Hub</h1>              
             </div>
 
             <div className="space-y-6">
-              <OptionButton
-                icon={<Building className="h-8 w-8" />}
-                title="Register as Landlord"
-                description=""
-                onClick={() => setShowLandlordTerms(!showLandlordTerms)}
-                isOpen={showLandlordTerms}
-              />
-              {showLandlordTerms && (
-                <TermsSection
-                  terms={landlordTerms}
-                  agreed={agreedLandlord}
-                  setAgreed={setAgreedLandlord}
-                  userType="Landlord"
-                  router={router}
+              <div className="transition-all duration-300 ease-in-out">
+                <OptionButton
+                  icon={<Building className="h-8 w-8" />}
+                  title="Register as Landlord"
+                  description="List your properties"
+                  onClick={() => {
+                    setShowLandlordTerms(!showLandlordTerms)
+                    if (showAgentTerms) setShowAgentTerms(false)
+                  }}
+                  isOpen={showLandlordTerms}
                 />
-              )}
+                <div
+                  className={`transition-all duration-300 ease-in-out overflow-hidden ${showLandlordTerms ? "max-h-[800px] opacity-100" : "max-h-0 opacity-0"}`}
+                >
+                  {showLandlordTerms && (
+                    <TermsSection
+                      terms={landlordTerms}
+                      agreed={agreedLandlord}
+                      setAgreed={setAgreedLandlord}
+                      userType="Landlord"
+                      router={router}
+                    />
+                  )}
+                </div>
+              </div>
 
-              <OptionButton
-                icon={<User className="h-8 w-8" />}
-                title="Register as Ground Agent"
-                description=""
-                onClick={() => setShowAgentTerms(!showAgentTerms)}
-                isOpen={showAgentTerms}
-              />
-              {showAgentTerms && (
-                <TermsSection
-                  terms={agentTerms}
-                  agreed={agreedAgent}
-                  setAgreed={setAgreedAgent}
-                  userType="Ground Agent"
-                  router={router}
+              <div className="transition-all duration-300 ease-in-out">
+                <OptionButton
+                  icon={<User className="h-8 w-8" />}
+                  title="Register as Ground Agent"
+                  description="Help connect landlords in your area"
+                  onClick={() => {
+                    setShowAgentTerms(!showAgentTerms)
+                    if (showLandlordTerms) setShowLandlordTerms(false)
+                  }}
+                  isOpen={showAgentTerms}
                 />
-              )}
+                <div
+                  className={`transition-all duration-300 ease-in-out overflow-hidden ${showAgentTerms ? "max-h-[800px] opacity-100" : "max-h-0 opacity-0"}`}
+                >
+                  {showAgentTerms && (
+                    <TermsSection
+                      terms={agentTerms}
+                      agreed={agreedAgent}
+                      setAgreed={setAgreedAgent}
+                      userType="Ground Agent"
+                      router={router}
+                    />
+                  )}
+                </div>
+              </div>
 
-              <OptionButton
-                icon={<LogIn className="h-8 w-8" />}
-                title="Login"
-                description=""
-                onClick={() => router.push("/rentershub/add-property")}
-                variant="outline"
-              />
+              <div className="transition-all duration-300 ease-in-out">
+                <OptionButton
+                  icon={<LogIn className="h-8 w-8" />}
+                  title="Login to Your Account"
+                  description="Access your properties"
+                  onClick={() => router.push("/rentershub/add-property")}
+                  variant="default"
+                />
+              </div>
+            </div>
+
+            <div className="mt-10 text-center text-sm text-gray-500">
+              <p>© {new Date().getFullYear()} Renters Hub. All rights reserved.</p>
             </div>
           </div>
         </CardContent>
@@ -108,23 +138,34 @@ interface OptionButtonProps {
   variant?: "default" | "outline"
 }
 
-const OptionButton: React.FC<OptionButtonProps> = ({ icon, title, description, onClick, isOpen, variant = "default" }) => (
+const OptionButton: React.FC<OptionButtonProps> = ({
+  icon,
+  title,
+  description,
+  onClick,
+  isOpen,
+  variant = "default",
+}) => (
   <Button
-    className={`w-full h-auto py-4 px-6 text-left flex items-start space-x-4 ${
+    className={`w-full h-auto py-5 px-6 text-left flex items-center space-x-4 ${
       variant === "outline"
-        ? "bg-white text-[#1C4532] hover:bg-[#E9F1EE] border-2 border-[#1C4532]"
-        : "bg-[#1C4532] hover:bg-[#153726] text-white"
-    } rounded-lg transition-all duration-300 ease-in-out transform hover:scale-102`}
+        ? "bg-white text-[#1C4532] hover:bg-[#E9F5F2] border-2 border-[#1C4532]"
+        : "bg-gradient-to-r from-[#1C4532] to-[#2A9D8F] hover:from-[#153726] hover:to-[#238779] text-white"
+    } rounded-xl transition-all duration-300 ease-in-out transform hover:scale-[1.02] hover:shadow-lg`}
     onClick={onClick}
   >
-    <div className="flex-shrink-0">{icon}</div>
+    <div className="flex-shrink-0 bg-white bg-opacity-20 p-3 rounded-full">{icon}</div>
     <div className="flex-grow">
       <h2 className="text-xl font-semibold mb-1">{title}</h2>
       <p className="text-sm opacity-90">{description}</p>
     </div>
     {isOpen !== undefined && (
-      <div className="flex-shrink-0 self-center">
-        {isOpen ? <ChevronUp className="h-6 w-6" /> : <ChevronDown className="h-6 w-6" />}
+      <div className="flex-shrink-0 self-center ml-2">
+        {isOpen ? (
+          <ChevronUp className="h-6 w-6 transition-transform duration-300" />
+        ) : (
+          <ChevronDown className="h-6 w-6 transition-transform duration-300" />
+        )}
       </div>
     )}
   </Button>
@@ -139,21 +180,36 @@ interface TermsSectionProps {
 }
 
 const TermsSection: React.FC<TermsSectionProps> = ({ terms, agreed, setAgreed, userType, router }) => (
-  <div className="mt-4 bg-gray-50 rounded-lg p-6 space-y-4">
-    <ScrollArea className="h-60 w-full rounded border p-4 bg-white">
-      <h3 className="font-semibold mb-2 text-lg">Terms and Conditions for {userType}s:</h3>
-      <p className="whitespace-pre-line text-sm">{terms}</p>
+  <div className="mt-4 bg-[#F7FBFA] rounded-xl p-6 space-y-4 border border-[#E0F0ED]">
+    <h3 className="font-semibold text-lg text-[#1C4532]">Terms and Conditions for {userType}s:</h3>
+
+    <ScrollArea className="h-64 w-full rounded-lg border border-[#E0F0ED] p-5 bg-white shadow-inner">
+      <div className="space-y-4">
+        <p className="whitespace-pre-line text-sm leading-relaxed text-gray-700">{terms}</p>
+      </div>
     </ScrollArea>
-    <div className="flex items-center space-x-2">
-      <Checkbox id={`agree-${userType}`} checked={agreed} onCheckedChange={(checked) => setAgreed(!!checked)} />
-      <label htmlFor={`agree-${userType}`} className="text-sm font-medium">
-        I have read and agree to the terms and conditions
+
+    <div className="flex items-start space-x-3 p-3 bg-white rounded-lg border border-[#E0F0ED]">
+      <Checkbox
+        id={`agree-${userType}`}
+        checked={agreed}
+        onCheckedChange={(checked) => setAgreed(!!checked)}
+        className="mt-1 data-[state=checked]:bg-[#2A9D8F] data-[state=checked]:border-[#2A9D8F]"
+      />
+      <label htmlFor={`agree-${userType}`} className="text-sm font-medium text-gray-700">
+        I have read and agree to the terms and conditions for {userType}s on Renters Hub
       </label>
     </div>
-    <Button className="w-full bg-[#2A9D8F] hover:bg-[#238779] text-white" disabled={!agreed} onClick={() => router.push("/signup")}>
-      Register Me Right Now
+
+    <Button
+      className="w-full py-6 bg-gradient-to-r from-[#2A9D8F] to-[#3EB7A8] hover:from-[#238779] hover:to-[#2A9D8F] text-white font-medium rounded-xl transition-all duration-300 shadow-md hover:shadow-lg disabled:opacity-70 disabled:cursor-not-allowed"
+      disabled={!agreed}
+      onClick={() => router.push("/signup")}
+    >
+      Register as {userType} Now
     </Button>
   </div>
 )
 
 export default AuthOptions
+
