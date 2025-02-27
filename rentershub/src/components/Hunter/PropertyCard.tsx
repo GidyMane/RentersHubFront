@@ -25,7 +25,7 @@ function handleShare(id: string, title: string) {
 }
 
 // Function to truncate the title to a certain word limit
-function truncateTitle(title: string, wordLimit: number = 3) {
+function truncateTitle(title: string, wordLimit: number = 6) {
   const words = title.split(" ");
   return words.length > wordLimit ? words.slice(0, wordLimit).join(" ") + "..." : title;
 }
