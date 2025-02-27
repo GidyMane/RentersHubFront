@@ -21,7 +21,7 @@ const page = async (props: {
   searchParams: Promise<{ limit: number; offset: number; address: string; propertytype_name: string; rent_price_max: number; special_condition:string }>
 }) => {
   const params = await props.searchParams;
-  const limit = params?.limit || 4;
+  const limit = params?.limit || 20;
   const offset = params?.offset || null;
   const address = params?.address || null;
   const propertytype_name = params?.propertytype_name || null;
