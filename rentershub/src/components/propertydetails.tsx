@@ -193,25 +193,7 @@ export default function PropertyDetail({
 
 
 
-  const handleShare = () => {
-    const url = window.location.href; // You can replace this with the property URL you want to share
-    if (navigator.share) {
-      navigator
-        .share({
-          title: property?.title || "Property",
-          text: `Check out this property: ${property?.title}`,
-          url: url,
-        })
-        .then(() => setIsShared(true))
-        .catch((error) => console.log("Error sharing:", error));
-    } else {
-      // Fallback: Copy link to clipboard if sharing is not supported
-      navigator.clipboard.writeText(url).then(() => {
-        setIsShared(true);
-        toast.success("Link copied to clipboard!");
-      });
-    }
-  };
+  
 
   return (
     <div className="mx-auto ">
@@ -219,15 +201,8 @@ export default function PropertyDetail({
         <div className="space-y-6">
           {/* Header */}
           {property && (
-            <div className="space-y-4">
-              {/* <div className="flex items-center gap-2">
-                {property.featured && (
-                  <Badge className="bg-green-500 hover:bg-green-600">
-                    AVAILABLE
-                  </Badge>
-                )}
-              </div> */}
-              <h1 className="text-3xl font-bold">
+            <div className="space-y-4">              
+              <h1 className="text-3xl py-8 font-bold">
                 {property.title}
               </h1>
               {/* Image Gallery */}
@@ -286,18 +261,7 @@ export default function PropertyDetail({
                       currency: "KES",
                     }).format(Number(property.rent_price))}
                   </span>
-                </div>
-                {/* <Button
-                  variant="outline"
-                  className="gap-2"
-                  onClick={handleShare}
-                >
-                  <Share2 className="w-4 h-4" />
-                  {isSharing ? "Sharing..." : "Share"}
-                </Button> */}
-                {/* {isShared && (
-                  <span className="text-green-500">Link Shared!</span>
-                )} */}
+                </div>               
               </div>
             </div>
           )}
@@ -331,22 +295,7 @@ export default function PropertyDetail({
                   </div>
                 </div>
               </CardContent>
-            </Card>
-            {/* <Card>
-              <CardContent className="pt-6">
-                <div className="flex items-center gap-2">
-                  <Square className="w-4 h-4 text-muted" />
-                  <div className="space-y-1">
-                    <p className="text-sm text-secondary">
-                      Square Meters
-                    </p>
-                    <p className="font-medium">
-                      {property?.data?.property?.size}
-                    </p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card> */}
+            </Card>            
           </div>
         </div>
 
@@ -365,17 +314,7 @@ export default function PropertyDetail({
                   </Button>
                 </div>
               </div>
-              <form className="space-y-4">
-                {/* <Input placeholder="Name" />
-                <Input placeholder="Phone" /> */}
-                {/* <Input placeholder="Email" /> */}
-                {/* <Textarea
-                  placeholder="Message"
-                  defaultValue="Hello. I have seen this vacant house on Renters Hub Platform. Is it still available?”"
-                /> */}
-                {/* <Button className="w-full bg-[#B5A887] hover:bg-[#A39775] text-white">
-                  Send Message
-                </Button> */}
+              <form className="space-y-4">              
 
                 <CallLandlordForm landlordPhone={property?.owners_contact} propertyId={""} />
                 <ChatWithLandlord landlordPhone={property?.owners_contact} propertyId={""} />
@@ -440,50 +379,6 @@ export default function PropertyDetail({
               </ul>
             </div>
           </div>
-          {/* <div className="space-y-2 my-2 px-4 py-2"> */}
-            {/* <h3 className="text-lg font-semibold">Details</h3>
-            <div className="text-sm text-black">
-              Updated on{" "}
-              {property?.updated_at
-                ? new Date(property?.updated_at).toLocaleString()
-                : "N/A"}
-            </div> */}
-            {/* <div className="grid gap-4 rounded-lg bg-white p-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <div className="font-medium">Price:</div>
-                  <div className="text-2xl font-bold">
-                    {property?.data?.property?.price
-                      ? `${new Intl.NumberFormat("en-US", {
-                        style: "currency",
-                        currency: "KES",
-                      }).format(Number(property?.rent_price))}`
-                      : "N/A"}
-                  </div>
-                </div>
-                <div>
-                  <div className="font-medium">Property Type:</div>
-                  <div>{property?.propertytype?.name || "N/A"}</div>
-                </div>
-              </div>
-              <Separator />
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <div className="font-medium">Bedrooms:</div>
-                  <div>{property?.data?.property?.bedrooms || "N/A"}</div>
-                </div>
-                <div>
-                  <div className="font-medium">Property Status:</div>
-                  <div>{property?.data?.property?.saleType || "N/A"}</div>
-                </div>
-              </div>
-              <Separator />
-              <div>
-                <div className="font-medium">Bathrooms:</div>
-                <div>{property?.data?.property?.bathrooms || "N/A"}</div>
-              </div>
-            </div> */}
-          {/* </div> */}
         </div>
         <div className="bg-secondary50/90 px-4 py-8 md:container">
           {/* Features */}
@@ -583,7 +478,6 @@ export default function PropertyDetail({
         <div className="py-8 md:px-10 px-4 container">
           <h3 className="text-3xl font-semibold my-6">Other Properties In the Same Area</h3>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-
             <Suspense fallback={<Loader className="animate animate-spin" />}>
               {similarproperties[0] == 200 && similarproperties[1].length > 0 ? similarproperties[1].map((property: any, idx: number) => (
                 <PropertyRender property={property} key={idx} />
