@@ -88,7 +88,7 @@ const AuthOptions: React.FC = () => {
                 icon={<LogIn className="h-8 w-8" />}
                 title="Login"
                 description=""
-                onClick={() => router.push("/login")}
+                onClick={() => router.push("/rentershub/add-property")}
                 variant="outline"
               />
             </div>
