@@ -81,10 +81,11 @@ const Navbar = () => {
                             className={`fixed md:relative top-0 left-0 bottom-0 w-64 md:w-auto ${isMobile ? "bg-black opacity-2 text-white" : "hidden md:flex"} z-[100] md:z-auto flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-8 p-6 md:p-0`}
                         >
                             <div className='flex gap-2 items-center justify-center'>
-                                <div className='flex flex-col gap-2'>
-                                    <Image src="/RH1.png" alt="RentersHub Logo" width={40} height={40}  />
-                                    <p className='text-headlineSmall text-secondary500 text-balance'>Renters Hub</p>
-                                </div>
+                            <Link href="/" className="flex flex-col gap-2 items-center cursor-pointer">
+    <Image src="/RH1.png" alt="RentersHub Logo" width={40} height={40} />
+    <p className='text-headlineSmall text-secondary500 text-balance'>Renters Hub</p>
+</Link>
+
                                 <Button variant="ghost" size="icon" className="self-end justify-end items-end flex mb-4" onClick={() => setIsMenuOpen(false)}>
                                     <X className="h-6 w-6" />
                                 </Button>
