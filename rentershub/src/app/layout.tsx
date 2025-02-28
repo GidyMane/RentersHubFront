@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import { Analytics } from "@vercel/analytics/react"
 import "./globals.css";
 import { AuthProvider } from "@/providers/KindeAuthProvider";
 import { SessionProvider } from "@/context/SessionProvider";
@@ -35,6 +36,8 @@ export default function RootLayout({
   return (
     <AuthProvider>
       <SessionProvider>
+      <Analytics/>
+
         {/* <ToastContainer /> */}
         <QueryProvider>
         <EdgeStoreProvider>
