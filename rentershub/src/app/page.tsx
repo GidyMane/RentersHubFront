@@ -63,7 +63,7 @@ const whatsappMessage = encodeURIComponent(messageParts.join("\n\n\n"));
         </div>
         <div className='flex items-center justify-center md:px-10'>
           <div className='my-2'>
-            <h2 className='text-gray-800 text-3xl font-semibold text-balance'>Verified Vacant Houses</h2>
+            {/* <h2 className='text-gray-800 text-3xl font-semibold text-balance'>Verified Vacant Houses</h2> */}
             {/* <p className='text-muted text-md text-center'>Verified by our team</p> */}
           </div>
         </div>
