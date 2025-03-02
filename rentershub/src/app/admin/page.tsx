@@ -18,7 +18,7 @@ export default function DashboardPage() {
             <CardTitle className="text-sm font-medium">Total Properties</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-primary300">1,234</div>
+            <div className="text-2xl font-bold text-primary300">0</div>
           </CardContent>
         </Card>
         <Card>
@@ -26,7 +26,7 @@ export default function DashboardPage() {
             <CardTitle className="text-sm font-medium">Total Landlords</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-primary300">789</div>
+            <div className="text-2xl font-bold text-primary300">0</div>
           </CardContent>
         </Card>
         <Card>
@@ -34,7 +34,7 @@ export default function DashboardPage() {
             <CardTitle className="text-sm font-medium">Total Ground Agents</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-primary300">445</div>
+            <div className="text-2xl font-bold text-primary300">0</div>
           </CardContent>
         </Card>
         <Card>
@@ -42,7 +42,7 @@ export default function DashboardPage() {
             <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-primary300">56,000</div>
+            <div className="text-2xl font-bold text-primary300">0</div>
           </CardContent>
         </Card>
       </div>

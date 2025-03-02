@@ -147,13 +147,35 @@ const AuthOptions: React.FC = () => {
               </div>
 
               <div className="transition-all duration-300 ease-in-out">
-                <OptionButton
-                  icon={<LogIn className="h-8 w-8" />}
-                  title="Login to Your Account"
-                  description=""
-                  onClick={() => router.push("/rentershub/add-property")}
-                  variant="default"
-                />
+              <OptionButton
+  icon={<LogIn className="h-8 w-8" />}
+  title="Login to Your Account"
+  description=""
+  onClick={async () => {
+    try {
+      const res = await fetch("/api/auth/session"); 
+      const data = await res.json();
+      
+      if (data?.user) {
+        const role = data.user.role.toLowerCase();
+        if (role === "admin") {
+          router.push("/admin");
+        } else if (role === "landlord" || role === "groundagent") {
+          router.push("/rentershub/dashboard");
+        } else {
+          router.push("/login");
+        }
+      } else {
+        router.push("/login");
+      }
+    } catch (error) {
+      console.error("Session check failed:", error);
+      router.push("/login");
+    }
+  }}
+  variant="default"
+/>
+
               </div>
             </div>
 

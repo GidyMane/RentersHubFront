@@ -81,7 +81,7 @@ const whatsappMessage = encodeURIComponent(messageParts.join("\n\n\n"));
                 house in that location.<br /><br/>
                 Please go back and search another house or a different location 
                 or.<br /><br/>
-                Contact our office for further assistance.
+                Contact our admin for further assistance.
                 </p>
                 <div className="flex flex-col md:flex-row gap-6 mt-6 w-full justify-center">
                   <a href="tel:+254731352350" className="px-6 py-3 text-lg font-semibold rounded-lg bg-blue-600 text-white shadow-md hover:bg-blue-700 transition transform hover:scale-105">
