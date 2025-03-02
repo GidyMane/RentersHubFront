@@ -18,6 +18,7 @@ import { usePathname } from "next/navigation"
 import Image from "next/image"
 import React, { ReactNode } from "react"
 import { NavBarDropDown } from "./NavBardropdown"
+import Link from "next/link"
 
 
 
@@ -64,15 +65,19 @@ const AdminLayout = ({ children }: { children: ReactNode }) => {
             </Breadcrumb>
           </div>
           <div className="flex items-center gap-2 px-3">
-            <NavBarDropDown />
-            {/* <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-              <Image width={300} height={300} src={"/logo.jpeg"} alt={"logo"} className="w-full h-full" />
-            </div>
-            <div className="flex flex-col gap-0.5 leading-none">
-              <span className="font-semibold text-secondary300">Intime Homes Consultancy</span>
-              <span className="">v1.0.0</span>
-            </div> */}
-
+            
+            <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-white text-sidebar-primary-foreground">
+  <Link href="/login">
+    <Image
+      width={600}
+      height={600}
+      src="/RH2.jpg"
+      alt="logo"
+      className="w-full h-full cursor-pointer"
+    />
+  </Link>
+</div>        
+<NavBarDropDown />
           </div>
         </header>
         <div className="flex flex-1 flex-col gap-4 p-4">
