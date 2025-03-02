@@ -3,8 +3,8 @@ import type { Metadata } from "next";
 
 
 export const metadata: Metadata = {
-  title: "RentersHub",
-  description: "Where Smart Kenyans Come to find homes",
+  title: "Renters Hub",
+  description: "The Place Where Kenyans Come To Find Vacant Houses.",
 };
 
 export default function RootLayout({

@@ -17,8 +17,8 @@ const lato = Jost({
 });
 
 export const metadata: Metadata = {
-  title: "Admin- RentersHub ",
-  description: "Where Smart Kenyans Come to find houses",
+  title: "Admin- Renters Hub ",
+  description: "The Place Where Kenyans Come To Find Vacant Houses.",
 };
 
 export default function DashboardLayout({
