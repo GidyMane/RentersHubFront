@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronDown, CircleUserRound, Dock, Facebook, Instagram, Menu, X } from "lucide-react";
+import { ChevronDown, CircleUserRound, Dock, Facebook, Home, Instagram, Menu, X } from "lucide-react";
 import React from "react";
 import { Button } from "../ui/button";
 import Link from "next/link";
@@ -132,7 +132,7 @@ const Navbar: React.FC = () => {
             <div className="items-center gap-4 justify-around hidden md:flex">
                 <NavItem href="#">
                     <div className="text-bodyMedium flex items-center justify-center rounded-full gap-0.5">
-                        <Dock className="w-4 h-4 font-extrabold" />
+                        <Home className="w-4 h-4 font-extrabold" />
                         Vacant Houses
                     </div>
                 </NavItem>
