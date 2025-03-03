@@ -194,7 +194,7 @@ function ApproveButton({ row }: { row: any }) {
 
 
         }} className="group">
-            <Button variant="outline" className="group-hover:bg-primary group-hover:cursor-pointer">{approvemutation.isPending ? <Loader className="animate animate-spin" /> : "Approve User"}</Button>
+            <Button variant="outline" className="group-hover:bg-primary group-hover:cursor-pointer">{approvemutation.isPending ? <Loader className="animate animate-spin" /> : "Approve"}</Button>
 
         </div>
     )
