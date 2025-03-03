@@ -51,9 +51,11 @@ const SignUpForm = () => {
   const fetchRoles = async () => {
     try {
       const response = await axios.get(`${baseUrl}accounts/roles`);
+      console.log(response, "response")
       const filteredRoles = response.data.result.filter(
         (role: { role: string }) => role.role === 'LANDLORD' || role.role === 'GROUNDAGENT'
       );
+      console.log(filteredRoles, "roles")
       setRoles(filteredRoles);
     } catch (error) {
       toast.error('Error fetching roles. Please try again.');

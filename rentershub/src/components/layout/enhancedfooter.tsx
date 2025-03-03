@@ -1,14 +1,21 @@
 "use client"
 
-import Image from "next/image"
-import Link from "next/link"
-import { ArrowUp } from 'lucide-react'
+import Image from "next/image";
+import Link from "next/link";
+import { ArrowUp } from "lucide-react";
 import { usePathname } from "next/navigation";
 
 export default function Footer() {
     const path = usePathname();
 
-    if (path.includes("admin") || path.startsWith("/rentershub") || path.includes("/login") || path.includes("/signup") || path.includes("/successmessage") || path.includes("/auth2")) {
+    if (
+        path.includes("admin") ||
+        path.startsWith("/rentershub") ||
+        path.includes("/login") ||
+        path.includes("/signup") ||
+        path.includes("/successmessage") ||
+        path.includes("/auth2")
+    ) {
         return null;
     }
 
@@ -36,29 +43,27 @@ export default function Footer() {
                     <div className="grid grid-cols-2 gap-8">
                         <nav>
                             <ul className="space-y-2">
-                                <li><Link href="/auth2" className="hover:text-gray-300">Register as landlord</Link></li>
-                                <li><Link href="/auth2" className="hover:text-gray-300">Register as Ground Agent</Link></li>
-                                
-                                <li><a href="https://api.whatsapp.com/send?phone=254731352350&text=Hello.%20I%20am%20from%20the%20website,%20https://rentershub.co.ke%20and%20I%20am%20searching%20for%20a%20vacant%20house" target="_blank" rel="noopener noreferrer" className="hover:text-gray-300">Chat with Us</a></li>
+                                <li><a href="tel:+254731352350" className="hover:text-gray-300">Call Us</a></li>
                                 <li>
-  <a href="tel:+254731352350" className="hover:text-gray-300">Call Us</a>
-</li>
-
+                                    <a
+                                        href="https://api.whatsapp.com/send?phone=254731352350&text=Hello.%20I%20am%20from%20the%20website,%20https://rentershub.co.ke%20and%20I%20am%20searching%20for%20a%20vacant%20house"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="hover:text-gray-300"
+                                    >
+                                        Chat with Us
+                                    </a>
+                                </li>
                                 <li><Link href="/rentershub/Dashboard" className="hover:text-gray-300">Login to Post a House</Link></li>
+                                <li><Link href="/auth2" className="hover:text-gray-300">Register as Landlord</Link></li>
+                                <li><Link href="/auth2" className="hover:text-gray-300">Register as Ground Sales Agent</Link></li>
                             </ul>
-                        </nav>
-                        <nav>
-                            {/* <ul className="space-y-2">
-                                <li><Link href="/admin" className="hover:text-gray-300">Admin panel</Link></li>
-                            </ul> */}
                         </nav>
                     </div>
                 </div>
 
                 <div className="flex flex-col md:flex-row justify-between items-center py-4">
-                    <p className="text-sm">
-                        © {new Date().getFullYear()} Renters Hub. All rights reserved.
-                    </p>
+                    <p className="text-sm">© {new Date().getFullYear()} Renters Hub. All rights reserved.</p>
                 </div>
 
                 <div className="flex justify-center space-x-4 py-4">
@@ -81,5 +86,5 @@ export default function Footer() {
                 </div>
             </div>
         </footer>
-    )
+    );
 }
