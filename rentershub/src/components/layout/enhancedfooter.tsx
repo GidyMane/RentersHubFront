@@ -56,7 +56,7 @@ export default function Footer() {
                                 </li>
                                 <li><Link href="/rentershub/Dashboard" className="hover:text-gray-300">Login to Post a House</Link></li>
                                 <li><Link href="/auth2" className="hover:text-gray-300">Register as Landlord</Link></li>
-                                <li><Link href="/auth2" className="hover:text-gray-300">Register as Ground Sales Agent</Link></li>
+                                <li><Link href="/auth2" className="hover:text-gray-300 whitespace-nowrap">Register as Ground Sales Agent</Link></li>
                             </ul>
                         </nav>
                     </div>
