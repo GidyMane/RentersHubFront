@@ -13,19 +13,21 @@ export const getproperties = async (
 ) => {
     try {
         const searchparams = new URLSearchParams()
-        if (limit || offset || address || propertytype_name || rent_price_max || special_condition) {
-            searchparams.set("limit", limit?.toString() ?? "20")
-            searchparams.set("offset", offset?.toString() ?? "0")
-            searchparams.set("address", address?.toString() ?? "")
-            searchparams.set("propertytype_name", propertytype_name?.toString() ?? "")
-            searchparams.set("rent_price_max", rent_price_max?.toString() ?? "")
-            searchparams.set("special_condition", special_condition?.toString() ?? "")
-        }       
 
-        const res = await axios.get(baseUrl + `listing/property?${searchparams.toString()}`)
-        const properties = res.data.filter((property: any) => property.is_approved !== false)
+        // Set default values and add necessary parameters
+        searchparams.set("limit", limit?.toString() ?? "20")
+        searchparams.set("offset", offset?.toString() ?? "0")
+        searchparams.set("address", address?.toString() ?? "")
+        searchparams.set("propertytype_name", propertytype_name?.toString() ?? "")
+        searchparams.set("rent_price_max", rent_price_max?.toString() ?? "")
+        searchparams.set("special_condition", special_condition?.toString() ?? "")
 
-        return [res.status, properties]
+        // Ensure we only fetch properties where is_approved is true
+        searchparams.set("is_approved", "true")
+
+        const res = await axios.get(`${baseUrl}listing/property?${searchparams.toString()}`)
+
+        return [res.status, res.data]
 
     } catch (error: any) {
         return [400, error?.message]
