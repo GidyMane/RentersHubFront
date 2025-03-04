@@ -14,18 +14,17 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
   const toggleSidebar = () => setSidebarOpen(!sidebarOpen)
 
   return (
-    <div className="flex w-full">
-      {/* Render sidebar only when it's open */}
-      {sidebarOpen && (
-        <div className="fixed w-64 h-screen z-40">
-          <Sidebar isOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
-        </div>
-      )}
+    <div className="flex h-screen">
+      {/* Sidebar: Always visible on large screens, toggle on small screens */}
+      <div className={`lg:w-64 ${sidebarOpen ? "block" : "hidden lg:block"}`}>
+        <Sidebar isOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
+      </div>
 
-      <div className={`flex flex-col w-full transition-all ${sidebarOpen ? 'md:ml-64' : ''}`}>
+      {/* Main Content Area */}
+      <div className="flex-1 flex flex-col w-full">
         <Navbar toggleSidebar={toggleSidebar} isOpen={sidebarOpen} />
 
-        <main className="bg-gray-100 overflow-y-auto container mx-auto">
+        <main className="flex-1 bg-gray-100 overflow-y-auto container mx-auto p-4">
           {children}
         </main>
       </div>

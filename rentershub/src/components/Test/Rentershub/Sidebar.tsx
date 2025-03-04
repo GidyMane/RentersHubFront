@@ -30,8 +30,8 @@ export function Sidebar({ isOpen, toggleSidebar }: SidebarProps) {
   return (
     <div
       className={cn(
-        "fixed inset-y-0 left-0 z-50 h-full w-64 bg-[#1C4532] dark:bg-[#153726] text-white transition-all lg:translate-x-0 lg:static",
-        isOpen ? "translate-x-0" : "-translate-x-full",
+        "fixed inset-y-0 left-0 z-50 h-full w-64 bg-[#1C4532] dark:bg-[#153726] text-white transition-transform lg:translate-x-0 lg:static",
+        isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
       )}
     >
       <div className="flex flex-col h-full">
@@ -41,6 +41,7 @@ export function Sidebar({ isOpen, toggleSidebar }: SidebarProps) {
             <Image src={theme === "dark" ? "/RH1.png" : "/RH1.png"} alt="RentersHub Logo" width={40} height={40} className="rounded-full" />
             <span className="text-xl font-bold">Renters Hub</span>
           </Link>
+          {/* Hide close button on large screens */}
           <Button variant="ghost" size="icon" onClick={toggleSidebar} className="lg:hidden">
             <X className="h-6 w-6" />
           </Button>
