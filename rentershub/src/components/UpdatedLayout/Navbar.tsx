@@ -130,7 +130,7 @@ const Navbar: React.FC = () => {
             </div>
 
             <div className="items-center gap-4 justify-around hidden md:flex">
-                <NavItem href="#">
+                <NavItem href="/">
                     <div className="text-bodyMedium flex items-center justify-center rounded-full gap-0.5">
                         <Home className="w-4 h-4 font-extrabold" />
                         Vacant Houses
@@ -154,9 +154,11 @@ const Navbar: React.FC = () => {
                     </Button>
                 </div>
                 <div className="hidden md:flex gap-2 items-center justify-center">
+                <NavItem href="/rentershub/add-property">
                     <Button variant="outline" className="text-black bg-secondary400 rounded-3xl text-bodySmall">
                         Manage Rentals
                     </Button>
+                    </NavItem>
                 </div>
             </div>
         </div>
