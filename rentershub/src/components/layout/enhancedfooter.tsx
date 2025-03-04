@@ -25,7 +25,7 @@ export default function Footer() {
                 <div className="flex justify-end py-4">
                     <button
                         onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-                        className="hover:text-gray-300 flex items-center"
+                        className="hover:text-gray-300 flex items-center"   style={{ fontFamily: "Georgia, serif" }}
                     >
                         <ArrowUp className="mr-2 h-4 w-4" />
                         Back to top
@@ -35,35 +35,36 @@ export default function Footer() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 py-8 border-secondary500">
                     <div>
                         <Image src="/RH1.png" alt="RentersHub Logo" width={50} height={50} />
-                        <p className='text-headlineSmall text-secondary500 text-balance'>Renters Hub</p>
-                        <p className="text-sm mb-4">
+                        <p className='text-headlineSmall text-secondary500 text-balance'   style={{ fontFamily: "Georgia, serif" }}>Renters Hub</p>
+                        <p className="text-sm mb-4"   style={{ fontFamily: "Georgia, serif" }}>
                             Renters Hub: The Place Where Kenyans Come To Find Vacant Houses.
                         </p>
                     </div>
                     <div className="grid grid-cols-2 gap-8">
                         <nav>
                             <ul className="space-y-2">
-                                <li><a href="tel:+254731352350" className="hover:text-gray-300">Call Us</a></li>
+                                <li><a href="tel:+254731352350" className="hover:text-gray-300"   style={{ fontFamily: "Georgia, serif" }}>Call Us</a></li>
                                 <li>
                                     <a
                                         href="https://api.whatsapp.com/send?phone=254731352350&text=Hello.%20I%20am%20from%20the%20website,%20https://rentershub.co.ke%20and%20I%20am%20searching%20for%20a%20vacant%20house"
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         className="hover:text-gray-300"
+                                        style={{ fontFamily: "Georgia, serif" }}
                                     >
                                         Chat with Us
                                     </a>
                                 </li>
-                                <li><Link href="/rentershub/Dashboard" className="hover:text-gray-300">Login to Post a House</Link></li>
-                                <li><Link href="/auth2" className="hover:text-gray-300">Register as Landlord</Link></li>
-                                <li><Link href="/auth2" className="hover:text-gray-300 whitespace-nowrap">Register as Ground Sales Agent</Link></li>
+                                <li><Link href="/rentershub/Dashboard" className="hover:text-gray-300"   style={{ fontFamily: "Georgia, serif" }}>Login to Post a House</Link></li>
+                                <li><Link href="/auth2" className="hover:text-gray-300"   style={{ fontFamily: "Georgia, serif" }}>Register as Landlord</Link></li>
+                                <li><Link href="/auth2" className="hover:text-gray-300 whitespace-nowrap"   style={{ fontFamily: "Georgia, serif" }}>Register as Ground Sales Agent</Link></li>
                             </ul>
                         </nav>
                     </div>
                 </div>
 
                 <div className="flex flex-col md:flex-row justify-between items-center py-4">
-                    <p className="text-sm">© {new Date().getFullYear()} Renters Hub. All rights reserved.</p>
+                    <p className="text-sm"   style={{ fontFamily: "Georgia, serif" }}>© {new Date().getFullYear()} Renters Hub. All rights reserved.</p>
                 </div>
 
                 <div className="flex justify-center space-x-4 py-4">

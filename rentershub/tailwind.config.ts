@@ -18,6 +18,8 @@ const config = {
   		}
   	},
   	extend: {
+		fontFamily: {
+			sans: ["Georgia", "serif"],},
   		colors: {
   			border: '#153726',
   			input: '#153726',

@@ -23,10 +23,10 @@ const SearchForm = ({ propertytypes, api_key }: { propertytypes: any; api_key:st
 
 
                 <div className='flex flex-col gap-2'>
-                    <label htmlFor="" className='cursor-none  font-medium   '>Select House type</label>
+                    <label htmlFor="" className='cursor-none  font-medium   '  style={{ fontFamily: "Georgia, serif" }}>Select House type</label>
                     <Select name='propertytype_name' >
-                        <SelectTrigger className="w-full border-primary">
-                            <SelectValue placeholder="House type" className='text-secondary' />
+                        <SelectTrigger className="w-full border-primary"  style={{ fontFamily: "Georgia, serif" }}>
+                            <SelectValue placeholder="House type" className='text-secondary'  style={{ fontFamily: "Georgia, serif" }} />
                         </SelectTrigger>
                         <SelectContent>
                             <SelectGroup>
@@ -42,25 +42,25 @@ const SearchForm = ({ propertytypes, api_key }: { propertytypes: any; api_key:st
                 </div>
 
                 <div className='flex flex-col gap-2'>
-                    <label htmlFor="" className='cursor-none  font-medium   '>Enter Location</label>
-                    <PlacesAutocomplete GOOGLE_MAPS_API_KEY={api_key} />
+                    <label htmlFor="" className='cursor-none  font-medium   ' style={{ fontFamily: "Georgia, serif" }}>Enter Location</label>
+                    <PlacesAutocomplete GOOGLE_MAPS_API_KEY={api_key}  />
                 </div>
 
 
                 <div className='flex flex-col gap-2'>
-                    <label htmlFor="" className='cursor-none font-medium   '>Max Rent Budget</label>
-                    <Input name='rent_price_max' className='relative p-2 focus:border-secondary border-primary placeholder:text-sm' type='number' placeholder='eg; 10,000' />
+                    <label htmlFor="" className='cursor-none font-medium   '  style={{ fontFamily: "Georgia, serif" }}>Max Rent Budget</label>
+                    <Input name='rent_price_max' className='relative p-2 focus:border-secondary border-primary placeholder:text-sm' type='number'  style={{ fontFamily: "Georgia, serif" }} placeholder='eg; 10,000' />
                 </div>
 
                 <div className='flex flex-col gap-2'>
-                    <label htmlFor="" className='cursor-none font-medium   '>Special Condition</label>
-                    <Input name='special_condition' className='relative p-2 focus:border-secondary border-primary placeholder:text-sm' type='text' placeholder='eg; With balcony' />
+                    <label htmlFor="" className='cursor-none font-medium   '  style={{ fontFamily: "Georgia, serif" }}>Special Condition</label>
+                    <Input name='special_condition' className='relative p-2 focus:border-secondary border-primary placeholder:text-sm'  style={{ fontFamily: "Georgia, serif" }} type='text' placeholder='eg; With balcony' />
                 </div>
 
               
 
                 <div>
-                    <Button className='mt-4 md:mt-8 px-4 w-full' type='submit' onClick={handleRevalidate}>Find House</Button>
+                    <Button className='mt-4 md:mt-8 px-4 w-full' type='submit'  style={{ fontFamily: "Georgia, serif" }} onClick={handleRevalidate}>Find House</Button>
                 </div>
 
 

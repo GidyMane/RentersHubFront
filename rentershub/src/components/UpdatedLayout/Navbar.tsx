@@ -54,7 +54,7 @@ const Navbar: React.FC = () => {
 
     const DropdownNavItem: React.FC<DropdownNavItemProps> = ({ title, items }) => (
         <div className="group relative">
-            <button className="flex items-center gap-1 py-2 text-labelLarge hover:text-secondary300">
+            <button className="flex items-center gap-1 py-2 text-labelLarge hover:text-secondary300"   style={{ fontFamily: "Georgia, serif" }}>
                 {title}
                 <ChevronDown className="h-4 w-4" />
             </button>
@@ -80,7 +80,7 @@ const Navbar: React.FC = () => {
             <div className="flex gap-2 items-center justify-center">
                 <Link href="/" className="flex items-center gap-2 cursor-pointer">
                     <Image src="/RH1.png" alt="RentersHub Logo" width={40} height={40} />
-                    <p className="text-headlineSmall text-secondary500">Renters Hub</p>
+                    <p className="text-headlineSmall text-secondary500"   style={{ fontFamily: "Georgia, serif" }}>Renters Hub</p>
                 </Link>
             </div>
 
@@ -99,7 +99,7 @@ const Navbar: React.FC = () => {
                             <div className="flex gap-2 items-center justify-center">
                                 <Link href="/" className="flex flex-col gap-2 items-center cursor-pointer">
                                     <Image src="/RH1.png" alt="RentersHub Logo" width={40} height={40} />
-                                    <p className="text-headlineSmall text-secondary500">Renters Hub</p>
+                                    <p className="text-headlineSmall text-secondary500"   style={{ fontFamily: "Georgia, serif" }}>Renters Hub</p>
                                 </Link>
 
                                 <Button variant="ghost" size="icon" className="self-end justify-end items-end flex mb-4" onClick={() => setIsMenuOpen(false)}>
@@ -117,7 +117,7 @@ const Navbar: React.FC = () => {
                                 rel="noopener noreferrer"
                                 className="flex items-center gap-2 px-4 py-2 bg-green-500 text-white rounded-full shadow-lg hover:bg-green-600 transition-all"
                             >
-                                <span className="text-bodySmall font-semibold">Chat With Us</span>
+                                <span className="text-bodySmall font-semibold"   style={{ fontFamily: "Georgia, serif" }}>Chat With Us</span>
                             </a>
 
                             <div className="bottom-0 mt-6 flex gap-4 justify-center items-center mx-2">
@@ -131,19 +131,21 @@ const Navbar: React.FC = () => {
 
             <div className="items-center gap-4 justify-around hidden md:flex">
                 <NavItem href="/">
-                    <div className="text-bodyMedium flex items-center justify-center rounded-full gap-0.5">
-                        <Home className="w-4 h-4 font-extrabold" />
+                    <div className="text-bodyMedium flex items-center justify-center rounded-full gap-0.5"   style={{ fontFamily: "Georgia, serif" }}>
+                        <Home className="w-4 h-4 font-extrabold"   style={{ fontFamily: "Georgia, serif" }}/>
                         Vacant Houses
                     </div>
                 </NavItem>
+                <div   style={{ fontFamily: "Georgia, serif" }}>
                 <NavItem href="/auth2">Post A House</NavItem>
+                </div>
                 <a
                     href="https://api.whatsapp.com/send?phone=254731352350&text=Hello.%20I%20am%20from%20the%20website,%20https://rentershub.co.ke%20and%20I%20am%20searching%20for%20a%20vacant%20house"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center gap-2 px-4 py-2 bg-green-500 text-white rounded-full shadow-lg hover:bg-green-600 transition-all"
                 >
-                    <span className="text-bodySmall font-semibold">Chat With Us</span>
+                    <span className="text-bodySmall font-semibold"   style={{ fontFamily: "Georgia, serif" }}>Chat With Us</span>
                 </a>
             </div>
 
@@ -155,7 +157,7 @@ const Navbar: React.FC = () => {
                 </div>
                 <div className="hidden md:flex gap-2 items-center justify-center">
   <Link href="/rentershub/add-property">
-    <Button variant="outline" className="text-black bg-secondary400 rounded-3xl text-bodySmall">
+    <Button variant="outline" className="text-black bg-secondary400 rounded-3xl text-bodySmall"   style={{ fontFamily: "Georgia, serif" }}>
       Manage Rentals
     </Button>
   </Link>

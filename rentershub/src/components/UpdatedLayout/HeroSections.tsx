@@ -74,6 +74,7 @@ export function FullScreenCarousel({ propertytype, api_key }: { propertytype: an
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.6, delay: 0.4 }}
                             className="mb-2 text-3xl mt-20 md:text-4xl lg:text-4xl font-bold leading-tight"
+                            style={{ fontFamily: "Georgia, serif" }}
                         >
                             The Place Where Kenyans Come To Find Vacant Houses
                         </motion.h1>
