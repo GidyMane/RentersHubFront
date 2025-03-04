@@ -1,13 +1,19 @@
 "use server"
 
-
 import { baseUrl } from "@/utils/constants"
 import axios from "axios"
 
-export const getproperties = async (limit: number | null, offset: number | null, address:string | null, propertytype_name:string |null , rent_price_max:number | null, special_condition: string |null) => {
+export const getproperties = async (
+    limit: number | null,
+    offset: number | null,
+    address: string | null,
+    propertytype_name: string | null,
+    rent_price_max: number | null,
+    special_condition: string | null
+) => {
     try {
         const searchparams = new URLSearchParams()
-        if (limit || offset || address || propertytype_name || rent_price_max) {
+        if (limit || offset || address || propertytype_name || rent_price_max || special_condition) {
             searchparams.set("limit", limit?.toString() ?? "20")
             searchparams.set("offset", offset?.toString() ?? "0")
             searchparams.set("address", address?.toString() ?? "")
@@ -17,13 +23,11 @@ export const getproperties = async (limit: number | null, offset: number | null,
         }       
 
         const res = await axios.get(baseUrl + `listing/property?${searchparams.toString()}`)
+        const properties = res.data.filter((property: any) => property.is_approved !== false)
 
-        console.log(res, "response")
-        return [res.status, res.data]
-
+        return [res.status, properties]
 
     } catch (error: any) {
         return [400, error?.message]
     }
-
 }
