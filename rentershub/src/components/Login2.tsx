@@ -98,7 +98,7 @@ const LoginForm = () => {
 
   return (
     <>
-      <div className="flex min-h-screen flex-col lg:flex-row bg-gray-50">
+      <div className="flex min-h-screen flex-col lg:flex-row bg-gray-50"   style={{ fontFamily: "Georgia, serif" }}>
         {/* Home link - improved with better tap target for mobile */}
         <Link
           href="/"

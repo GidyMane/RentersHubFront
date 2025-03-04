@@ -81,7 +81,7 @@ const AuthOptions: React.FC = () => {
 14. Renters Hub's admins will ask you for your ID card photo or other documents for verification on WhatsApp. Send a View Once image of the documents. If you are not comfortable sharing such, do not proceed with registration.`;
 
   return (
-    <div className="min-h-screen bg-primary from-[#1C4532] to-[#2A9D8F] mt-12 flex items-center justify-center p-4 md:p-8">
+    <div className="min-h-screen bg-primary from-[#1C4532] to-[#2A9D8F] mt-12 flex items-center justify-center p-4 md:p-8"   style={{ fontFamily: "Georgia, serif" }}>
       <Card className="w-full max-w-4xl mx-auto shadow-2xl overflow-hidden rounded-2xl border-0">
         <CardContent className="p-0">
           <div className="bg-white p-6 md:p-10 relative">

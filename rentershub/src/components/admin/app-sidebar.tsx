@@ -107,7 +107,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   }
   return (
    
-    <Sidebar className="h-screen flex justify-between bg-primary ">
+    <Sidebar className="h-screen flex justify-between bg-primary "   style={{ fontFamily: "Georgia, serif" }}>
       <SidebarHeader className="h-screen flex justify-between bg-primary/10">
         <div className="px-4 py-6">
           <div className=" flex flex-col gap-4">

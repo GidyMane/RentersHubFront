@@ -30,7 +30,7 @@ const AdminLayout = ({ children }: { children: ReactNode }) => {
 
       
       <SidebarInset>
-        <header className="flex h-16 sticky top-0  w-full z-50 justify-between shrink-0 bg-transparent backdrop-blur-md shadow-md items-center gap-2 border-b">
+        <header className="flex h-16 sticky top-0  w-full z-50 justify-between shrink-0 bg-transparent backdrop-blur-md shadow-md items-center gap-2 border-b"   style={{ fontFamily: "Georgia, serif" }}>
           <div className="flex items-center gap-2 px-3">
             <SidebarTrigger />
             <Separator orientation="vertical" className="mr-2 h-4" />
@@ -66,7 +66,7 @@ const AdminLayout = ({ children }: { children: ReactNode }) => {
           </div>
           <div className="flex items-center gap-2 px-3">
             
-            <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-white text-sidebar-primary-foreground">
+            <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-white text-sidebar-primary-foreground"   style={{ fontFamily: "Georgia, serif" }}>
   <Link href="/login">
     <Image
       width={600}

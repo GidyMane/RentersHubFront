@@ -6,7 +6,7 @@ export const dynamic = "force-dynamic"
 
 export default function DashboardPage() {
   return (
-    <div className="space-y-6 col-span-3">
+    <div className="space-y-6 col-span-3"   style={{ fontFamily: "Georgia, serif" }}>
       <div className="flex justify-between items-center">
         <h1 className="text-3xl font-bold">Dashboard Overview</h1>
         {/* <QuickPropertySearch /> */}
