@@ -13,7 +13,7 @@ const HandlePageView = ({ landlords }: { landlords: any }) => {
     const dispatch = useAppDispatch()
 
     return (
-        <div className='flex flex-col gap-4'>
+        <div className='flex flex-col gap-4'   style={{ fontFamily: "Georgia, serif" }}>
                 <h1 className="text-2xl font-bold mb-5">Pending Landlords</h1>
 
                 {isedit ? (

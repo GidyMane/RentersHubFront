@@ -44,7 +44,7 @@ export function NavBarDropDown() {
     //console.log(session, "user")
     return (
         <DropdownMenu>
-            <DropdownMenuTrigger asChild className="cursor-pointer transition-all duration-300">
+            <DropdownMenuTrigger asChild className="cursor-pointer transition-all duration-300"   style={{ fontFamily: "Georgia, serif" }}>
                 <Avatar>
                                   <AvatarImage src={user.avatar} />
                                   <AvatarFallback>{user.name.charAt(0).toUpperCase()}</AvatarFallback>
