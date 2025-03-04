@@ -166,7 +166,7 @@ export default function PropertyDetail({
 };
 
   return (
-    <div className="mx-auto">
+    <div className="mx-auto"   style={{ fontFamily: "Georgia, serif" }}>
       {/* Image Gallery - Full Width */}
       <div className="relative w-full">
         <div className="relative min-h-[400px] md:min-h-[500px] w-full">
