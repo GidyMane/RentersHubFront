@@ -163,31 +163,35 @@ const SignUpForm = () => {
             <ToastContainer />
 
             {step === 1 && (
-              <div className="space-y-6">
-                <Label className="text-lg font-medium block mb-4">I am a...</Label>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  {roles.map((role) => (
-                    <Button
-                      key={role.pk}
-                      type="button"
-                      onClick={() => handleRoleSelect(role.role)}
-                      className={`h-24 sm:h-32 flex flex-col items-center justify-center ${
-                        userType === role.role.toLowerCase()
-                          ? 'bg-[#1C4532] text-white'
-                          : 'bg-white text-[#1C4532] border-2 border-[#1C4532]'
-                      } hover:bg-[#1C4532] hover:text-white transition-all rounded-xl`}
-                    >
-                      {role.role === 'GROUNDAGENT' ? (
-                        <User className="w-8 h-8 mb-2" />
-                      ) : (
-                        <Building className="w-8 h-8 mb-2" />
-                      )}
-                      <span className="text-sm sm:text-lg font-medium">{role.role}</span>
-                    </Button>
-                  ))}
-                </div>
-              </div>
+  <div className="space-y-6">
+    <Label className="text-lg font-medium block mb-4">I am a...</Label>
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      {roles.map((role) => {
+        const displayRole = role.role === 'GROUNDAGENT' ? 'Ground Agent' : role.role === 'LANDLORD' ? 'Landlord' : role.role;
+        return (
+          <Button
+            key={role.pk}
+            type="button"
+            onClick={() => handleRoleSelect(role.role)}
+            className={`h-24 sm:h-32 flex flex-col items-center justify-center ${
+              userType === role.role.toLowerCase()
+                ? 'bg-[#1C4532] text-white'
+                : 'bg-white text-[#1C4532] border-2 border-[#1C4532]'
+            } hover:bg-[#1C4532] hover:text-white transition-all rounded-xl`}
+          >
+            {role.role === 'GROUNDAGENT' ? (
+              <User className="w-8 h-8 mb-2" />
+            ) : (
+              <Building className="w-8 h-8 mb-2" />
             )}
+            <span className="text-sm sm:text-lg font-medium">{displayRole}</span>
+          </Button>
+        );
+      })}
+    </div>
+  </div>
+)}
+
 
             {step === 2 && (
               <form className="space-y-6">
