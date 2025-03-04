@@ -154,12 +154,12 @@ const Navbar: React.FC = () => {
                     </Button>
                 </div>
                 <div className="hidden md:flex gap-2 items-center justify-center">
-                <NavItem href="/rentershub/add-property">
-                    <Button variant="outline" className="text-black bg-secondary400 rounded-3xl text-bodySmall">
-                        Manage Rentals
-                    </Button>
-                    </NavItem>
-                </div>
+  <Link href="/rentershub/add-property">
+    <Button variant="outline" className="text-black bg-secondary400 rounded-3xl text-bodySmall">
+      Manage Rentals
+    </Button>
+  </Link>
+</div>
             </div>
         </div>
     );
