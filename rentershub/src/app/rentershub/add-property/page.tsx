@@ -8,6 +8,7 @@ const page = () => {
   return (
     <>
     <AddPropertyPage GOOGLE_MAPS_API_KEY={key}/>
+
     </>
     
   )
