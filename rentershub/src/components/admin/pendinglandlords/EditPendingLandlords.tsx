@@ -15,7 +15,7 @@ const EditPendingLandlord = () => {
     const editdata = useAppSelector((state) => state.property.editdata)
     const dispatch = useAppDispatch()
 
-    console.log(editdata, "editing")
+    // console.log(editdata, "editing")
 
     const formik = useFormik({
         initialValues: {

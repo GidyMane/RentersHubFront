@@ -37,6 +37,7 @@ const EditProperty = () => {
             managed_by: Yup.string().required(),
         }),
         onSubmit(values) {
+            console.log("Submitting values:", values);
             mutation.mutateAsync({ ...values });
         },
     });
@@ -49,7 +50,9 @@ const EditProperty = () => {
             managed_by: string;
             address: string;
             rent_price: string;}) => {
+                console.log("Mutation function called with:", values);
             const res = await updateProperty(values);
+            console.log(res, "response")
             return res;
         },
         onSuccess(data) {
