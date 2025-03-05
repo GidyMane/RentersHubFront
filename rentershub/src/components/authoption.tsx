@@ -90,7 +90,7 @@ const AuthOptions: React.FC = () => {
             <div className="absolute bottom-0 left-0 w-24 h-24 bg-[#E9F5F2] rounded-tr-full opacity-50 -z-10"></div>
 
             <div className="mb-10 text-center">
-              <h1 className="text-4xl md:text-5xl font-bold text-[#1C4532] mb-4">Welcome to Renters Hub</h1>              
+              <h1 className="text-2xl md:text-2xl font-bold text-[#1C4532] mb-4">Welcome to Renters Hub</h1>              
             </div>
 
             <div className="space-y-6">
@@ -216,7 +216,7 @@ const OptionButton: React.FC<OptionButtonProps> = ({
   >
     <div className="flex-shrink-0 bg-white bg-opacity-20 p-3 rounded-full">{icon}</div>
     <div className="flex-grow">
-      <h2 className="text-xl font-semibold mb-1">{title}</h2>
+      <h2 className="font-semibold mb-1">{title}</h2>
       <p className="text-sm opacity-90">{description}</p>
     </div>
     {isOpen !== undefined && (
