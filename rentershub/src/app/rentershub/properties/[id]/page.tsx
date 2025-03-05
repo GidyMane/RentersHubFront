@@ -57,7 +57,7 @@ export default function PropertyPage() {
         {property ? (
           <PropertyDetails {...property} />
         ) : (
-          <p className="text-gray-500">No property details available.</p>
+          <p className="text-gray-500" style={{ fontFamily: "Georgia, serif" }}>No property details available.</p>
         )}
       </div>
 
