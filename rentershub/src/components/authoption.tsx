@@ -96,7 +96,7 @@ const AuthOptions: React.FC = () => {
             <div className="space-y-6">
               <div className="transition-all duration-300 ease-in-out">
                 <OptionButton
-                  icon={<Building className="h-8 w-8" />}
+                  icon={<Building className="h-6 w-6 sm:h-5 sm:w-5" />}
                   title="Register as Landlord"
                   description=""
                   onClick={() => {
@@ -122,7 +122,7 @@ const AuthOptions: React.FC = () => {
 
               <div className="transition-all duration-300 ease-in-out">
                 <OptionButton
-                  icon={<User className="h-8 w-8" />}
+                  icon={<User className="h-6 w-6 sm:h-5 sm:w-5" />}
                   title="Register as Ground Agent"
                   description=""
                   onClick={() => {
