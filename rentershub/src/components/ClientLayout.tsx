@@ -151,7 +151,7 @@ const SignUpForm = () => {
   }
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
+    <div className="flex min-h-screen bg-gray-50" style={{ fontFamily: "Georgia, serif" }}>
       {/* Left side - Form */}
       <div className="flex-1 flex flex-col justify-center p-4 sm:p-6 md:p-8">
         <Card className="w-full max-w-md mx-auto shadow-lg border-0">
