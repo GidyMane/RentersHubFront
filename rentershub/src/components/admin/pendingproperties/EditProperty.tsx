@@ -9,6 +9,16 @@ import { ArrowLeft, Ellipsis } from 'lucide-react';
 import React, { useEffect } from 'react';
 import { toast } from 'react-hot-toast';
 import * as Yup from 'yup';
+interface PropertyImage {
+    id: string;
+    url: string;
+}
+
+interface PropertyFeature {
+    id: number;
+    name: string;
+    propertytype: string | null;
+}
 
 const EditProperty = () => {
     const editdata = useAppSelector((state) => state.property.editdata);
@@ -26,6 +36,10 @@ const EditProperty = () => {
             address: '',
             rent_price: '',
             managed_by: '',
+            water_charges:'',           
+            main_image_url: { id: '', url: '' },
+            images: [] as PropertyImage[],
+            property_features: [] as PropertyFeature[]
         },
         validationSchema: Yup.object().shape({
             title: Yup.string().required(),
@@ -66,6 +80,7 @@ const EditProperty = () => {
     });
 
     useEffect(() => {
+         
         formik.setValues({
             id: editdata.id,
             title: editdata.title,
@@ -75,6 +90,10 @@ const EditProperty = () => {
             address: editdata.address,
             rent_price: editdata.rent_price,
             managed_by: editdata.managed_by,
+            water_charges: editdata.water_charges,
+            main_image_url: editdata.main_image_url,
+            images: editdata.images || [],
+            property_features: editdata.property_features || []
         });
     }, [editdata]);
 
@@ -118,6 +137,42 @@ const EditProperty = () => {
                     <label className='block mb-2 text-sm font-medium text-gray-900'>Rent Price</label>
                     <input type='text' name='rent_price' onChange={formik.handleChange} onBlur={formik.handleBlur} value={formik.values.rent_price} className='bg-gray-50 border border-gray-300 text-sm rounded-lg w-full p-2.5' required />
                 </div>
+                <div>
+                    <label className='block mb-2 text-sm font-medium text-gray-900'>Water Charges</label>
+                    <input type='text' name='water_charges' onChange={formik.handleChange} onBlur={formik.handleBlur} value={formik.values.water_charges} className='bg-gray-50 border border-gray-300 text-sm rounded-lg w-full p-2.5' required />
+                </div>
+                <form className='grid grid-cols-1 gap-2' onSubmit={formik.handleSubmit}>
+                <div>
+                    <label className='block mb-2 text-sm font-medium text-gray-900'>Main Image</label>
+                    {formik.values.main_image_url?.url && <img src={formik.values.main_image_url.url} alt='Main' className='w-full h-40 object-cover rounded' />}
+                </div>
+
+                <div>
+                    <label className='block mb-2 text-sm font-medium text-gray-900'>Additional Images</label>
+                    <div className='grid grid-cols-3 gap-2'>
+                        {formik.values.images.map((image) => (
+                            <img key={image.id} src={image.url} alt='Property' className='w-full h-24 object-cover rounded' />
+                        ))}
+                    </div>
+                </div>
+
+                <div>
+    <label className='block mb-2 text-sm font-medium text-gray-900'>Features</label>
+    {formik.values.property_features.length > 0 ? (
+        <ul className='list-disc pl-5'>
+            {formik.values.property_features.map((feature, index) => (
+                <li key={feature?.id || index}>
+                    {feature?.name ? feature.name : `Feature ${index + 1}`}
+                </li>
+            ))}
+        </ul>
+    ) : (
+        <p className='text-gray-500'>No features available.</p>
+    )}
+</div>
+
+
+                </form>
 
                 <Button type='submit' disabled={mutation.isPending} className='w-full bg-primary text-white'>
                     {mutation.isPending ? <Ellipsis className='animate-pulse' /> : 'Update Property'}

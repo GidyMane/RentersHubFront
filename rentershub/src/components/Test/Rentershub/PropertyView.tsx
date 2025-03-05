@@ -29,7 +29,8 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
-import { toast } from "@/hooks/use-toast"
+import { toast } from "react-hot-toast"
+
 
 interface Feature {
   id: number
