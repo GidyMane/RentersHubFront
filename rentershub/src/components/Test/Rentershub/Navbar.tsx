@@ -72,7 +72,7 @@ export function Navbar({ toggleSidebar, isOpen }: NavbarProps) {
   }, []);
 
   return (
-    <header className={`top-0 ${isOpen ? "z-30" :"z-50"} w-full bg-white sticky border-b shadow-sm`}>
+    <header className={`top-0 ${isOpen ? "z-30" :"z-50"} w-full bg-white sticky border-b shadow-sm`} style={{ fontFamily: "Georgia, serif" }}>
       <div className="container mx-auto px-4">
         <div className="flex h-16 items-center justify-between">
           <div className="flex items-center">

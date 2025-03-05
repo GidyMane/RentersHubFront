@@ -112,7 +112,7 @@ export default function ProfilePage() {
 
   return (
    
-      <div className="p-4 sm:p-6 lg:p-8">
+      <div className="p-4 sm:p-6 lg:p-8" style={{ fontFamily: "Georgia, serif" }}>
         <ToastContainer />
         <div className="max-w-2xl mx-auto space-y-8">
           <h1 className="text-2xl sm:text-3xl font-bold text-[#1C4532]">My Profile</h1>

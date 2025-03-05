@@ -52,7 +52,7 @@ export default function PropertiesPage() {
 
   return (
     
-      <div className="p-4 sm:p-6 lg:p-8">
+      <div className="p-4 sm:p-6 lg:p-8" style={{ fontFamily: "Georgia, serif" }}>
         <div className="max-w-7xl mx-auto">
           <div className="flex justify-between items-center mb-6">
             <h1 className="text-2xl sm:text-3xl font-bold text-[#1C4532]">My Properties</h1>

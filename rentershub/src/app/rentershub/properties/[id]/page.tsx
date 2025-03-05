@@ -45,7 +45,7 @@ export default function PropertyPage() {
 
   return (
 
-      <div className="p-4 sm:p-6 lg:p-8">
+      <div className="p-4 sm:p-6 lg:p-8" style={{ fontFamily: "Georgia, serif" }}>
         {loading && <p>Loading property details...</p>}
 
         {error && (

@@ -32,7 +32,7 @@ export function Sidebar({ isOpen, toggleSidebar }: SidebarProps) {
       className={cn(
         "fixed inset-y-0 left-0 z-50 h-full w-64 bg-[#1C4532] dark:bg-[#153726] text-white transition-transform lg:translate-x-0 lg:static",
         isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
-      )}
+      )} style={{ fontFamily: "Georgia, serif" }}
     >
       <div className="flex flex-col h-full">
         {/* Sidebar Header */}

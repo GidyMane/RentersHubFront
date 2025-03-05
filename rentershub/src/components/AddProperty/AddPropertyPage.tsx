@@ -357,7 +357,7 @@ export default function AddPropertyPage({ GOOGLE_MAPS_API_KEY }: { GOOGLE_MAPS_A
   }
 
   return (
-    <div className="bg-gray-50 min-h-screen p-3 sm:p-2">
+    <div className="bg-gray-50 min-h-screen p-3 sm:p-2" style={{ fontFamily: "Georgia, serif" }}>
       <div className="max-w-4xl mx-auto bg-white rounded-xl shadow-sm">
         <div className="p-4 sm:p-6 border-b">
           <h1 className="text-2xl sm:text-3xl font-bold text-primary flex items-center">
