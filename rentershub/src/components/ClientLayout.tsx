@@ -79,22 +79,30 @@ const SignUpForm = () => {
 
   const handleVerifyOtp = async () => {
     if (!otp) {
-      toast.warning("Please enter the OTP.")
-      return
+        toast.warning("Please enter the OTP.");
+        return;
     }
-    setIsLoading(true)
+
+    setIsLoading(true);
     try {
-      await axios.post(`${baseUrl}accounts/verify/otp`, { otp })
-      toast.success(
-        "Phone Number verified Succesfully.",
-      )
-      setStep(4)
+        // Ensure the phone number starts with '0'
+        const formattedPhone = phone.startsWith("0") ? phone : `0${phone}`;
+        
+
+        await axios.post(`${baseUrl}accounts/verify/otp`, { 
+            otp, 
+            contact: formattedPhone  // Sending phone number with OTP
+        });
+
+        toast.success("Phone Number verified Successfully.");
+        setStep(4);
     } catch (error) {
-      toast.error("Invalid OTP. Please try again.")
+        toast.error("Invalid OTP. Please try again.");
     } finally {
-      setIsLoading(false)
+        setIsLoading(false);
     }
-  }
+};
+
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
