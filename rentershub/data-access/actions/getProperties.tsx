@@ -27,6 +27,8 @@ export const getproperties = async (
 
         const res = await axios.get(`${baseUrl}listing/property?${searchparams.toString()}`)
 
+        console.log(res, "properties")
+
         return [res.status, res.data]
 
     } catch (error: any) {

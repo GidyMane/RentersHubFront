@@ -279,7 +279,7 @@ export default function AddPropertyPage({ GOOGLE_MAPS_API_KEY }: { GOOGLE_MAPS_A
           other_charges: Number.parseFloat(values.otherFees || "0"),
           water_deposit: Number.parseFloat(values.waterDeposit || "0"),
           is_available: true,
-          is_approved: true,
+          is_approved: false,
           featured: true,
           rent_price: Number.parseFloat(values.rent),
           deposit_amount: Number.parseFloat(values.deposit),
