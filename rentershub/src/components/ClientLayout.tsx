@@ -10,7 +10,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Progress } from "@/components/ui/progress"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
-import { User, Building, Mail, Lock, UserPlus, CheckCircle2, ArrowLeft, ArrowRight } from "lucide-react"
+import { User, Building, Mail, Lock, UserPlus, CheckCircle2, ArrowLeft, ArrowRight, EyeOff, Eye } from "lucide-react"
 import Image from "next/image"
 import { baseUrl } from "@/utils/constants"
 import { InputOTP, InputOTPGroup, InputOTPSeparator, InputOTPSlot } from "@/components/ui/input-otp"
@@ -33,6 +33,7 @@ const SignUpForm = () => {
   const [password, setPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
   const [isLoading, setIsLoading] = useState(false)
+  const [showPassword, setShowPassword] = useState(false);
   const router = useRouter()
 
   const totalSteps = 4
@@ -85,7 +86,7 @@ const SignUpForm = () => {
     try {
       await axios.post(`${baseUrl}accounts/verify/otp`, { otp })
       toast.success(
-        "Renters Hub has received your application to advertise on the website. Please wait for verification and approval by the admin.",
+        "Phone Number verified Succesfully.",
       )
       setStep(4)
     } catch (error) {
@@ -122,7 +123,7 @@ const SignUpForm = () => {
     setIsLoading(true)
     try {
       await axios.post(`${baseUrl}accounts/create/user/`, payload)
-      toast.success("Sign-up completed successfully!")
+      toast.success("Renters Hub has received your application to advertise on the website. Please wait for verification and approval by the admin.")
       router.push("/successmessage") // Redirect to success page
     } catch (error) {
       toast.error("Failed to complete sign-up. Please try again.")
@@ -274,7 +275,7 @@ const SignUpForm = () => {
 
             {step === 4 && (
               <form onSubmit={handleSubmit} className="space-y-3">
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-1 gap-3">
                   <div className="space-y-1">
                     <Label htmlFor="firstName" className="text-xs font-medium">
                       First Name
@@ -305,7 +306,7 @@ const SignUpForm = () => {
                   </div>
                 </div>
 
-                <div className="space-y-1">
+                {/* <div className="space-y-1">
                   <Label htmlFor="username" className="text-xs font-medium">
                     Username
                   </Label>
@@ -321,8 +322,8 @@ const SignUpForm = () => {
                       required
                     />
                   </div>
-                </div>
-
+                </div> */}
+{/* 
                 <div className="space-y-1">
                   <Label htmlFor="email" className="text-xs font-medium">
                     Email (optional)
@@ -338,43 +339,62 @@ const SignUpForm = () => {
                       className="pl-8 h-9"
                     />
                   </div>
-                </div>
+                </div> */}
 
-                <div className="space-y-1">
-                  <Label htmlFor="password" className="text-xs font-medium">
-                    Password
-                  </Label>
-                  <div className="relative">
-                    <Lock className="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-                    <Input
-                      id="password"
-                      type="password"
-                      placeholder="Create a strong password"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      className="pl-8 h-9"
-                      required
-                    />
-                  </div>
-                </div>
+<div className="space-y-1">
+        <Label htmlFor="password" className="text-xs font-medium">
+          Password
+        </Label>
+        <div className="relative">
+          <Lock className="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+          <Input
+            id="password"
+            type={showPassword ? "text" : "password"}
+            placeholder="Create a strong password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="pl-8 pr-10 h-9"
+            required
+          />
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon"
+            className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5"
+            onClick={() => setShowPassword((prev) => !prev)}
+          >
+            {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+          </Button>
+        </div>
+      </div>
 
-                <div className="space-y-1">
-                  <Label htmlFor="confirmPassword" className="text-xs font-medium">
-                    Confirm Password
-                  </Label>
-                  <div className="relative">
-                    <Lock className="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-                    <Input
-                      id="confirmPassword"
-                      type="password"
-                      placeholder="Confirm your password"
-                      value={confirmPassword}
-                      onChange={(e) => setConfirmPassword(e.target.value)}
-                      className="pl-8 h-9"
-                      required
-                    />
-                  </div>
-                </div>
+      <div className="space-y-1">
+        <Label htmlFor="confirmPassword" className="text-xs font-medium">
+          Confirm Password
+        </Label>
+        <div className="relative">
+          <Lock className="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+          <Input
+            id="confirmPassword"
+            type={showPassword ? "text" : "password"}
+            placeholder="Confirm your password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            className="pl-8 pr-10 h-9"
+            required
+          />
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon"
+            className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5"
+            onClick={() => setShowPassword((prev) => !prev)}
+          >
+            {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+          </Button>
+        </div>
+      </div>
+  
 
                 <Button
                   type="submit"
