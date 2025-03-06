@@ -13,6 +13,7 @@ export const updateProperty = async (property: {
   managed_by: string;
   address: string;
   rent_price: string;
+  is_available: boolean;
 }) => {
   try {
     // Get the session and access token
@@ -27,11 +28,12 @@ export const updateProperty = async (property: {
       `${baseUrl}listing/property/${property.id}/`,
       {
         title: property.title,
-        propertytype: property.propertytype.id, // Assuming API expects ID
+        propertytype: property.propertytype.id, 
         postedby: property.postedby,
         managed_by: property.managed_by,
         address: property.address,
         rent_price: property.rent_price,
+        is_available: property.is_available,
       },
       {
         headers: {
