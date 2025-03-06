@@ -29,7 +29,7 @@ const LandlordDashboard = () => {
   return (
     <div className="p-4 sm:p-6 lg:p-8" style={{ fontFamily: "Georgia, serif" }}>
       <div className="max-w-7xl mx-auto">
-        <h1 className="text-2xl sm:text-3xl font-bold text-[#1C4532] mb-6">Landlord Dashboard</h1>
+        <h1 className="text-2xl sm:text-3xl font-bold text-[#1C4532] mb-6">Dashboard</h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <DashboardCard 
             title="Total Properties" 
