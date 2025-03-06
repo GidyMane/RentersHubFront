@@ -98,18 +98,18 @@ const SignUpForm = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-
+  
     if (password !== confirmPassword) {
       toast.error("Passwords do not match!")
       return
     }
-
+  
     const selectedRole = roles.find((role) => role.role.toLowerCase() === userType)
     if (!selectedRole) {
       toast.warning("Please select your role: Ground Agent or Landlord")
       return
     }
-
+  
     const payload = {
       email,
       password,
@@ -119,18 +119,35 @@ const SignUpForm = () => {
       contact: `0${phone}`,
       username,
     }
-
+  
     setIsLoading(true)
     try {
-      await axios.post(`${baseUrl}accounts/create/user/`, payload)
-      toast.success("Renters Hub has received your application to advertise on the website. Please wait for verification and approval by the admin.")
+      const response = await axios.post(`${baseUrl}accounts/create/user/`, payload)
+  
+      // Handle successful response
+      toast.success(response.data?.message || "Renters Hub has received your application to advertise on the website. Please wait for verification and approval by the admin.")
       router.push("/successmessage") // Redirect to success page
-    } catch (error) {
+    } catch (error: any) {if (error.response?.data) {
+      const errorData = error.response.data
+
+      // Loop through error object and display messages
+      Object.entries(errorData).forEach(([key, value]) => {
+        if (Array.isArray(value)) {
+          // If the error message is an array (Django Rest Framework often returns lists)
+          value.forEach((msg) => toast.error(` ${msg}`))
+        } else {
+          toast.error(`${value}`)
+        }
+      })
+    } else {
       toast.error("Failed to complete sign-up. Please try again.")
+    }
     } finally {
       setIsLoading(false)
     }
   }
+  
+  
 
   const nextStep = () => setStep((prevStep) => Math.min(prevStep + 1, totalSteps))
   const prevStep = () => setStep((prevStep) => Math.max(prevStep - 1, 1))
