@@ -31,70 +31,85 @@ const LoginForm = () => {
     setShowPassword(!showPassword)
   }
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-
+  const handleSubmit = async (e: React.FormEvent) => { 
+    e.preventDefault();
+  
     // Basic validation
     if (!contact.trim()) {
-      toast.error("Please enter your phone number")
-      return
+      toast.error("Please enter your phone number");
+      return;
     }
-
+  
     if (!password.trim()) {
-      toast.error("Please enter your password")
-      return
+      toast.error("Please enter your password");
+      return;
     }
-
-    const payload = { contact, password }
-    setIsLoading(true)
-
+  
+    const payload = { contact, password };
+    setIsLoading(true);
+  
     try {
+      // Attempt to sign in
       const response = await signIn("credentials", {
         contact: payload.contact,
         password: payload.password,
         redirect: false,
-      })
-
-      if (response?.ok) {
-        toast.success("Login successful!")
-
-        // Fetch session data to get user details
-        const session = await fetch("/api/auth/session").then((res) => res.json())
-
-        if (session?.user?.role) {
-          const userRole = session.user.role
-
-          if (userRole === "ADMIN") {
-            router.push("/admin")
-          } else if (["LANDLORD", "GROUND AGENT"].includes(userRole)) {
-            router.push("/rentershub/Dashboard")
+      });
+  
+      console.log("Login Response:", response); // Debugging
+  
+      // Handle response based on status and error
+      if (response?.status === 200) {
+        if (!response.error) {
+          // Successful login
+          toast.success("Login successful!");
+  
+          // Fetch session data to determine user role
+          const session = await fetch("/api/auth/session").then((res) => res.json());
+  
+          console.log("Fetched Session:", session); // Debugging
+  
+          if (session?.user?.role) {
+            const userRole = session.user.role;
+  
+            if (userRole === "ADMIN") {
+              router.push("/admin");
+            } else if (["LANDLORD", "GROUNDAGENT"].includes(userRole)) {
+              router.push("/rentershub/Dashboard");
+            } else {
+              router.push("/"); // Default redirect
+            }
           } else {
-            router.push("/") // Default redirect if role is unknown
+            toast.warning("Your account is pending approval. Please wait for admin approval.");
           }
         } else {
-          toast.warning("Your account is pending approval. Please wait for admin approval.")
+          // Account pending approval
+          toast.warning("Your account is pending approval. Please wait for admin approval.");
         }
+      } else if (response?.status === 400) {
+        // Invalid credentials
+        toast.error("Wrong password or phone number. Please try again.");
       } else {
-        // Handle specific error cases
-        if (response?.error) {
-          if (response.error.includes("Invalid credentials")) {
-            toast.error("Wrong password or phone number. Please try again.")
-          } else if (response.error.includes("Account not found")) {
-            toast.error("Account not found. Please sign up to create an account.")
-          } else {
-            toast.error(response.error)
-          }
-        } else {
-          toast.error("Login failed. Please check your details and try again.")
-        }
+        // Generic error message
+        toast.error(response?.error || "Login failed. Please check your details and try again.");
       }
     } catch (error: any) {
-      console.error("Login error:", error)
-      toast.error("Connection error. Please check your internet and try again.")
+      console.error("Login error:", error);
+  
+      if (error.response) {
+        console.error("API Error Data:", error.response.data);
+      }
+  
+      toast.error("Connection error. Please check your internet and try again.");
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
+  
+  
+  
+  
+  
 
   return (
     <>

@@ -3,6 +3,7 @@ import Credentials from "next-auth/providers/credentials";
 import axios from "axios";
 // Your own logic for dealing with plaintext password strings; be careful!
 import type { NextAuthConfig } from "next-auth";
+import { json } from "stream/consumers";
 // import { ZodError } from "zod"
 // import { signInSchema } from "./lib/zod"
 // import GoogleProvider from "next-auth/providers/google";
@@ -82,6 +83,9 @@ export default {
               user_id: user.result.user_id,
               role: user.result.role,
             };
+          }
+          else{
+            throw new Error (JSON.stringify(res.data))
           }
         } catch (error: any) {
           console.error("Authorization error:", error);
