@@ -53,6 +53,7 @@ interface PropertyFeature {
   propertytype: string | null
 }
 
+
 // Form validation schema
 const formSchema = z.object({
   id: z.number(),
@@ -61,6 +62,7 @@ const formSchema = z.object({
     id: z.number(),
     name: z.string(),
   }),
+  is_available: z.boolean().default(true),
   postedby: z.string().min(2, { message: "Posted by is required" }),
   price: z.string().min(1, { message: "Price is required" }),
   address: z.string().min(5, { message: "Address must be at least 5 characters" }),
@@ -77,6 +79,7 @@ const formSchema = z.object({
       url: z.string(),
     }),
   ),
+ 
   property_features: z.array(
     z.object({
       id: z.number().optional(),
@@ -111,6 +114,7 @@ const EditProperty = () => {
       main_image_url: { id: "", url: "" },
       images: [],
       property_features: [],
+      is_available: true,
     },
   })
 
@@ -130,6 +134,7 @@ const EditProperty = () => {
         main_image_url: editdata.main_image_url,
         images: editdata.images || [],
         property_features: editdata.property_features || [],
+        is_available: editdata.is_available ?? true,
       })
     }
   }, [editdata, form])
