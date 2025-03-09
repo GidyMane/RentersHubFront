@@ -25,12 +25,10 @@ export function DataTableToolbar<TData>({
 
   if (pathname === "/admin/approvedlandlords") {
     deleteType = "approvedlandlords"
-  } else if (pathname === "/intime-admin/managefeatures") {
+  } else if (pathname === "/admin/pendinglandlords") {
     deleteType = "pendinglandlords"
-  } else if (pathname === "/intime-admin/managelisting") {
-    deleteType = "property"
-  }else if (pathname === "/intime-admin/blogs") {
-    deleteType = "blog"
+  } else if (pathname === "/admin/approvedproperty" || pathname === "/admin/pendingproperties") {
+    deleteType = "property"  
   }else if(pathname === "/intime-admin/users"){
     deleteType = "company"
   }else if(pathname === "/intime-admin/requestaccess"){

@@ -48,6 +48,10 @@ export function DataTableViewOptions<TData>({
         if (session) {
           if (deleteType === "approvedlandlords" || deleteType === "pendinglandlords" || deleteType === "approvedgroundagents" || deleteType === "pendinggroundagents" ) {
             url = baseUrl + `accounts/user/${id}/delete`
+          }
+
+            else if (deleteType === "property") {
+              url = baseUrl + `listing/property/${id}/`; 
           
           } else if (pathname === "/intime-admin/managelisting") {
             deleteType = "property"
