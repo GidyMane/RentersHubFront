@@ -81,6 +81,12 @@ export const priorities = [
 ]
 
 export type Property = {
+        title: string
+        propertytype: any
+        postedby: string
+        managed_by: string
+        address: string
+        rent_price: string
     
         id: number;
         name: string;
