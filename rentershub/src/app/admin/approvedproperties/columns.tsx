@@ -81,6 +81,7 @@ export const priorities = [
 ]
 
 export type Property = {
+        is_available: any
         title: string
         propertytype: any
         postedby: string

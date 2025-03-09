@@ -31,8 +31,12 @@ export function DataTableRowActions<TData>({ row, page }: DataTableRowActionsPro
   const dispatch = useAppDispatch();
   const pathname = usePathname();
 
-  // Mutation function to hide a property
-  const hideProperty = useMutation({
+  // Determine the button label dynamically
+  const isCurrentlyAvailable = property.is_available;
+  const actionLabel = isCurrentlyAvailable ? "Hide" : "Unhide"; // Set button text dynamically
+
+  // Mutation function to toggle property availability
+  const togglePropertyAvailability = useMutation({
     mutationFn: async () => {
       const res = await updateProperty({
         id: property.id,
@@ -42,7 +46,7 @@ export function DataTableRowActions<TData>({ row, page }: DataTableRowActionsPro
         managed_by: property.managed_by,
         address: property.address,
         rent_price: property.rent_price,
-        is_available: false, // Hide property
+        is_available: !isCurrentlyAvailable, // Toggle availability
       });
 
       console.log(res, "update property");
@@ -50,10 +54,10 @@ export function DataTableRowActions<TData>({ row, page }: DataTableRowActionsPro
     },
     onSuccess(data) {
       if (data[1] === 200) {
-        toast.success("Property hidden successfully");
+        toast.success(`Property ${isCurrentlyAvailable ? "hidden" : "unhidden"} successfully`);
         RevalidatePath(pathname); // Refresh UI
       } else {
-        toast.error("Failed to hide property");
+        toast.error("Failed to update property status");
       }
     },
     onError(error) {
@@ -80,17 +84,17 @@ export function DataTableRowActions<TData>({ row, page }: DataTableRowActionsPro
           Edit
         </DropdownMenuItem>
 
-        {/* Hide Button with Loader (Only on /admin/approvedproperty) */}
+        {/* Hide / Unhide Button with Loader (Only on /admin/approvedproperty) */}
         {pathname === "/admin/approvedproperty" && (
           <DropdownMenuItem
-            onClick={() => hideProperty.mutate()}
+            onClick={() => togglePropertyAvailability.mutate()}
             className="text-center bg-red-500 text-white flex items-center justify-center"
-            disabled={hideProperty.isPending} // Disable button while loading
+            disabled={togglePropertyAvailability.isPending} // Disable button while loading
           >
-            {hideProperty.isPending ? (
+            {togglePropertyAvailability.isPending ? (
               <Loader2 className="w-4 h-4 animate-spin mr-2" /> // Loader icon
             ) : (
-              "Hide"
+              actionLabel // "Hide" or "Unhide"
             )}
           </DropdownMenuItem>
         )}
