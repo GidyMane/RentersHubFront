@@ -46,59 +46,77 @@ export function DataTableViewOptions<TData>({
     mutationFn: async (ids: string[]) => {
       const promises = ids.map(async (id) => {
         if (session) {
-          if (deleteType === "approvedlandlords" || deleteType === "pendinglandlords" || deleteType === "approvedgroundagents" || deleteType === "pendinggroundagents" ) {
-            url = baseUrl + `accounts/user/${id}/delete`
+          if (
+            deleteType === "approvedlandlords" ||
+            deleteType === "pendinglandlords" ||
+            deleteType === "approvedgroundagents" ||
+            deleteType === "pendinggroundagents"
+          ) {
+            url = baseUrl + `accounts/user/${id}/delete`;
+          } 
+          else if (deleteType === "property") {
+            url = baseUrl + `listing/property/${id}/`;
+          } 
+          else if (pathname === "/intime-admin/managelisting") {
+            deleteType = "property";
+          } 
+          else if (pathname === "/intime-admin/blogs") {
+            deleteType = "blog";
+          } 
+          else if (pathname === "/intime-admin/users") {
+            deleteType = "company";
+          } 
+          else if (pathname === "/intime-admin/requestaccess") {
+            deleteType = "requestuser";
+          } 
+          else if (pathname === "/intime-admin/testimonials") {
+            deleteType = "testimonial";
           }
-
-            else if (deleteType === "property") {
-              url = baseUrl + `listing/property/${id}/`; 
-          
-          } else if (pathname === "/intime-admin/managelisting") {
-            deleteType = "property"
-          } else if (pathname === "/intime-admin/blogs") {
-            deleteType = "blog"
-          } else if (pathname === "/intime-admin/users") {
-            deleteType = "company"
-          } else if (pathname === "/intime-admin/requestaccess") {
-            deleteType = "requestuser"
-          } else if (pathname === "/intime-admin/testimonials") {
-            deleteType = "testimonial"
-          }
+  
           const res = await axios.delete(url, {
             headers: {
               Authorization: `Bearer ${accessToken}`,
-           
-            }
-          })
-          console.log(res, "delete")
-          if (res.status == 200) {
-            RevalidatePath(pathname)
+            },
+          });
+  
+          console.log(res, "delete");
+  
+          // Revalidate only if status is 200 or 204
+          if (res.status === 200 || res.status === 204) {
+            RevalidatePath(pathname);
           }
-          return { id, status: res.status }
-        }else{
-          throw new Error("Not authorized")
+  
+          return { id, status: res.status };
+        } else {
+          throw new Error("Not authorized");
         }
-
-      })
-      return Promise.all(promises)
+      });
+  
+      return Promise.all(promises);
     },
-
+  
     onSuccess(data) {
       console.log(data);
-    
-      // Check if any item in the array has status !== 200
-      const hasError = data.some((item) => item.status !== 200);
-    
+  
+      const hasError = data.some((item) => item.status !== 200 && item.status !== 204);
+  
       if (hasError) {
         toast.error("Delete not successful");
       } else {
-        toast.success("Data deleted successfully");
+        // Show specific messages based on status
+        const deletedProperty = data.some((item) => item.status === 204);
+        const deletedUser = data.some((item) => item.status === 200);
+  
+        if (deletedProperty) {
+          toast.success("Property was deleted successfully");
+        }
+        if (deletedUser) {
+          toast.success("User was deleted successfully");
+        }
       }
     }
-    
-    
-   
-  })
+  });
+  
 
   // Handle delete button click
   const handleDelete = () => {
