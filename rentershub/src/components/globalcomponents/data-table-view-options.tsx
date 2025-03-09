@@ -22,7 +22,7 @@ import { useSession } from "next-auth/react"
 
 interface DataTableViewOptionsProps<TData> {
   table: Table<TData>
-  deleteType: "approvedlandlords" | "pendinglandlords" | "property" | "blog" | "testimonial" | "company" | "requestuser" // API endpoint type
+  deleteType: "approvedlandlords" | "pendinglandlords" | "approvedgroundagents" | "pendinggroundagents" | "testimonial" | "company" | "requestuser" | "blog" | "property"// API endpoint type
   pathname: string;
 }
 
@@ -34,10 +34,11 @@ export function DataTableViewOptions<TData>({
 
   const { data: session } = useSession()
 
-  // console.log("Base URL:", baseUrl); // Debug log
-  // console.log("Delete Type:", deleteType); // Debug log
+  
 
   let url = ""
+
+  const accessToken = session?.user?.accessToken;
   
 
   // Mutation for handling deletion
@@ -45,7 +46,7 @@ export function DataTableViewOptions<TData>({
     mutationFn: async (ids: string[]) => {
       const promises = ids.map(async (id) => {
         if (session) {
-          if (deleteType === "approvedlandlords" || deleteType === "pendinglandlords" ) {
+          if (deleteType === "approvedlandlords" || deleteType === "pendinglandlords" || deleteType === "approvedgroundagents" || deleteType === "pendinggroundagents" ) {
             url = baseUrl + `accounts/user/${id}/delete`
           
           } else if (pathname === "/intime-admin/managelisting") {
@@ -61,10 +62,12 @@ export function DataTableViewOptions<TData>({
           }
           const res = await axios.delete(url, {
             headers: {
-              "Authorization": session?.user?.accessToken
+              Authorization: `Bearer ${accessToken}`,
+           
             }
           })
-          if (res.status == 204) {
+          console.log(res, "delete")
+          if (res.status == 200) {
             RevalidatePath(pathname)
           }
           return { id, status: res.status }
@@ -75,17 +78,22 @@ export function DataTableViewOptions<TData>({
       })
       return Promise.all(promises)
     },
+
     onSuccess(data) {
-      const failed = data.filter((result) => result.status !== 204)
-      if (failed.length === 0) {
-        toast.success("Data deleted successfully")
+      console.log(data);
+    
+      // Check if any item in the array has status !== 200
+      const hasError = data.some((item) => item.status !== 200);
+    
+      if (hasError) {
+        toast.error("Delete not successful");
       } else {
-        toast.error("Some items could not be deleted")
+        toast.success("Data deleted successfully");
       }
-    },
-    onError() {
-      toast.error("Something went wrong while deleting data")
-    },
+    }
+    
+    
+   
   })
 
   // Handle delete button click
