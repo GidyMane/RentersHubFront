@@ -72,7 +72,7 @@ export const columns: ColumnDef<Property>[] = [
     cell: ({ row }) => (
       <div className="flex items-center gap-2">
         <span className="max-w-[500px] truncate font-medium">{row.getValue("title")}</span>
-        {!row.original.is_available && <Badge variant="destructive">Hidden</Badge>} {/* Show "Hidden" badge */}
+        {!row.original.is_available && <Badge className="bg-orange-500 text-white">Hidden</Badge>} {/* Show "Hidden" badge */}
       </div>
     ),
   },

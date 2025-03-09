@@ -79,7 +79,7 @@ export function DataTableRowActions<TData>({ row, page }: DataTableRowActionsPro
           onClick={() => {
             dispatch(setEditData({ data: property, page }));
           }}
-          className="text-center bg-primary text-white"
+          className="text-center bg-primary flex items-center justify-center text-white"
         >
           Edit
         </DropdownMenuItem>
@@ -88,7 +88,7 @@ export function DataTableRowActions<TData>({ row, page }: DataTableRowActionsPro
         {pathname === "/admin/approvedproperty" && (
           <DropdownMenuItem
             onClick={() => togglePropertyAvailability.mutate()}
-            className="text-center bg-red-500 text-white flex items-center justify-center"
+            className="text-center bg-orange-500 text-white flex items-center justify-center"
             disabled={togglePropertyAvailability.isPending} // Disable button while loading
           >
             {togglePropertyAvailability.isPending ? (
