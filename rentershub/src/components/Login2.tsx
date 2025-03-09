@@ -71,6 +71,8 @@ const LoginForm = () => {
   
           if (session?.user?.role) {
             const userRole = session.user.role;
+
+             console.log(userRole, "role")
   
             if (userRole === "ADMIN") {
               router.push("/admin");
@@ -104,12 +106,7 @@ const LoginForm = () => {
     } finally {
       setIsLoading(false);
     }
-  };
-  
-  
-  
-  
-  
+  };  
 
   return (
     <>

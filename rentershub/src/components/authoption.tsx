@@ -156,11 +156,11 @@ const AuthOptions: React.FC = () => {
       const res = await fetch("/api/auth/session"); 
       const data = await res.json();
       
-      if (data?.user) {
-        const role = data.user.role.toLowerCase();
-        if (role === "admin") {
+      if (data?.user?.role) {
+        const role = data.user.role;
+        if (role === "ADMIN") {
           router.push("/admin");
-        } else if (role === "landlord" || role === "groundagent") {
+        } else if (role === "LANDLORD" || role === "GROUNDAGENT") {
           router.push("/rentershub/dashboard");
         } else {
           router.push("/login");
