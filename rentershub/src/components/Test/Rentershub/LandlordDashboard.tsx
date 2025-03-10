@@ -1,10 +1,20 @@
 'use client'
 
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import axios from 'axios'
+import { useSession } from 'next-auth/react'
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Home, CheckCircle, HomeIcon, Clock } from 'lucide-react'
+import { baseUrl } from "@/utils/constants"
 
-const DashboardCard = ({ title, value, icon: Icon, description }: { title: string, value: number, icon: React.ElementType, description: string }) => (
+interface DashboardCardProps {
+  title: string;
+  value: number;
+  icon: React.ElementType;
+  description: string;
+}
+
+const DashboardCard: React.FC<DashboardCardProps> = ({ title, value, icon: Icon, description }) => (
   <Card className="bg-white">
     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
       <CardTitle className="text-sm font-medium text-gray-600">{title}</CardTitle>
@@ -18,13 +28,41 @@ const DashboardCard = ({ title, value, icon: Icon, description }: { title: strin
 )
 
 const LandlordDashboard = () => {
-  // This data would typically come from an API or state management
-  const dashboardData = {
-    totalProperties: 15,
-    vacantProperties: 3,
-    occupiedProperties: 11,
-    awaitingApproval: 1
-  }
+  const { data: session } = useSession();
+  const userId = session?.user?.user_id;
+
+  const [dashboardData, setDashboardData] = useState({
+    totalProperties: 0,
+    vacantProperties: 0,
+    occupiedProperties: 0,
+    awaitingApproval: 0
+  })
+
+  useEffect(() => {
+    if (userId) {
+      const fetchDashboardData = async () => {
+        try {
+          const response = await axios.get(`${baseUrl}listing/${userId}/getsummarybylandlordorgroundagent/`, {
+            headers: {
+              Authorization: `Bearer ${session?.user?.accessToken}`
+            }
+          })
+          console.log(response.data, "data");
+          
+          const { total_properties, approved_properties, pending_properties } = response.data;
+          setDashboardData({
+            totalProperties: total_properties,
+            occupiedProperties: approved_properties,
+            awaitingApproval: pending_properties,
+            vacantProperties: total_properties - approved_properties // Assuming vacant = total - occupied
+          });
+        } catch (error) {
+          console.error("Error fetching dashboard data:", error);
+        }
+      };
+      fetchDashboardData();
+    }
+  }, [userId, session]);
 
   return (
     <div className="p-4 sm:p-6 lg:p-8" style={{ fontFamily: "Georgia, serif" }}>
@@ -64,8 +102,7 @@ const LandlordDashboard = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default LandlordDashboard
-
+export default LandlordDashboard;

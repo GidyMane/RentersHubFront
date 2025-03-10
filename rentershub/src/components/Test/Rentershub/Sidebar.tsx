@@ -18,6 +18,7 @@ interface SidebarProps {
 }
 
 const menuItems = [
+  { icon: Building, label: "Dashboard", href: "/rentershub/Dashboard" },
   { icon: Building, label: "My Properties", href: "/rentershub/properties" },
   { icon: PlusSquare, label: "Add Property", href: "/rentershub/add-property" },
   { icon: User, label: "Profile", href: "/rentershub/profile" },
