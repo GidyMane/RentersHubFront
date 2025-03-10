@@ -166,7 +166,7 @@ export default function AddPropertyPage({ GOOGLE_MAPS_API_KEY }: { GOOGLE_MAPS_A
             }))
           },
         })
-
+        console.log(res, "response from edgestore")
         uploadedUrls.push(res.url)
       } catch (error) {
         console.error(`Error uploading ${file.name}:`, error)

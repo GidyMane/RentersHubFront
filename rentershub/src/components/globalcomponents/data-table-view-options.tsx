@@ -19,6 +19,10 @@ import { RevalidatePath } from "./RevalidateCustomPath"
 import { baseUrl } from "@/utils/constants"
 import axios from "axios"
 import { useSession } from "next-auth/react"
+import { useEdgeStore } from "@/lib/edgestore"
+
+
+
 
 interface DataTableViewOptionsProps<TData> {
   table: Table<TData>
@@ -33,6 +37,8 @@ export function DataTableViewOptions<TData>({
 }: DataTableViewOptionsProps<TData>) {
 
   const { data: session } = useSession()
+  
+const { edgestore } = useEdgeStore()
 
   
 
@@ -45,51 +51,65 @@ export function DataTableViewOptions<TData>({
   const mutation = useMutation({
     mutationFn: async (ids: string[]) => {
       const promises = ids.map(async (id) => {
-        if (session) {
-          if (
-            deleteType === "approvedlandlords" ||
-            deleteType === "pendinglandlords" ||
-            deleteType === "approvedgroundagents" ||
-            deleteType === "pendinggroundagents"
-          ) {
-            url = baseUrl + `accounts/user/${id}/delete`;
-          } 
-          else if (deleteType === "property") {
-            url = baseUrl + `listing/property/${id}/`;
-          } 
-          else if (pathname === "/intime-admin/managelisting") {
-            deleteType = "property";
-          } 
-          else if (pathname === "/intime-admin/blogs") {
-            deleteType = "blog";
-          } 
-          else if (pathname === "/intime-admin/users") {
-            deleteType = "company";
-          } 
-          else if (pathname === "/intime-admin/requestaccess") {
-            deleteType = "requestuser";
-          } 
-          else if (pathname === "/intime-admin/testimonials") {
-            deleteType = "testimonial";
-          }
+        if (!session) {
+          throw new Error("Not authorized");
+        }
   
-          const res = await axios.delete(url, {
+        let url = "";
+        let deleteImages = false;
+        let imageUrls: string[] = [];
+  
+        if (
+          deleteType === "approvedlandlords" ||
+          deleteType === "pendinglandlords" ||
+          deleteType === "approvedgroundagents" ||
+          deleteType === "pendinggroundagents"
+        ) {
+          url = baseUrl + `accounts/user/${id}/delete`;
+        } else if (deleteType === "property") {
+          url = baseUrl + `listing/property/${id}/`;
+  
+          // Fetch property details to get image URLs
+          const propertyRes = await axios.get(url, {
             headers: {
               Authorization: `Bearer ${accessToken}`,
             },
           });
   
-          console.log(res, "delete");
-  
-          // Revalidate only if status is 200 or 204
-          if (res.status === 200 || res.status === 204) {
-            RevalidatePath(pathname);
+          if (propertyRes.status === 200) {
+            const property = propertyRes.data;
+            imageUrls = [
+              property.main_image_url?.url,
+              ...property.images.map((img: { url: string }) => img.url),
+            ].filter(Boolean);
+            deleteImages = true;
           }
-  
-          return { id, status: res.status };
-        } else {
-          throw new Error("Not authorized");
         }
+  
+        // Delete property or user
+        const res = await axios.delete(url, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
+  
+        console.log(res, "delete");
+  
+        // Delete images if deleting a property
+        if (deleteImages && res.status === 204) {
+          await Promise.all(
+            imageUrls.map((urlToDelete) =>
+              edgestore.publicFiles.delete({ url: urlToDelete })
+            )
+          );
+        }
+  
+        // Revalidate only if status is 200 or 204
+        if (res.status === 200 || res.status === 204) {
+          RevalidatePath(pathname);
+        }
+  
+        return { id, status: res.status };
       });
   
       return Promise.all(promises);
@@ -103,7 +123,6 @@ export function DataTableViewOptions<TData>({
       if (hasError) {
         toast.error("Delete not successful");
       } else {
-        // Show specific messages based on status
         const deletedProperty = data.some((item) => item.status === 204);
         const deletedUser = data.some((item) => item.status === 200);
   
@@ -114,8 +133,9 @@ export function DataTableViewOptions<TData>({
           toast.success("User was deleted successfully");
         }
       }
-    }
+    },
   });
+  
   
 
   // Handle delete button click
