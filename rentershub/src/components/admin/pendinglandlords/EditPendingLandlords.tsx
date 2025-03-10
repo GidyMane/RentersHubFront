@@ -36,7 +36,7 @@ const EditPendingLandlord = () => {
             username: Yup.string().required(),
             approval_status: Yup.string().required(),
         }),
-        onSubmit(values, formikHelpers) {
+        onSubmit(values,) {
             mutation.mutateAsync({ ...values })
         },
     })
@@ -47,7 +47,7 @@ const EditPendingLandlord = () => {
             const res = await updateUser(values)
             return res
         },
-        onSuccess(data: any, variables, context) {
+        onSuccess(data: any, ) {
             if (data[1] == 200) {
                 toast.success("Landlord updated successfully")
                 dispatch(clearEditData())
@@ -55,7 +55,7 @@ const EditPendingLandlord = () => {
                 toast.error("Something went wrong!")
             }
         },
-        onError(error, variables, context) {
+        onError(error,) {
             toast.error(error.message)
         },
     })

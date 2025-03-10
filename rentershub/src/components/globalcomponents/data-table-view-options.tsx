@@ -42,7 +42,6 @@ const { edgestore } = useEdgeStore()
 
   
 
-  let url = ""
 
   const accessToken = session?.user?.accessToken;
   

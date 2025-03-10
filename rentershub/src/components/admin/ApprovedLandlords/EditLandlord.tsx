@@ -36,7 +36,7 @@ const EditLandlord = () => {
             username: Yup.string().required(),
             approval_status: Yup.string().required(),
         }),
-        onSubmit(values, formikHelpers) {
+        onSubmit(values,) {
             mutation.mutateAsync({ ...values })
         },
     })
