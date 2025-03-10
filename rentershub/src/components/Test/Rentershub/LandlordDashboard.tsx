@@ -34,7 +34,7 @@ const LandlordDashboard = () => {
   const [dashboardData, setDashboardData] = useState({
     totalProperties: 0,
     vacantProperties: 0,
-    occupiedProperties: 0,
+    approvedProperties: 0,
     awaitingApproval: 0
   })
 
@@ -52,9 +52,9 @@ const LandlordDashboard = () => {
           const { total_properties, approved_properties, pending_properties } = response.data;
           setDashboardData({
             totalProperties: total_properties,
-            occupiedProperties: approved_properties,
+            approvedProperties: approved_properties,
             awaitingApproval: pending_properties,
-            vacantProperties: total_properties - approved_properties // Assuming vacant = total - occupied
+            vacantProperties: total_properties - approved_properties // Assuming vacant = total - approved
           });
         } catch (error) {
           console.error("Error fetching dashboard data:", error);
@@ -82,10 +82,10 @@ const LandlordDashboard = () => {
             description="Properties available for rent"
           />
           <DashboardCard 
-            title="Occupied Properties" 
-            value={dashboardData.occupiedProperties}
+            title="approved Properties" 
+            value={dashboardData.approvedProperties}
             icon={CheckCircle}
-            description="Properties currently rented"
+            description="Properties available for rent"
           />
           <DashboardCard 
             title="Awaiting Approval" 
