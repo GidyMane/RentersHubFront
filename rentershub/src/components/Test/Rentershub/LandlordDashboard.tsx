@@ -85,7 +85,7 @@ const LandlordDashboard = () => {
             title="approved Properties" 
             value={dashboardData.approvedProperties}
             icon={CheckCircle}
-            description="Properties available for rent"
+            description="Properties verified successfully"
           />
           <DashboardCard 
             title="Awaiting Approval" 
