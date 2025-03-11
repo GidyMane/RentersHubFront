@@ -41,7 +41,7 @@ const ChatWithLandlord = ({ landlordPhone, propertyId }: { landlordPhone: string
     }
   
     setSubmitted(true);
-    console.log("User Info Submitted:", { name, phone });
+    // console.log("User Info Submitted:", { name, phone });
   
     // Send SMS to landlord after submission
     sendSmsToLandlord();
@@ -71,7 +71,7 @@ Is it still available?`;
   
       const data = await response.json();
       if (data.success) {
-        console.log("SMS sent successfully:", data);
+        // console.log("SMS sent successfully:", data);
       } else {
         console.error("Failed to send SMS:", data.error);
       }

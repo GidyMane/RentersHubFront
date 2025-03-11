@@ -30,7 +30,7 @@ export default function PropertiesPage() {
           },
         })
 
-        console.log(response, "propatis")
+        // console.log(response, "propatis")
 
         setProperties(response.data.results || [])
       } catch (error) {
@@ -48,7 +48,7 @@ export default function PropertiesPage() {
     return true
   })
 
-  console.log(filteredProperties, "filter")
+  // console.log(filteredProperties, "filter")
 
   return (
     

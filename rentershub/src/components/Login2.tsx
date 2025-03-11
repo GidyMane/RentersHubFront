@@ -56,7 +56,7 @@ const LoginForm = () => {
         redirect: false,
       });
   
-      console.log("Login Response:", response); // Debugging
+      // console.log("Login Response:", response); // Debugging
   
       // Handle response based on status and error
       if (response?.status === 200) {
@@ -67,12 +67,12 @@ const LoginForm = () => {
           // Fetch session data to determine user role
           const session = await fetch("/api/auth/session").then((res) => res.json());
   
-          console.log("Fetched Session:", session); // Debugging
+          // console.log("Fetched Session:", session); // Debugging
   
           if (session?.user?.role) {
             const userRole = session.user.role;
 
-             console.log(userRole, "role")
+            //  console.log(userRole, "role")
   
             if (userRole === "ADMIN") {
               router.push("/admin");

@@ -42,7 +42,7 @@ const CallLandlordForm = ({ landlordPhone, propertyId }: { landlordPhone: string
     }
 
     setSubmitted(true);
-    console.log("User Info Submitted:", { name, phone });
+    // console.log("User Info Submitted:", { name, phone });
   };
 
   const handleReveal = () => {
@@ -66,7 +66,7 @@ const CallLandlordForm = ({ landlordPhone, propertyId }: { landlordPhone: string
       });
 
       const data = await response.json();
-      console.log("SMS sent:", data);
+      // console.log("SMS sent:", data);
     } catch (error) {
       console.error("Error sending SMS:", error);
     }
