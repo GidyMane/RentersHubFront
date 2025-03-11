@@ -7,10 +7,11 @@ import { AuthProvider } from "@/providers/KindeAuthProvider";
 import { SessionProvider } from "@/context/SessionProvider";
 import { EdgeStoreProvider } from "../lib/edgestore";
 import Navbar from "@/components/UpdatedLayout/Navbar";
-import { FloatingNavDemo } from "@/components/layout/FloatingNav";
 import Footer from "@/components/layout/enhancedfooter";
 import { Toaster } from "react-hot-toast";
 import { QueryProvider } from "@/providers/TarnstackProvider";
+import ReactReduxProvider from "./ReactReduxProvider";
+
 
 
 const geistSans = localFont({
@@ -37,49 +38,50 @@ export default function RootLayout({
   return (
     <AuthProvider>
       <SessionProvider>
-      <Analytics/>
-      <SpeedInsights/>
-
+        <Analytics />
+        <SpeedInsights />
         {/* <ToastContainer /> */}
         <QueryProvider>
-        <EdgeStoreProvider>
-          <html lang="en" suppressHydrationWarning>
-            <body
-              className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-            >
-              <div className="relative w-full">
+          <EdgeStoreProvider>
+            <html lang="en" suppressHydrationWarning>
+              <body
+                className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+              >
+                <div className="relative w-full">
 
-                <Toaster
-                  position="top-center"
-                  reverseOrder={false}
-                  gutter={8}
-                  containerClassName=""
-                  containerStyle={{}}
-                  toastOptions={{
-                    className: '',
-                    duration: 5000,
-                  }}
-                />
-                <div className="bg-white top-0">
-                  <Navbar />
+                  <Toaster
+                    position="top-center"
+                    reverseOrder={false}
+                    gutter={8}
+                    containerClassName=""
+                    containerStyle={{}}
+                    toastOptions={{
+                      className: '',
+                      duration: 5000,
+                    }}
+                  />
+                  <div className="bg-white top-0">
+                    <Navbar />
+                  </div>
+                  <ReactReduxProvider>
+
+                    {children}
+
+                  </ReactReduxProvider>
+
+
+                  {/* <FloatingNavDemo /> */}
+                  <div className="bottom-0 rounded-lg">
+                    <Footer />
+                  </div>
+
                 </div>
-                
-
-                  {children}
-
-                  
-             
-
-                {/* <FloatingNavDemo /> */}
-                <div className="bottom-0 rounded-lg">
-                  <Footer />
-                </div>
-
-              </div>
-            </body>
-          </html>
-        </EdgeStoreProvider>
+              </body>
+            </html>
+          </EdgeStoreProvider>
         </QueryProvider>
+
+
       </SessionProvider>
     </AuthProvider>
   );

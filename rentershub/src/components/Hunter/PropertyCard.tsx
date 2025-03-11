@@ -46,40 +46,41 @@ export function PropertyCard({
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.8, ease: "easeIn" }}
     >
-      <Card className="overflow-hidden group cursor-pointer transition-shadow hover:shadow-lg w-full">
-        <Link href={`/property/${id}`}>
-          <div className="relative">
-            <Image
-              src={imageUrl || "/placeholder.svg"}
-              alt={title}
-              width={400}
-              height={300}
-              className="w-full h-[200px] object-cover"
-            />
-            <div className="absolute top-4 right-4 z-20 flex items-center gap-2" >
-              <Button
-                size="icon"
-                variant="secondary"
-                className="bg-gray-900/60 hover:bg-gray-900/70 text-white rounded-full h-8 w-8"
-                  style={{ fontFamily: "Georgia, serif" }}
-                onClick={() => handleShare(id, title)}
-              >
-                <Share2 className="h-4 w-4" />
-              </Button>
-            </div>
+      <Card className="overflow-hidden group  cursor-pointer transition-shadow hover:shadow-lg w-full">
+
+        <div className="relative">
+          <Image
+            src={imageUrl || "/placeholder.svg"}
+            alt={title}
+            width={400}
+            height={300}
+            className="w-full h-[200px] object-cover"
+          />
+          <div className="absolute top-4 right-4 z-20 flex items-center gap-2" >
+            <Button
+              size="icon"
+              variant="secondary"
+              className="bg-gray-900/60 hover:bg-gray-900/70 text-white rounded-full h-8 w-8"
+              style={{ fontFamily: "Georgia, serif" }}
+              onClick={() => handleShare(id, title)}
+            >
+              <Share2 className="h-4 w-4" />
+            </Button>
           </div>
+        </div>
+        <Link href={`/property/${id}`}>
           <div className="p-4">
-            <h3 className="text-lg font-bold"   style={{ fontFamily: "Georgia, serif" }}>{truncateTitle(title)}</h3>
-            <Badge variant="secondary" className="mb-2"   style={{ fontFamily: "Georgia, serif" }}>
+            <h3 className="text-lg font-bold" style={{ fontFamily: "Georgia, serif" }}>{truncateTitle(title)}</h3>
+            <Badge variant="secondary" className="mb-2" style={{ fontFamily: "Georgia, serif" }}>
               {propertyType}
             </Badge>
             <div className="flex items-center gap-1 text-muted">
               <MapPin className="h-4 w-4 black" />
-              <span className="text-sm text-black"   style={{ fontFamily: "Georgia, serif" }}>
+              <span className="text-sm text-black" style={{ fontFamily: "Georgia, serif" }}>
                 {city}, {state}
               </span>
             </div>
-            <h3 className="text font-bold text-primary mt-2"   style={{ fontFamily: "Georgia, serif" }}>
+            <h3 className="text font-bold text-primary mt-2" style={{ fontFamily: "Georgia, serif" }}>
               {rentPrice.toLocaleString()} pm
             </h3>
           </div>

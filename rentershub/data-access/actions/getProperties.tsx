@@ -12,6 +12,15 @@ export const getproperties = async (
     special_condition: string | null
 ) => {
     try {
+
+        console.log(
+            limit,
+            offset,
+            address,
+            propertytype_name,
+            rent_price_max,
+            special_condition
+        )
         const searchparams = new URLSearchParams();
 
         // Set default values and add necessary parameters

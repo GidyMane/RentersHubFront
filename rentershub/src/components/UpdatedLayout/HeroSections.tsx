@@ -94,7 +94,7 @@ export function FullScreenCarousel({ propertytype, api_key }: { propertytype: an
                         className="bg-white/40 shadow-md h-fit w-full md:w-fit p-2 mt-10"
                     >
                         <div className="bg-white w-full h-full p-4">
-                            <SearchForm api_key={api_key} propertytypes={propertytype} />
+                            <SearchForm api_key={api_key} propertytypes={propertytype} classname="flex md:flex-row flex-col gap-4 md:items-center md:justify-center w-full"/>
                         </div>
                     </motion.div>
                 </div>
