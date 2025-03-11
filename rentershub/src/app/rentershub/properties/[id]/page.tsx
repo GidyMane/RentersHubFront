@@ -31,7 +31,7 @@ export default function PropertyPage() {
           },
         })
 
-        console.log(response, "fetched page")
+        // console.log(response, "fetched page")
         setProperty(response.data)
       } catch (err) {
         setError("Failed to fetch property details.")
