@@ -92,7 +92,7 @@ const { edgestore } = useEdgeStore()
           },
         });
   
-        console.log(res, "delete");
+        // console.log(res, "delete");
   
         // Delete images if deleting a property
         if (deleteImages && res.status === 204) {
