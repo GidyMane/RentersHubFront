@@ -189,13 +189,13 @@ export default function PropertyDetail({
     <div className="mx-auto relative pb-20 md:pb-0" style={{ fontFamily: "Georgia, serif" }}>
       {/* Image Gallery - Full Width */}
       <div className="relative w-full">
-        <div className="relative min-h-[400px] md:min-h-[500px] w-full">
+        <div className="relative min-h-[400px] md:min-h-[500px] w-full bg-gray-100">
           {images.length > 0 ? (
             <Image
               src={images[selectedImage] || "/placeholder.svg"}
               alt="Property"
               fill
-              className="object-cover"
+              className="object-contain bg-gray-100"
               priority
             />
           ) : (
@@ -254,7 +254,7 @@ export default function PropertyDetail({
                         src={src || "/placeholder.svg"}
                         alt={`Property ${idx + 1}`}
                         fill
-                        className="rounded-lg object-cover"
+                        className="rounded-lg object-contain bg-gray-100"
                       />
                     </div>
                   ))}
