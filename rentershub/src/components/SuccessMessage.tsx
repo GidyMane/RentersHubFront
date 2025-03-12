@@ -19,7 +19,7 @@ const SuccessMessage = () => {
       <CardContent className="p-6 space-y-6">
         <h2 className="text-2xl font-bold text-center text-[#235a14]">🎉 Account Creation Successful! 🎉</h2>
         <p className="text-center">
-          Thank you for joining the Renters Hub community! Your account has been successfully created, and we are thrilled to have you on board.
+          Thank you for joining the Renters Hub community Your account has been successfully created, and we are thrilled to have you on board.
         </p>
         <div className="bg-blue-50 border-l-4 border-blue-500 p-4 rounded">
           <h3 className="font-bold mb-2">Next Steps:</h3>
