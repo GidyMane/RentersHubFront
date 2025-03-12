@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { MessageCircle } from "lucide-react";
 
 const ChatWithLandlord = ({ landlordPhone, propertyId }: { landlordPhone: string, propertyId: string }) => {
+ console.log(propertyId, "id ya property")
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [submitted, setSubmitted] = useState(false);
@@ -49,7 +50,7 @@ const ChatWithLandlord = ({ landlordPhone, propertyId }: { landlordPhone: string
   
 
   // Generate house link
-  const houseLink = `https://rentershub.co.ke/properties-details.php?PropertyDetail=${propertyId}`;
+  const houseLink = `https://rentershub.co.ke/property/${propertyId}`;
 
   // WhatsApp message template
   const preFilledMessage = `Hello. 

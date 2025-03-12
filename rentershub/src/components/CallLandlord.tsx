@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Phone, MessageSquare } from 'lucide-react';
 
-const CallLandlordForm = ({ landlordPhone, propertyId }: { landlordPhone: string, propertyId: string }) => {
+const CallLandlordForm = ({ landlordPhone, propertyId }: { landlordPhone: string, propertyId: string }) => {  
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [submitted, setSubmitted] = useState(false);
@@ -51,7 +51,7 @@ const CallLandlordForm = ({ landlordPhone, propertyId }: { landlordPhone: string
   };
 
   // Generate house link
-  const houseLink = `https://rentershub.co.ke/properties-details.php?PropertyDetail=${propertyId}`;
+  const houseLink = `https://rentershub.co.ke/property/${propertyId}`;
 
   // SMS message template
   const landlordSmsMessage = `Hello. Renters Hub has shared your contacts with ${name} (${phone}) who wants to rent your house ${houseLink}. Please receive them.`;

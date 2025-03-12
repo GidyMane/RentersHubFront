@@ -92,6 +92,7 @@ interface Image {
 }
 
 export interface PropertyResponse {
+  id: number
   status: string
   data: {
     property: PropertyData
@@ -452,9 +453,9 @@ export default function PropertyDetail({
                   </div>
                 </div>
                 <div className="space-y-4">
-                  <CallLandlordForm landlordPhone={property?.owners_contact} propertyId={""} />
-                  <ChatWithLandlord landlordPhone={property?.owners_contact} propertyId={""} />
-                  <ShareButton propertyLink={typeof window !== "undefined" ? window.location.href : ""} />
+                  <CallLandlordForm landlordPhone={property?.owners_contact} propertyId={property?.id?.toString() ?? ""}/>
+                  <ChatWithLandlord landlordPhone={property?.owners_contact} propertyId={property?.id?.toString() ?? ""} />
+                  <ShareButton propertyLink={`https://rentershub.co.ke/Property/${property?.id}`} />
                 </div>
               </CardContent>
             </Card>
