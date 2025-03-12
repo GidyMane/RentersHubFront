@@ -7,7 +7,7 @@ export default function NotFound() {
         <Suspense>
             <div>
                 <h2>Not Found</h2>
-                <p>Could not find requested resource</p>
+                <p>Could not find requested the resource</p>
                 <Link href="/">Return Home</Link>
             </div>
         </Suspense>
