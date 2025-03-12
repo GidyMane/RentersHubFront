@@ -48,7 +48,7 @@ const ChatWithLandlord = ({ landlordPhone, propertyId }: { landlordPhone: string
     sendSmsToLandlord();
   };
   
-
+   
   // Generate house link
   const houseLink = `https://rentershub.co.ke/property/${propertyId}`;
 

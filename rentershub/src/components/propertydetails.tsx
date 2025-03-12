@@ -314,8 +314,7 @@ export default function PropertyDetail({
                     <DialogTitle>Call Landlord</DialogTitle>
                     <CallLandlordForm
                       landlordPhone={property?.owners_contact}
-                      propertyId={property?.id?.toString() ?? ""}
-                    />
+                      propertyId={property?.id?.toString() ?? ""}                    />
                   </DialogContent>
                 </Dialog>
 
@@ -330,8 +329,7 @@ export default function PropertyDetail({
                     <DialogTitle>Chat with Landlord</DialogTitle>
                     <ChatWithLandlord
                       landlordPhone={property?.owners_contact}
-                      propertyId={property?.id?.toString() ?? ""}
-                    />
+                      propertyId={property?.id?.toString() ?? ""}                    />
                   </DialogContent>
                 </Dialog>
 
@@ -517,12 +515,10 @@ export default function PropertyDetail({
                 <div className="space-y-4">
                   <CallLandlordForm
                     landlordPhone={property?.owners_contact}
-                    propertyId={property?.id?.toString() ?? ""}
-                  />
+                    propertyId={property?.id?.toString() ?? ""}                 />
                   <ChatWithLandlord
                     landlordPhone={property?.owners_contact}
-                    propertyId={property?.id?.toString() ?? ""}
-                  />
+                    propertyId={property?.id?.toString() ?? ""}                  />
                   <ShareButton propertyLink={`https://rentershub.co.ke/Property/${property?.id}`} />
                 </div>
               </CardContent>
