@@ -20,7 +20,7 @@ interface PropertyCardProps {
 
 // Handle WhatsApp share
 function handleShare(id: string, title: string) {
-  const url = `https://wa.me/?text=Check out this property: ${title} - ${window.location.origin}/property/${id}`;
+  const url = `https://wa.me/?text=Check out this property: ${title} - ${window.location.origin}/property/${title}`;
   window.open(url, "_blank");
 }
 
@@ -46,7 +46,7 @@ export function PropertyCard({
       transition={{ duration: 0.8, ease: "easeIn" }}
     >
       {/* Make the whole card a clickable Link */}
-      <Link href={`/property/${id}`} passHref className="block">
+      <Link href={`/property/${title}`} passHref className="block">
         <Card className="overflow-hidden group cursor-pointer transition-shadow hover:shadow-lg w-full" style={{ fontFamily: "Georgia, serif" }}>
           <div className="relative">
             <Image
