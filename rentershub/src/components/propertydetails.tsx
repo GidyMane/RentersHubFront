@@ -5,7 +5,19 @@ import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Dialog, DialogContent, DialogTitle, DialogTrigger, DialogClose } from "@/components/ui/dialog"
-import { MapPin, Camera, Check, Building2, User, Cctv, Loader, ChevronLeft, ChevronRight } from "lucide-react"
+import {
+  MapPin,
+  Camera,
+  Check,
+  Building2,
+  Cctv,
+  Loader,
+  ChevronLeft,
+  ChevronRight,
+  Phone,
+  MessageSquare,
+  Share2,
+} from "lucide-react"
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet"
 import "leaflet/dist/leaflet.css"
 import L from "leaflet"
@@ -86,7 +98,7 @@ export interface PropertyData {
   propertyType: PropertyType
 }
 
-interface Image {
+interface ImageType {
   id: string
   url: string
 }
@@ -114,7 +126,7 @@ export interface PropertyResponse {
   rent_price: string
   deposit_amount: string
   main_image_url: { id: string; url: string }
-  images: Image[]
+  images: ImageType[]
   features: { id: number; name: string }
   water_charges: string
   water_deposit: string
@@ -135,6 +147,10 @@ export default function PropertyDetail({
   similarproperties: any
 }) {
   const [selectedImage, setSelectedImage] = useState(0)
+  const [showCallDialog, setShowCallDialog] = useState(false)
+  const [showChatDialog, setShowChatDialog] = useState(false)
+  const [showShareDialog, setShowShareDialog] = useState(false)
+
   const position: [number, number] = property?.location_coords
     ? [Number(property.location_coords[1]), Number(property.location_coords[0])]
     : [-1.2345, 36.80271] // Default fallback coordinates
@@ -158,16 +174,19 @@ export default function PropertyDetail({
   }
 
   const formatCurrency = (amount: string | number) => {
-  return `Ksh ${new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "KES",
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  }).format(Number(amount)).replace("KES", "").trim()}`;
-};
+    return `Ksh ${new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "KES",
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    })
+      .format(Number(amount))
+      .replace("KES", "")
+      .trim()}`
+  }
 
   return (
-    <div className="mx-auto"   style={{ fontFamily: "Georgia, serif" }}>
+    <div className="mx-auto relative pb-20 md:pb-0" style={{ fontFamily: "Georgia, serif" }}>
       {/* Image Gallery - Full Width */}
       <div className="relative w-full">
         <div className="relative min-h-[400px] md:min-h-[500px] w-full">
@@ -279,7 +298,61 @@ export default function PropertyDetail({
           </div>
         </div>
 
-        {/* Price Details Card - Moved to top priority */}
+        {/* Mobile Contact Buttons - Visible only on mobile */}
+        <div className="md:hidden mb-6">
+          <Card className="shadow-lg">
+            <CardContent className="p-4">
+              <div className="grid grid-cols-3 gap-2">
+                <Dialog open={showCallDialog} onOpenChange={setShowCallDialog}>
+                  <DialogTrigger asChild>
+                    <Button className="w-full" size="lg">
+                      <Phone className="mr-2 h-4 w-4" />
+                      Call
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent>
+                    <DialogTitle>Call Landlord</DialogTitle>
+                    <CallLandlordForm
+                      landlordPhone={property?.owners_contact}
+                      propertyId={property?.id?.toString() ?? ""}
+                    />
+                  </DialogContent>
+                </Dialog>
+
+                <Dialog open={showChatDialog} onOpenChange={setShowChatDialog}>
+                  <DialogTrigger asChild>
+                    <Button className="w-full" size="lg" variant="outline">
+                      <MessageSquare className="mr-2 h-4 w-4" />
+                      Chat
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent>
+                    <DialogTitle>Chat with Landlord</DialogTitle>
+                    <ChatWithLandlord
+                      landlordPhone={property?.owners_contact}
+                      propertyId={property?.id?.toString() ?? ""}
+                    />
+                  </DialogContent>
+                </Dialog>
+
+                <Dialog open={showShareDialog} onOpenChange={setShowShareDialog}>
+                  <DialogTrigger asChild>
+                    <Button className="w-full" size="lg" variant="secondary">
+                      <Share2 className="mr-2 h-4 w-4" />
+                      Share
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent>
+                    <DialogTitle>Share Property</DialogTitle>
+                    <ShareButton propertyLink={`https://rentershub.co.ke/Property/${property?.id}`} />
+                  </DialogContent>
+                </Dialog>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Price Details Card */}
         <Card className="mb-8">
           <CardHeader>
             <CardTitle>Price Details</CardTitle>
@@ -434,27 +507,22 @@ export default function PropertyDetail({
             </Card>
           </div>
 
-          {/* Right Column - Contact Form */}
-          <div className="space-y-6">
+          {/* Right Column - Contact Form - Hidden on mobile */}
+          <div className="hidden md:block space-y-6">
             <Card className="sticky top-6">
               <CardHeader>
                 <CardTitle>Contact Landlord</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="w-12 h-12 bg-muted rounded-full flex items-center justify-center">
-                    <User className="w-6 h-6" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold">Renters Hub</h3>
-                    <Button variant="link" className="h-auto p-0">
-                      Connect with Us
-                    </Button>
-                  </div>
-                </div>
                 <div className="space-y-4">
-                  <CallLandlordForm landlordPhone={property?.owners_contact} propertyId={property?.id?.toString() ?? ""}/>
-                  <ChatWithLandlord landlordPhone={property?.owners_contact} propertyId={property?.id?.toString() ?? ""} />
+                  <CallLandlordForm
+                    landlordPhone={property?.owners_contact}
+                    propertyId={property?.id?.toString() ?? ""}
+                  />
+                  <ChatWithLandlord
+                    landlordPhone={property?.owners_contact}
+                    propertyId={property?.id?.toString() ?? ""}
+                  />
                   <ShareButton propertyLink={`https://rentershub.co.ke/Property/${property?.id}`} />
                 </div>
               </CardContent>
@@ -482,6 +550,24 @@ export default function PropertyDetail({
               )}
             </Suspense>
           </div>
+        </div>
+      </div>
+
+      {/* Mobile Fixed Contact Bar - Visible only on small screens */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-3 z-50">
+        <div className="grid grid-cols-3 gap-2">
+          <Button className="w-full" onClick={() => setShowCallDialog(true)}>
+            <Phone className="mr-2 h-4 w-4" />
+            Call
+          </Button>
+          <Button className="w-full" variant="outline" onClick={() => setShowChatDialog(true)}>
+            <MessageSquare className="mr-2 h-4 w-4" />
+            Chat
+          </Button>
+          <Button className="w-full" variant="secondary" onClick={() => setShowShareDialog(true)}>
+            <Share2 className="mr-2 h-4 w-4" />
+            Share
+          </Button>
         </div>
       </div>
     </div>
