@@ -314,7 +314,7 @@ export default function PropertyDetail({
                     <DialogTitle>Call Landlord</DialogTitle>
                     <CallLandlordForm
                       landlordPhone={property?.owners_contact}
-                      propertyId={property?.title?.toString() ?? ""}                    />
+                      propertyId={property?.title?.toString() ?? ""}  propId={property?.id}                  />
                   </DialogContent>
                 </Dialog>
 
@@ -515,7 +515,7 @@ export default function PropertyDetail({
                 <div className="space-y-4">
                   <CallLandlordForm
                     landlordPhone={property?.owners_contact}
-                    propertyId={property?.title?.toString() ?? ""}                 />
+                    propertyId={property?.title?.toString() ?? ""} propId={property?.id}                 />
                   <ChatWithLandlord
                     landlordPhone={property?.owners_contact}
                     propertyId={property?.title?.toString() ?? ""}                  />
