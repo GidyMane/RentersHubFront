@@ -96,7 +96,7 @@ export default function DashboardPage() {
         <div className="text-center p-6 bg-destructive/10 rounded-lg">
           <AlertCircle className="mx-auto h-10 w-10 text-destructive mb-4" />
           <h2 className="text-xl font-bold mb-2">Failed to load dashboard data</h2>
-          <p className="text-muted-foreground">{error}</p>
+          <p className="text-black">{error}</p>
         </div>
       </div>
     )
@@ -106,7 +106,7 @@ export default function DashboardPage() {
     <div className="space-y-6 col-span-3">
       <div className="flex justify-between items-center">
         <h1 className="text-3xl font-bold">Dashboard Overview</h1>
-        <div className="text-sm text-muted-foreground">Last updated: {new Date().toLocaleString()}</div>
+        <div className="text-sm text-black">Last updated: {new Date().toLocaleString()}</div>
       </div>
 
       <Tabs defaultValue="overview" className="space-y-4">
@@ -121,21 +121,21 @@ export default function DashboardPage() {
             <StatsCard
               title="Total Properties"
               value={data?.total_properties || 0}
-              icon={<Building2 className="h-4 w-4 text-muted-foreground" />}
+              icon={<Building2 className="h-4 w-4 text-black" />}
               description="All properties in the system"
               trend="up"
             />
             <StatsCard
               title="Total Users"
               value={data?.total_users || 0}
-              icon={<Users className="h-4 w-4 text-muted-foreground" />}
+              icon={<Users className="h-4 w-4 text-black" />}
               description="Combined users across all roles"
               trend="up"
             />
             <StatsCard
               title="Approved Properties"
               value={data?.approved_properties || 0}
-              icon={<CheckCircle className="h-4 w-4 text-muted-foreground" />}
+              icon={<CheckCircle className="h-4 w-4 text-black" />}
               description={`${data ? Math.round((data.approved_properties / data.total_properties) * 100) : 0}% approval rate`}
               trend="up"
             />
@@ -147,7 +147,7 @@ export default function DashboardPage() {
                 (data?.pending_landlords || 0) +
                 (data?.pending_agents || 0)
               }
-              icon={<Clock className="h-4 w-4 text-muted-foreground" />}
+              icon={<Clock className="h-4 w-4 text-black" />}
               description="Items requiring your attention"
               trend="neutral"
             />
@@ -213,7 +213,7 @@ export default function DashboardPage() {
                         }}
                       ></div>
                     </div>
-                    <div className="mt-2 text-center text-sm text-muted-foreground">
+                    <div className="mt-2 text-center text-sm text-black">
                       {data ? Math.round((data.approved_properties / data.total_properties) * 100) : 0}% approved
                     </div>
                   </div>
@@ -228,7 +228,7 @@ export default function DashboardPage() {
             <StatsCard
               title="Total Properties"
               value={data?.total_properties || 0}
-              icon={<Building2 className="h-4 w-4 text-muted-foreground" />}
+              icon={<Building2 className="h-4 w-4 text-black" />}
               description="All properties in the system"
               trend="up"
               className="lg:col-span-1"
@@ -236,7 +236,7 @@ export default function DashboardPage() {
             <StatsCard
               title="Approved Properties"
               value={data?.approved_properties || 0}
-              icon={<CheckCircle className="h-4 w-4 text-muted-foreground" />}
+              icon={<CheckCircle className="h-4 w-4 text-black" />}
               description={`${data ? Math.round((data.approved_properties / data.total_properties) * 100) : 0}% of total`}
               trend="up"
               className="lg:col-span-1"
@@ -244,7 +244,7 @@ export default function DashboardPage() {
             <StatsCard
               title="Pending Properties"
               value={data?.pending_properties || 0}
-              icon={<Clock className="h-4 w-4 text-muted-foreground" />}
+              icon={<Clock className="h-4 w-4 text-black" />}
               description="Awaiting approval"
               trend={data?.pending_properties ? "down" : "neutral"}
               className="lg:col-span-1"
@@ -304,18 +304,18 @@ export default function DashboardPage() {
               <CardHeader className="pb-2">
                 <div className="flex items-center justify-between">
                   <CardTitle className="text-sm font-medium">Admins</CardTitle>
-                  <User className="h-4 w-4 text-muted-foreground" />
+                  <User className="h-4 w-4 text-black" />
                 </div>
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">{data?.totaladmins || 0}</div>
                 <div className="flex items-center justify-between mt-2">
-                  <div className="text-xs text-muted-foreground">
+                  <div className="text-xs text-black">
                     <span className="inline-flex items-center text-emerald-600">
                       <CheckCircle className="mr-1 h-3 w-3" /> {data?.approved_admins || 0} Approved
                     </span>
                   </div>
-                  <div className="text-xs text-muted-foreground">
+                  <div className="text-xs text-black">
                     <span className="inline-flex items-center text-amber-600">
                       <Clock className="mr-1 h-3 w-3" /> {data?.pending_admins || 0} Pending
                     </span>
@@ -328,18 +328,18 @@ export default function DashboardPage() {
               <CardHeader className="pb-2">
                 <div className="flex items-center justify-between">
                   <CardTitle className="text-sm font-medium">Landlords</CardTitle>
-                  <UserCheck className="h-4 w-4 text-muted-foreground" />
+                  <UserCheck className="h-4 w-4 text-black" />
                 </div>
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">{data?.total_landlords || 0}</div>
                 <div className="flex items-center justify-between mt-2">
-                  <div className="text-xs text-muted-foreground">
+                  <div className="text-xs text-black">
                     <span className="inline-flex items-center text-emerald-600">
                       <CheckCircle className="mr-1 h-3 w-3" /> {data?.approved_landlords || 0} Approved
                     </span>
                   </div>
-                  <div className="text-xs text-muted-foreground">
+                  <div className="text-xs text-black">
                     <span className="inline-flex items-center text-amber-600">
                       <Clock className="mr-1 h-3 w-3" /> {data?.pending_landlords || 0} Pending
                     </span>
@@ -352,18 +352,18 @@ export default function DashboardPage() {
               <CardHeader className="pb-2">
                 <div className="flex items-center justify-between">
                   <CardTitle className="text-sm font-medium">Ground Agents</CardTitle>
-                  <UserCog className="h-4 w-4 text-muted-foreground" />
+                  <UserCog className="h-4 w-4 text-black" />
                 </div>
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">{data?.total_groundagents || 0}</div>
                 <div className="flex items-center justify-between mt-2">
-                  <div className="text-xs text-muted-foreground">
+                  <div className="text-xs text-black">
                     <span className="inline-flex items-center text-emerald-600">
                       <CheckCircle className="mr-1 h-3 w-3" /> {data?.approved_agents || 0} Approved
                     </span>
                   </div>
-                  <div className="text-xs text-muted-foreground">
+                  <div className="text-xs text-black">
                     <span className="inline-flex items-center text-amber-600">
                       <Clock className="mr-1 h-3 w-3" /> {data?.pending_agents || 0} Pending
                     </span>
@@ -395,17 +395,17 @@ export default function DashboardPage() {
             <CardFooter className="border-t px-6 py-4">
               <div className="grid grid-cols-3 gap-4 w-full text-sm">
                 <div className="flex flex-col">
-                  <span className="text-muted-foreground">Total Users</span>
+                  <span className="text-black">Total Users</span>
                   <span className="font-medium">{data?.total_users || 0}</span>
                 </div>
                 <div className="flex flex-col">
-                  <span className="text-muted-foreground">Approved Users</span>
+                  <span className="text-black">Approved Users</span>
                   <span className="font-medium">
                     {(data?.approved_admins || 0) + (data?.approved_landlords || 0) + (data?.approved_agents || 0)}
                   </span>
                 </div>
                 <div className="flex flex-col">
-                  <span className="text-muted-foreground">Pending Users</span>
+                  <span className="text-black">Pending Users</span>
                   <span className="font-medium">
                     {(data?.pending_admins || 0) + (data?.pending_landlords || 0) + (data?.pending_agents || 0)}
                   </span>
@@ -443,7 +443,7 @@ function StatsCard({
       </CardHeader>
       <CardContent>
         <div className="text-2xl font-bold">{value}</div>
-        <p className="text-xs text-muted-foreground mt-1 flex items-center">
+        <p className="text-xs text-black mt-1 flex items-center">
           {trend === "up" && <TrendingUpIcon className="mr-1 h-3 w-3 text-emerald-600" />}
           {trend === "down" && <TrendingDownIcon className="mr-1 h-3 w-3 text-rose-600" />}
           {description}
