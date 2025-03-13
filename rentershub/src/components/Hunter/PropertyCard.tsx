@@ -20,10 +20,10 @@ interface PropertyCardProps {
 
 // Handle WhatsApp share
 function handleShare(id: string, title: string) {
-  const url = `https://wa.me/?text=Check out this property: ${title} - 
-  ${encodeURIComponent(`${window.location.origin}/property/${title}`)}`;
+  const url = `https://wa.me/?text=Check out this property: ${title}%0A%0A${`${window.location.origin}/property/${encodeURIComponent(title)}`}`;
   window.open(url, "_blank");
 }
+
 
 // Truncate title for better UI
 function truncateTitle(title: string, wordLimit: number = 6) {

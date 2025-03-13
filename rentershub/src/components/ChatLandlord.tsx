@@ -50,17 +50,16 @@ const ChatWithLandlord = ({ landlordPhone, propertyId }: { landlordPhone: string
   
    
   // Generate house link
-  const houseLink = encodeURIComponent(`https://rentershub.co.ke/property/${propertyId}`);
+  const houseLink = encodeURIComponent(`${propertyId}`);
 
   // WhatsApp message template
   const preFilledMessage = `Hello. 
 I have seen this vacant house on Renters Hub Platform. 
-${houseLink} 
+https://rentershub.co.ke/property/${houseLink} 
 Is it still available?`;
 
   // SMS message template
-  const landlordSmsMessage = `Hello. Renters Hub has shared your contacts with ${name} (${phone}) who wants to rent your house
-   ${houseLink}
+  const landlordSmsMessage = `Hello. Renters Hub has shared your contacts with ${name} (${phone}) who wants to rent your house%0A%0Ahttps://rentershub.co.ke/property/${houseLink}
    . Please receive them.`;
 
   // Function to send SMS
