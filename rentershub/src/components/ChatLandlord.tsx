@@ -5,8 +5,10 @@ import { Dialog, DialogTrigger, DialogContent } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { MessageCircle } from "lucide-react";
+import { baseUrl } from "@/utils/constants";
+import axios from "axios";
 
-const ChatWithLandlord = ({ landlordPhone, propertyId }: { landlordPhone: string, propertyId: string }) => {
+const ChatWithLandlord = ({ landlordPhone, propertyId, propId}: { landlordPhone: string, propertyId: string, propId:number }) => {
  console.log(propertyId, "id ya property")
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
@@ -23,6 +25,9 @@ const ChatWithLandlord = ({ landlordPhone, propertyId }: { landlordPhone: string
 
   const formattedPhone = formatPhoneNumber(landlordPhone);
 
+  const houseLink = encodeURIComponent(`${propertyId}`);
+  const fullHouseLink = `https://rentershub.co.ke/property/${houseLink}`;
+
   // Validate phone number input
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const input = e.target.value.replace(/\D/g, '');
@@ -35,22 +40,36 @@ const ChatWithLandlord = ({ landlordPhone, propertyId }: { landlordPhone: string
     }
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (phone.length < 10) {
       setPhoneError("Phone number must be at least 10 digits.");
       return;
     }
-  
-    setSubmitted(true);
-    // console.log("User Info Submitted:", { name, phone });
-  
-    // Send SMS to landlord after submission
-    sendSmsToLandlord();
+
+    const payload = {
+      connectionfullname: name,
+      contact: phone,
+      propertylink: fullHouseLink,
+      property: propId,
+      commission: "0.00"
+    };
+
+   
+
+    try {
+      const response = await axios.post(`${baseUrl}accounts/connections`, payload);
+      console.log("Connection submitted successfully:", response.data);
+      setSubmitted(true);
+    } catch (error) {
+      console.error("Error submitting connection:", error);
+    }
   };
+
+
   
    
   // Generate house link
-  const houseLink = encodeURIComponent(`${propertyId}`);
+
 
   // WhatsApp message template
   const preFilledMessage = `Hello. 

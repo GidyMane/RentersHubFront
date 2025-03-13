@@ -51,7 +51,7 @@ const CallLandlordForm = ({ landlordPhone, propertyId, propId }: { landlordPhone
       commission: "0.00"
     };
 
-    console.log("Submitting connection with payload:", payload);
+   
 
     try {
       const response = await axios.post(`${baseUrl}accounts/connections`, payload);
