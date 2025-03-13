@@ -201,7 +201,7 @@ export default function AdminLoginForm() {
           <div className="bg-white/10 backdrop-blur-sm rounded-xl p-2 w-full aspect-video relative overflow-hidden shadow-xl">
             <div className="relative w-full h-full min-h-[200px]">
               <img
-                src="/interior.jpg?height=400&width=600"
+                src="/interior3.jpg?height=400&width=600"
                 alt="Admin Dashboard"
                 className="rounded-lg object-cover w-full h-full"
               />
