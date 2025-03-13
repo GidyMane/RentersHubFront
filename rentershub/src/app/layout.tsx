@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { Analytics } from "@vercel/analytics/react"
-import { SpeedInsights } from "@vercel/speed-insights/next"
+// import { SpeedInsights } from "@vercel/speed-insights/next"
 import "./globals.css";
 import { AuthProvider } from "@/providers/KindeAuthProvider";
 import { SessionProvider } from "@/context/SessionProvider";
@@ -39,7 +39,7 @@ export default function RootLayout({
     <AuthProvider>
       <SessionProvider>
         <Analytics />
-        <SpeedInsights />
+        {/* <SpeedInsights /> */}
         {/* <ToastContainer /> */}
         <QueryProvider>
           <EdgeStoreProvider>

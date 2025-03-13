@@ -21,6 +21,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { baseUrl } from "@/utils/constants"
 import { useEdgeStore } from "@/lib/edgestore"
 import { Home, Trash2, ImageIcon, Upload, CheckCircle2, AlertCircle } from "lucide-react"
+import { PlacesAutocomplete } from "../GoogleAutoCompletePlaces"
 
 declare global {
   interface Window {
@@ -292,6 +293,8 @@ export default function AddPropertyPage({ GOOGLE_MAPS_API_KEY }: { GOOGLE_MAPS_A
           managed_by: values.managedBy,
         }
 
+        console.log(formattedData, "data")
+
         const response = await fetch(`${baseUrl}listing/property`, {
           method: "POST",
           headers: {
@@ -300,6 +303,8 @@ export default function AddPropertyPage({ GOOGLE_MAPS_API_KEY }: { GOOGLE_MAPS_A
           },
           body: JSON.stringify(formattedData),
         })
+
+        console.log(response, "res")
 
         if (!response.ok) {
           const errorDetails = await response.text()
@@ -499,13 +504,19 @@ export default function AddPropertyPage({ GOOGLE_MAPS_API_KEY }: { GOOGLE_MAPS_A
                     Property Location
                   </Label>
                   <div className="mt-1">
+                    <Input type="text" name="location" onChange={formik.handleChange} onBlur={formik.handleBlur} defaultValue={formik.values.location} id="" />
+                     {/* <PlacesAutocomplete GOOGLE_MAPS_API_KEY={api_key}  />
                     <Autocomplete
                       apiKey={GOOGLE_MAPS_API_KEY}
-                      onPlaceSelected={(place) => handlePlaceSelect(place, formik)}
+                      onPlaceSelected={(place) => {
+                        console.log(place, "place")
+                        handlePlaceSelect(place, formik)
+                      }}
+                      
                       options={{ types: ["geocode"], componentRestrictions: { country: "KE" } }}
                       className="w-full px-4 py-3 border rounded-md text-base h-12"
                       placeholder="Search for location"
-                    />
+                    /> */}
                   </div>
                 </div>
 

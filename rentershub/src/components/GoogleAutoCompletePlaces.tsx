@@ -24,6 +24,7 @@ export function PlacesAutocomplete({GOOGLE_MAPS_API_KEY}:{GOOGLE_MAPS_API_KEY:st
   const [selectedPrediction, setSelectedPrediction] = useState<PlacePrediction | null>(null)
   const debouncedInput = useDebounce(input, 300)
   const autocompleteService = useRef<google.maps.places.AutocompleteService | null>(null)
+  console.log(input, "input")
 
   useEffect(() => {
     if (!window.google) {
