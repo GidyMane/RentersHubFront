@@ -7,7 +7,7 @@ interface ActivityLogProps {
 export default function ActivityLog({ activities }: ActivityLogProps) {
   return (
     <div className="bg-white rounded-lg shadow-md p-6">
-      <h3 className="text-lg font-semibold text-gray-700 mb-4">Recent Activities</h3>
+      <h3 className="text-lg font-semibold text-gray-700 mb-4">Recent Activity</h3>
       <ul className="space-y-4">
         {activities.map((activity) => (
           <li key={activity.id} className="flex items-start">
