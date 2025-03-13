@@ -59,7 +59,9 @@ ${houseLink}
 Is it still available?`;
 
   // SMS message template
-  const landlordSmsMessage = `Hello. Renters Hub has shared your contacts with ${name} (${phone}) who wants to rent your house ${houseLink}. Please receive them.`;
+  const landlordSmsMessage = `Hello. Renters Hub has shared your contacts with ${name} (${phone}) who wants to rent your house
+   ${houseLink}
+   . Please receive them.`;
 
   // Function to send SMS
   const sendSmsToLandlord = async () => {

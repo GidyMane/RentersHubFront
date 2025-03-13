@@ -20,7 +20,8 @@ interface PropertyCardProps {
 
 // Handle WhatsApp share
 function handleShare(id: string, title: string) {
-  const url = `https://wa.me/?text=Check out this property: ${title} - ${encodeURIComponent(`${window.location.origin}/property/${title}`)}`;
+  const url = `https://wa.me/?text=Check out this property: ${title} - 
+  ${encodeURIComponent(`${window.location.origin}/property/${title}`)}`;
   window.open(url, "_blank");
 }
 
