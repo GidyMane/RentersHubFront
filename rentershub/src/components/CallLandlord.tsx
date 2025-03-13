@@ -54,7 +54,7 @@ const CallLandlordForm = ({ landlordPhone, propertyId }: { landlordPhone: string
 
 
   // Generate house link
-  const houseLink = `https://rentershub.co.ke/property/${propertyId}`;
+  const houseLink = encodeURIComponent(`https://rentershub.co.ke/property/${propertyId}`);
 
   // SMS message template
   const landlordSmsMessage = `Hello. Renters Hub has shared your contacts with ${name} (${phone}) who wants to rent your house ${houseLink}. Please receive them.`;

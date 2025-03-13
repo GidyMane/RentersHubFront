@@ -50,7 +50,7 @@ const ChatWithLandlord = ({ landlordPhone, propertyId }: { landlordPhone: string
   
    
   // Generate house link
-  const houseLink = `https://rentershub.co.ke/property/${propertyId}`;
+  const houseLink = encodeURIComponent(`https://rentershub.co.ke/property/${propertyId}`);
 
   // WhatsApp message template
   const preFilledMessage = `Hello. 
