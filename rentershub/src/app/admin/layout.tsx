@@ -17,8 +17,13 @@ const lato = Jost({
 });
 
 export const metadata: Metadata = {
+<<<<<<< HEAD
   title: "Admin- RentersHub ",
   description: "Where Smart Kenyans Come to find houses",
+=======
+  title: "Admin- Renters Hub ",
+  description: "The Place Where Kenyans Come To Find Vacant Houses.",
+>>>>>>> da2dc9da5fc186335cc48ca707f8b25d5cfb93b6
 };
 
 export default function DashboardLayout({
@@ -28,7 +33,11 @@ export default function DashboardLayout({
 }>) {
   return (
     <div className="relative h-screen bg-white m-0" >
+<<<<<<< HEAD
       
+=======
+        
+>>>>>>> da2dc9da5fc186335cc48ca707f8b25d5cfb93b6
         <AdminLayout>
         <ReduxProvider>
           

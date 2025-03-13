@@ -86,3 +86,17 @@ body {
     @apply bg-background text-foreground;
   }
 }
+<<<<<<< HEAD
+=======
+
+
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+>>>>>>> da2dc9da5fc186335cc48ca707f8b25d5cfb93b6

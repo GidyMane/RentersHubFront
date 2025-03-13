@@ -30,7 +30,11 @@ export default function PropertiesPage() {
           },
         })
 
+<<<<<<< HEAD
         console.log(response, "propatis")
+=======
+        // console.log(response, "propatis")
+>>>>>>> da2dc9da5fc186335cc48ca707f8b25d5cfb93b6
 
         setProperties(response.data.results || [])
       } catch (error) {
@@ -48,11 +52,19 @@ export default function PropertiesPage() {
     return true
   })
 
+<<<<<<< HEAD
   console.log(filteredProperties, "filter")
 
   return (
     <DashboardLayout>
       <div className="p-4 sm:p-6 lg:p-8">
+=======
+  // console.log(filteredProperties, "filter")
+
+  return (
+    
+      <div className="p-4 sm:p-6 lg:p-8" style={{ fontFamily: "Georgia, serif" }}>
+>>>>>>> da2dc9da5fc186335cc48ca707f8b25d5cfb93b6
         <div className="max-w-7xl mx-auto">
           <div className="flex justify-between items-center mb-6">
             <h1 className="text-2xl sm:text-3xl font-bold text-[#1C4532]">My Properties</h1>
@@ -87,6 +99,10 @@ export default function PropertiesPage() {
           </div>
         </div>
       </div>
+<<<<<<< HEAD
     </DashboardLayout>
+=======
+    
+>>>>>>> da2dc9da5fc186335cc48ca707f8b25d5cfb93b6
   )
 }

@@ -19,6 +19,10 @@ declare module "next-auth" {
       accessToken: string;
       refreshToken: string; 
       user_id:number;
+<<<<<<< HEAD
+=======
+      role: string;
+>>>>>>> da2dc9da5fc186335cc48ca707f8b25d5cfb93b6
          
     } & DefaultSession["user"];
   }
@@ -27,6 +31,10 @@ declare module "next-auth" {
     accessToken: string;
     refreshToken: string;
     user_id: number;
+<<<<<<< HEAD
+=======
+    role: string;
+>>>>>>> da2dc9da5fc186335cc48ca707f8b25d5cfb93b6
     
    
 

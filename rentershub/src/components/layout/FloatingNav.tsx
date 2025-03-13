@@ -14,7 +14,11 @@ export function FloatingNavDemo() {
         },
         {
             name: "Post A house",
+<<<<<<< HEAD
             link: "/",
+=======
+            link: "/rentershub/Dashboard",
+>>>>>>> da2dc9da5fc186335cc48ca707f8b25d5cfb93b6
             icon: <IconList className="h-4 w-4 text-neutral-500 dark:text-white" />,
         },
         {
@@ -29,7 +33,11 @@ export function FloatingNavDemo() {
         },
     ];
 
+<<<<<<< HEAD
     if (path.includes("intime-admin") || path.startsWith("/intimehomes")) {
+=======
+    if (path.includes("admin") || path.startsWith("/rentershub") || path.includes("/login") || path.includes("/signup") || path.includes("/successmessage")) {
+>>>>>>> da2dc9da5fc186335cc48ca707f8b25d5cfb93b6
         return null;
     }
 

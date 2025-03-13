@@ -24,6 +24,19 @@
     --input: 214.3 31.8% 91.4%;
     --ring: 221.2 83.2% 53.3%;
     --radius: 0.5rem;
+<<<<<<< HEAD
   }
 }
 
+=======
+    
+    /* ✅ Define Georgia as the default font */
+    --font-primary: Georgia, serif;
+  }
+
+  /* ✅ Apply Georgia globally */
+  body {
+    font-family: var(--font-primary);
+  }
+}
+>>>>>>> da2dc9da5fc186335cc48ca707f8b25d5cfb93b6

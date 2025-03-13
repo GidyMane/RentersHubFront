@@ -19,7 +19,11 @@ const Sidebar = ({ isOpen, toggleSidebar }: { isOpen: boolean, toggleSidebar: ()
       } transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0`}
     >
       <div className="flex items-center justify-between h-16 px-4 bg-[#153726]">
+<<<<<<< HEAD
         <span className="text-xl font-semibold">RentersHub</span>
+=======
+        <span className="text-xl font-semibold">Renters Hub</span>
+>>>>>>> da2dc9da5fc186335cc48ca707f8b25d5cfb93b6
         <Button variant="ghost" size="icon" onClick={toggleSidebar} className="lg:hidden">
           <X className="h-6 w-6" />
         </Button>
@@ -64,7 +68,11 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
           <Button variant="ghost" size="icon" onClick={toggleSidebar}>
             <Menu className="h-6 w-6" />
           </Button>
+<<<<<<< HEAD
           <span className="text-xl font-semibold text-[#1C4532]">RentersHub</span>
+=======
+          <span className="text-xl font-semibold text-[#1C4532]">Renters Hub</span>
+>>>>>>> da2dc9da5fc186335cc48ca707f8b25d5cfb93b6
           <div className="w-6"></div> {/* Placeholder for balance */}
         </header>
         <main className="flex-1 overflow-x-hidden overflow-y-auto">{children}</main>

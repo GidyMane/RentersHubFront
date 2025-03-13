@@ -73,7 +73,11 @@ export function PropertyCard({
         <div className="text-sm text-gray-500">Rent: KeS {rent_price}/month</div>
         <div className="text-xs text-gray-500 mt-2">Last Updated: {formattedDate}</div>
 
+<<<<<<< HEAD
         <div className="mt-4 grid grid-cols-3 gap-4 text-center border-t pt-4">
+=======
+        {/* <div className="mt-4 grid grid-cols-3 gap-4 text-center border-t pt-4">
+>>>>>>> da2dc9da5fc186335cc48ca707f8b25d5cfb93b6
           <div>
             <div className="flex items-center justify-center gap-1 text-[#2C7BE5]">
               <Bed className="w-4 h-4" />
@@ -95,7 +99,11 @@ export function PropertyCard({
             </div>
             <div className="text-xs text-gray-600 mt-1">Parking</div>
           </div>
+<<<<<<< HEAD
         </div>
+=======
+        </div> */}
+>>>>>>> da2dc9da5fc186335cc48ca707f8b25d5cfb93b6
       </CardContent>
     </Card>
   )

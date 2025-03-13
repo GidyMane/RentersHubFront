@@ -43,7 +43,11 @@ export default function MapView({ properties }: MapViewProps) {
     }
 
     const script = document.createElement("script");
+<<<<<<< HEAD
     script.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&callback=initMap`;
+=======
+    script.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.GOOGLE_MAPS_API_KEY}&callback=initMap`;
+>>>>>>> da2dc9da5fc186335cc48ca707f8b25d5cfb93b6
     script.async = true;
     script.defer = true;
     script.onerror = () => {

@@ -20,11 +20,19 @@ import { usePathname } from "next/navigation"
 import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs"
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
 import { useSession } from "next-auth/react"
+<<<<<<< HEAD
+=======
+import { useUser } from "@/actions/useUser"
+>>>>>>> da2dc9da5fc186335cc48ca707f8b25d5cfb93b6
 
 
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+<<<<<<< HEAD
 
+=======
+  const { user } = useUser()
+>>>>>>> da2dc9da5fc186335cc48ca707f8b25d5cfb93b6
   const pathname = usePathname()
   const { data:session } = useSession();
 
@@ -40,14 +48,22 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       {
 
         title: "Approved Houses",
+<<<<<<< HEAD
         url: "/admin/approvedproperties",
+=======
+        url: "/admin/approvedproperty",
+>>>>>>> da2dc9da5fc186335cc48ca707f8b25d5cfb93b6
         icon: "/property.png"
 
       },
       {
 
         title: "Pending Houses",
+<<<<<<< HEAD
         url: "/rentershub/managefeatures",
+=======
+        url: "/admin/pendingproperties",
+>>>>>>> da2dc9da5fc186335cc48ca707f8b25d5cfb93b6
         icon: "/feature.png",
 
       },
@@ -82,17 +98,42 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       {
 
         title: "Pending Landlords",
+<<<<<<< HEAD
         url: "/intime-admin/requestaccess",
         icon: "/access.png",
 
       }
+=======
+        url: "/admin/pendinglandlords",
+        icon: "/access.png",
+
+      },
+      {
+
+        title: "Approved Ground Agents",
+        url: "/admin/approvedgroundagents",
+        icon: "/users.png",
+
+      },
+      {
+
+        title: "Pending Ground Agents",
+        url: "/admin/pendinggroundagents",
+        icon: "/access.png",
+
+      },
+>>>>>>> da2dc9da5fc186335cc48ca707f8b25d5cfb93b6
 
       
     ],
   }
   return (
    
+<<<<<<< HEAD
     <Sidebar className="h-screen flex justify-between bg-primary ">
+=======
+    <Sidebar className="h-screen flex justify-between bg-primary "   style={{ fontFamily: "Georgia, serif" }}>
+>>>>>>> da2dc9da5fc186335cc48ca707f8b25d5cfb93b6
       <SidebarHeader className="h-screen flex justify-between bg-primary/10">
         <div className="px-4 py-6">
           <div className=" flex flex-col gap-4">
@@ -130,6 +171,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 
           </ul>
         </div >
+<<<<<<< HEAD
         <div className="sticky  border-e inset-y-0 border-gray-100">
           <Link href="#" className="flex items-center gap-2 bg-white p-4 hover:bg-gray-50">
             <Avatar>
@@ -142,6 +184,18 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 <strong className="block font-medium">{session?.user?.name ?? "user"}</strong>
 
                 <span> {session?.user?.email ?? "adminq@rentershub.com"}</span>
+=======
+        <div className="sticky border-e inset-y-0 border-gray-100">
+          <Link href="#" className="flex items-center gap-2 bg-white p-4 hover:bg-gray-50">
+            <Avatar>
+              <AvatarImage src={user.avatar} />
+              <AvatarFallback>{user.name.charAt(0).toUpperCase()}</AvatarFallback>
+            </Avatar>
+            <div>
+              <p className="text-xs">
+                <strong className="block font-medium">{user.name ?? "User"}</strong>
+                <span>{user.email ?? "admin@rentershub.com"}</span>
+>>>>>>> da2dc9da5fc186335cc48ca707f8b25d5cfb93b6
               </p>
             </div>
           </Link>

@@ -18,6 +18,11 @@ const config = {
   		}
   	},
   	extend: {
+<<<<<<< HEAD
+=======
+		fontFamily: {
+			sans: ["Georgia", "serif"],},
+>>>>>>> da2dc9da5fc186335cc48ca707f8b25d5cfb93b6
   		colors: {
   			border: '#153726',
   			input: '#153726',
@@ -146,11 +151,24 @@ const config = {
   				to: {
   					height: '0'
   				}
+<<<<<<< HEAD
   			}
   		},
   		animation: {
   			'accordion-down': 'accordion-down 0.2s ease-out',
   			'accordion-up': 'accordion-up 0.2s ease-out'
+=======
+  			},
+			'caret-blink': {
+          "0%,70%,100%": { opacity: "1" },
+          "20%,50%": { opacity: "0" },
+        },
+  		},
+  		animation: {
+  			'accordion-down': 'accordion-down 0.2s ease-out',
+  			'accordion-up': 'accordion-up 0.2s ease-out',
+			"caret-blink": "caret-blink 1.25s ease-out infinite"
+>>>>>>> da2dc9da5fc186335cc48ca707f8b25d5cfb93b6
   		}
   	}
   },

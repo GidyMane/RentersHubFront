@@ -18,6 +18,10 @@ import { usePathname } from "next/navigation"
 import Image from "next/image"
 import React, { ReactNode } from "react"
 import { NavBarDropDown } from "./NavBardropdown"
+<<<<<<< HEAD
+=======
+import Link from "next/link"
+>>>>>>> da2dc9da5fc186335cc48ca707f8b25d5cfb93b6
 
 
 
@@ -29,7 +33,11 @@ const AdminLayout = ({ children }: { children: ReactNode }) => {
 
       
       <SidebarInset>
+<<<<<<< HEAD
         <header className="flex h-16 sticky top-0  w-full  justify-between shrink-0 bg-transparent backdrop-blur-md shadow-md items-center gap-2 border-b">
+=======
+        <header className="flex h-16 sticky top-0  w-full z-50 justify-between shrink-0 bg-transparent backdrop-blur-md shadow-md items-center gap-2 border-b"   style={{ fontFamily: "Georgia, serif" }}>
+>>>>>>> da2dc9da5fc186335cc48ca707f8b25d5cfb93b6
           <div className="flex items-center gap-2 px-3">
             <SidebarTrigger />
             <Separator orientation="vertical" className="mr-2 h-4" />
@@ -64,6 +72,7 @@ const AdminLayout = ({ children }: { children: ReactNode }) => {
             </Breadcrumb>
           </div>
           <div className="flex items-center gap-2 px-3">
+<<<<<<< HEAD
             <NavBarDropDown />
             {/* <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
               <Image width={300} height={300} src={"/logo.jpeg"} alt={"logo"} className="w-full h-full" />
@@ -73,6 +82,21 @@ const AdminLayout = ({ children }: { children: ReactNode }) => {
               <span className="">v1.0.0</span>
             </div> */}
 
+=======
+            
+            <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-white text-sidebar-primary-foreground"   style={{ fontFamily: "Georgia, serif" }}>
+  <Link href="/login">
+    <Image
+      width={600}
+      height={600}
+      src="/RH2.jpg"
+      alt="logo"
+      className="w-full h-full cursor-pointer"
+    />
+  </Link>
+</div>        
+<NavBarDropDown />
+>>>>>>> da2dc9da5fc186335cc48ca707f8b25d5cfb93b6
           </div>
         </header>
         <div className="flex flex-1 flex-col gap-4 p-4">

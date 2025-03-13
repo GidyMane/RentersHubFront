@@ -20,9 +20,16 @@ import { baseUrl } from '@/utils/constants'
 
 interface NavbarProps {
   toggleSidebar: () => void
+<<<<<<< HEAD
 }
 
 export function Navbar({ toggleSidebar }: NavbarProps) {
+=======
+  isOpen:boolean
+}
+
+export function Navbar({ toggleSidebar, isOpen }: NavbarProps) {
+>>>>>>> da2dc9da5fc186335cc48ca707f8b25d5cfb93b6
   const [user, setUser] = useState<{ name: string, email: string, avatar?: string }>({
     name: '',
     email: '',
@@ -55,7 +62,12 @@ export function Navbar({ toggleSidebar }: NavbarProps) {
       const userData = data.result;
 
       setUser({
+<<<<<<< HEAD
         name: userData.first_name + ' ' + userData.username,
+=======
+        // name: userData.first_name + ' ' + userData.username,
+        name:  userData.username,
+>>>>>>> da2dc9da5fc186335cc48ca707f8b25d5cfb93b6
         email: userData.email,
         avatar: userData.avatar || "/placeholder.svg?height=32&width=32",
       });
@@ -70,7 +82,11 @@ export function Navbar({ toggleSidebar }: NavbarProps) {
   }, []);
 
   return (
+<<<<<<< HEAD
     <header className="sticky top-0 z-40 bg-white border-b shadow-sm">
+=======
+    <header className={`top-0 ${isOpen ? "z-30" :"z-50"} w-full bg-white sticky border-b shadow-sm`} style={{ fontFamily: "Georgia, serif" }}>
+>>>>>>> da2dc9da5fc186335cc48ca707f8b25d5cfb93b6
       <div className="container mx-auto px-4">
         <div className="flex h-16 items-center justify-between">
           <div className="flex items-center">
@@ -95,15 +111,24 @@ export function Navbar({ toggleSidebar }: NavbarProps) {
             </Button>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
+<<<<<<< HEAD
                 <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+=======
+                <Button variant="ghost" className="relative h-8 w-8 rounded-full" style={{ fontFamily: "Georgia, serif" }}>
+>>>>>>> da2dc9da5fc186335cc48ca707f8b25d5cfb93b6
                   <Avatar className="h-8 w-8">
                     <AvatarImage src={user.avatar} alt={user.name} />
                     <AvatarFallback>{user.name?.charAt(0)}</AvatarFallback>
                   </Avatar>
                 </Button>
               </DropdownMenuTrigger>
+<<<<<<< HEAD
               <DropdownMenuContent className="w-56" align="end" forceMount>
                 <DropdownMenuLabel className="font-normal">
+=======
+              <DropdownMenuContent className="w-56" align="end" style={{ fontFamily: "Georgia, serif" }} forceMount>
+                <DropdownMenuLabel className="font-normal" style={{ fontFamily: "Georgia, serif" }}>
+>>>>>>> da2dc9da5fc186335cc48ca707f8b25d5cfb93b6
                   <div className="flex flex-col space-y-1">
                     <p className="text-sm font-medium leading-none">{user.name}</p>
                     <p className="text-xs leading-none text-muted-foreground">
@@ -122,12 +147,20 @@ export function Navbar({ toggleSidebar }: NavbarProps) {
                 <DropdownMenuItem>
                 <Button
             variant="ghost"
+<<<<<<< HEAD
             className="w-full justify-start text-black-300 hover:bg-[#db3131] dark:hover:bg-[#df3535] hover:text-white"
+=======
+            className="w-full justify-start text-black-300 "
+>>>>>>> da2dc9da5fc186335cc48ca707f8b25d5cfb93b6
             onClick={async () => {
               await signOut()
             }}
           >
+<<<<<<< HEAD
             <LogOut className="h-5 w-5 mr-3" aria-hidden="true" />
+=======
+            <LogOut className="h-5 w-5 mr-3" aria-hidden="true"  style={{ fontFamily: "Georgia, serif" }}/>
+>>>>>>> da2dc9da5fc186335cc48ca707f8b25d5cfb93b6
             Log Out
           </Button>
                 </DropdownMenuItem>

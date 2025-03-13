@@ -3,6 +3,10 @@ import Credentials from "next-auth/providers/credentials";
 import axios from "axios";
 // Your own logic for dealing with plaintext password strings; be careful!
 import type { NextAuthConfig } from "next-auth";
+<<<<<<< HEAD
+=======
+import { json } from "stream/consumers";
+>>>>>>> da2dc9da5fc186335cc48ca707f8b25d5cfb93b6
 // import { ZodError } from "zod"
 // import { signInSchema } from "./lib/zod"
 // import GoogleProvider from "next-auth/providers/google";
@@ -65,7 +69,11 @@ export default {
             }
           );
       
+<<<<<<< HEAD
           console.dir(res);
+=======
+          // console.dir(res);
+>>>>>>> da2dc9da5fc186335cc48ca707f8b25d5cfb93b6
       
           // Check if the response is successful
           if (res.status === 200) {
@@ -80,8 +88,17 @@ export default {
               accessToken: user.result.tokens.access,
               refreshToken: user.result.tokens.refresh,
               user_id: user.result.user_id,
+<<<<<<< HEAD
             };
           }
+=======
+              role: user.result.role,
+            };
+          }
+          else{
+            throw new Error (JSON.stringify(res.data))
+          }
+>>>>>>> da2dc9da5fc186335cc48ca707f8b25d5cfb93b6
         } catch (error: any) {
           console.error("Authorization error:", error);
       
@@ -129,7 +146,12 @@ export default {
       if (user){
         token.accessToken= user.accessToken,
         token.refreshToken= user.refreshToken,
+<<<<<<< HEAD
         token.user_id = user.user_id as unknown as number
+=======
+        token.user_id = user.user_id as unknown as number,
+        token.role = user.role
+>>>>>>> da2dc9da5fc186335cc48ca707f8b25d5cfb93b6
       }
   
 
@@ -139,14 +161,26 @@ export default {
       
     },
     session: async ({ session, token }) => {
+<<<<<<< HEAD
       // console.log(token)
+=======
+      // console.log(token, "itpoken")
+>>>>>>> da2dc9da5fc186335cc48ca707f8b25d5cfb93b6
       return {
         ...session,
         user: {
           ...session?.user, 
+<<<<<<< HEAD
           accessToken : token.accessToken,
           refreshToken: token.refreshToken,
           user_id: token.user_id as number
+=======
+          // accessToken : token.accessToken,
+          // refreshToken: token.refreshToken,
+          user_id: token.user_id as number,
+          ...token
+          
+>>>>>>> da2dc9da5fc186335cc48ca707f8b25d5cfb93b6
 
           
         }

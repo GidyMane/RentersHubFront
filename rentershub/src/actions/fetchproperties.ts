@@ -25,4 +25,34 @@ export const fetchPropertyById = async (id: number) => {
     console.error("Error fetching property:", error)
     throw new Error("Failed to fetch property")
   }
+<<<<<<< HEAD
+=======
+}
+export const fetchPropertyByName = async (name: string) => {
+  try {
+    const response = await axios.get(`${baseUrl}listing/propertybyname/${name}/`)
+    console.log(response.data, "res from server")
+    return response?.data ?? [];
+    
+  } catch (error) {
+    console.error("Error fetching property:", error)
+    throw new Error("Failed to fetch property")
+  }
+}
+
+
+export async function fetchSimilarProperties(address:string): Promise<Property[]> {
+  try {
+    const response = await axios.get(`${baseUrl}listing/property`, {
+      params:{
+        address
+      }
+    })
+    // console.log(response.data, "res from server")
+    return [response.status,response.data?.results.slice(1) ?? []]
+  } catch (error) {
+    console.error("Error fetching properties:", error)
+    throw new Error("Failed to fetch properties")
+  }
+>>>>>>> da2dc9da5fc186335cc48ca707f8b25d5cfb93b6
 }

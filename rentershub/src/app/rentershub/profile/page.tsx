@@ -111,8 +111,13 @@ export default function ProfilePage() {
   }
 
   return (
+<<<<<<< HEAD
     <DashboardLayout>
       <div className="p-4 sm:p-6 lg:p-8">
+=======
+   
+      <div className="p-4 sm:p-6 lg:p-8" style={{ fontFamily: "Georgia, serif" }}>
+>>>>>>> da2dc9da5fc186335cc48ca707f8b25d5cfb93b6
         <ToastContainer />
         <div className="max-w-2xl mx-auto space-y-8">
           <h1 className="text-2xl sm:text-3xl font-bold text-[#1C4532]">My Profile</h1>
@@ -166,6 +171,10 @@ export default function ProfilePage() {
           <ChangePassword />
         </div>
       </div>
+<<<<<<< HEAD
     </DashboardLayout>
+=======
+   
+>>>>>>> da2dc9da5fc186335cc48ca707f8b25d5cfb93b6
   )
 }

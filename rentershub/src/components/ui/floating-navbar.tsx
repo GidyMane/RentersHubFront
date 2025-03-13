@@ -74,12 +74,21 @@ export const FloatingNav = ({
               `relative dark:text-neutral-50 items-center flex space-x-1 text-neutral-600 dark:hover:text-neutral-300 hover:text-neutral-500 ${path.split("/")[1] == navItem.link.split("/")[1] && "bg-black text-white px-2 rounded-full py-1"}`
             )}
           >
+<<<<<<< HEAD
             <span className="block sm:hidden">{navItem.icon}</span>
             <span className="hidden sm:block text-sm">{navItem.name}</span>
           </Link>
         ))}
         <button className="border text-sm font-medium relative border-neutral-200 dark:border-white/[0.2] text-black dark:text-white px-4 py-2 rounded-full" onClick={()=>{
             router.push("/login")
+=======
+            {/* <span className="block sm:hidden">{navItem.icon}</span> */}
+            <span className="sm:block text-sm">{navItem.name}</span>
+          </Link>
+        ))}
+        <button className="border text-sm font-medium relative border-neutral-200 dark:border-white/[0.2] text-black dark:text-white px-4 py-2 rounded-full" onClick={()=>{
+            router.push("/admin")
+>>>>>>> da2dc9da5fc186335cc48ca707f8b25d5cfb93b6
         }}>
           <span>Manage Rentals</span>
           <span className="absolute inset-x-0 w-1/2 mx-auto -bottom-px bg-gradient-to-r from-transparent via-secondary500 to-transparent  h-px" />

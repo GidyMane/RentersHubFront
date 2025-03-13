@@ -2,7 +2,11 @@
 
 import * as React from "react"
 import {
+<<<<<<< HEAD
   ColumnDef,
+=======
+  ColumnDef,  
+>>>>>>> da2dc9da5fc186335cc48ca707f8b25d5cfb93b6
   ColumnFiltersState,
   SortingState,
   VisibilityState,
