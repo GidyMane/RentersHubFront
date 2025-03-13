@@ -52,13 +52,13 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         icon: "/feature.png",
 
       },
-      // {
+      {
 
-      //   title: "Property Type lis",
-      //   url: "/rentershub/manage-property-types",
-      //   icon: "/list.png",
+        title: "Connections",
+        url: "/admin/connections",
+        icon: "/list.png",
 
-      // },
+      },
       // {
 
       //   title: "Blogs",
@@ -107,8 +107,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   }
   return (
    
-    <Sidebar className="h-screen flex justify-between bg-primary "   style={{ fontFamily: "Georgia, serif" }}>
-      <SidebarHeader className="h-screen flex justify-between bg-primary/10">
+    <Sidebar className="h-screen flex justify-between bg-primary"   style={{ fontFamily: "Georgia, serif" }}>
+      <SidebarHeader className="h-screen flex justify-between bg-primary/10  overflow-y-auto">
         <div className="px-4 py-6">
           <div className=" flex flex-col gap-4">
             <span className="grid h-10 w-32 place-content-center rounded-lg text-xs text-gray-600">
