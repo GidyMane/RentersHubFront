@@ -342,7 +342,7 @@ export default function PropertyDetail({
                   </DialogTrigger>
                   <DialogContent>
                     <DialogTitle>Share Property</DialogTitle>
-                    <ShareButton propertyLink={`https://rentershub.co.ke/Property/${property?.title}`} />
+                    <ShareButton propertyLink={encodeURIComponent(`https://rentershub.co.ke/Property/${property?.title}`)} />
                   </DialogContent>
                 </Dialog>
               </div>
