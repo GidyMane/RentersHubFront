@@ -329,7 +329,7 @@ export default function PropertyDetail({
                     <DialogTitle>Chat with Landlord</DialogTitle>
                     <ChatWithLandlord
                       landlordPhone={property?.owners_contact}
-                      propertyId={property?.id?.toString() ?? ""}                    />
+                      propertyId={property?.title?.toString() ?? ""}                    />
                   </DialogContent>
                 </Dialog>
 
