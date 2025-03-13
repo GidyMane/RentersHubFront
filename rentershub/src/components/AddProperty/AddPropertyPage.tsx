@@ -555,7 +555,7 @@ export default function AddPropertyPage({ GOOGLE_MAPS_API_KEY }: { GOOGLE_MAPS_A
                   </div>
                 </div>
 
-                <div>
+                {/* <div>
                   <Label htmlFor="poBox" className="text-base font-medium">
                     P.O. Box
                   </Label>
@@ -568,7 +568,7 @@ export default function AddPropertyPage({ GOOGLE_MAPS_API_KEY }: { GOOGLE_MAPS_A
                     onBlur={formik.handleBlur}
                     className="mt-1 h-12 text-base relative z-[1]"
                   />
-                </div>
+                </div> */}
 
                 <div className="flex justify-between pt-4">
                   <Button
