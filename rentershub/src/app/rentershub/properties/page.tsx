@@ -27,6 +27,7 @@ export default function PropertiesPage() {
             Authorization: `Bearer ${session.user.accessToken}`,
           },
         })
+        console.log(response, "proeprties")
 
         setProperties(response.data.results || [])
       } catch (error) {
@@ -40,8 +41,8 @@ export default function PropertiesPage() {
   // Filter properties based on status
   const filteredProperties = properties.filter((property) => {
     if (status === "all") return true
-    if (status === "available") return property.is_available
-    if (status === "unavailable") return !property.is_available
+    if (status === "approved") return property.is_approved
+    if (status === "notapproved") return !property.is_approved
     return true
   })
 

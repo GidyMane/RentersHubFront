@@ -31,8 +31,8 @@ export function FilterBar({
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">All Properties</SelectItem>
-            <SelectItem value="available">Available</SelectItem>
-            <SelectItem value="unavailable">Unavailable</SelectItem>
+            <SelectItem value="approved">Approved</SelectItem>
+            <SelectItem value="notapproved">Pending Approval</SelectItem>
           </SelectContent>
         </Select>
       </div>
