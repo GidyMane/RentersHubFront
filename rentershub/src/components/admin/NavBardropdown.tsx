@@ -33,7 +33,7 @@ import {
 import { LogoutLink, useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { useRouter } from "next/navigation";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { useUser } from "@/actions/useUser";
 
 
@@ -53,14 +53,17 @@ export function NavBarDropDown() {
             <DropdownMenuContent className="w-56">
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                 <DropdownMenuItem>
-                    <div className="flex gap-2 hover:cursor-pointer focus:cursor-pointer after:bg-gray-100" onClick={() => {
-                        router.push("/api/auth/signout")
-                    }}>
-                        <LogOut />
-                        <span>Log out</span>
-                    </div>
-
-                </DropdownMenuItem>
+                                <Button
+                            variant="ghost"
+                            className="w-full justify-start text-black-300 "
+                            onClick={async () => {
+                              await signOut()
+                            }}
+                          >
+                            <LogOut className="h-5 w-5 mr-3" aria-hidden="true"  style={{ fontFamily: "Georgia, serif" }}/>
+                            Log Out
+                          </Button>
+                                </DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>
     )
