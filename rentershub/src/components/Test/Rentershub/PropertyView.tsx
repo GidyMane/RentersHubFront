@@ -308,6 +308,7 @@ export default function PropertyDetails({
       ...prev,
       is_available: !prev.is_available,
     }))
+    toast.success(`Property will be marked as ${!formData.is_available ? "Available" : "Occupied"} after saving`)
   }
 
   const cancelEditing = () => {
@@ -365,6 +366,37 @@ export default function PropertyDetails({
     }
   }, [isEditing])
 
+  const updateAvailabilityStatus = async (newStatus: boolean) => {
+    try {
+      const session = await getSession()
+      if (!session?.user?.accessToken) throw new Error("User not authenticated")
+
+      const response = await axios.patch(
+        `${baseUrl}listing/property/${id}/`,
+        { is_available: newStatus },
+        {
+          headers: {
+            Authorization: `Bearer ${session.user.accessToken}`,
+            "Content-Type": "application/json",
+          },
+        },
+      )
+
+      if (response.status === 200) {
+        setFormData((prev) => ({
+          ...prev,
+          is_available: newStatus,
+        }))
+        toast.success(`Property marked as ${newStatus ? "Available" : "Not Available"}`)
+      } else {
+        toast.error("Failed to update availability status")
+      }
+    } catch (error) {
+      console.error("Error updating availability status:", error)
+      toast.error("An error occurred while updating availability status")
+    }
+  }
+
   return (
     <div className="w-full max-w-6xl mx-auto bg-background">
       {/* Hero Section with Main Image */}
@@ -397,7 +429,7 @@ export default function PropertyDetails({
                 }`}
                 onClick={toggleAvailability}
               >
-                {formData.is_available ? "Available" : "Not Available"}
+                {formData.is_available ? "Mark as Occupied" : "Mark as Available"}
               </Badge>
             )}
           </div>
@@ -493,6 +525,39 @@ export default function PropertyDetails({
         <TabsContent value="details" className="space-y-6">
           <Card className="border-none shadow-sm">
             <CardContent className="p-6">
+              <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
+                <div>
+                  <h3 className="text-lg font-semibold">Property Availability</h3>
+                  <p className="text-sm text-muted-foreground mt-1">Update the availability status of this property</p>
+                </div>
+                <div className="flex items-center gap-3">
+                  <span className="text-sm font-medium">Status:</span>
+                  <Badge
+                    className={`px-3 py-1 text-sm font-medium ${
+                      formData.is_available
+                        ? "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400"
+                        : "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400"
+                    }`}
+                  >
+                    {formData.is_available ? "Available for Rent" : "Fully Occupied"}
+                  </Badge>
+                  {!isEditing && (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => updateAvailabilityStatus(!formData.is_available)}
+                      className="ml-2"
+                    >
+                      Mark as {formData.is_available ? "Occupied" : "Available"}
+                    </Button>
+                  )}
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="border-none shadow-sm">
+            <CardContent className="p-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <h3 className="text-lg font-semibold mb-4">Property Information</h3>
@@ -503,7 +568,9 @@ export default function PropertyDetails({
                     </div>
                     <div className="flex justify-between border-b pb-2">
                       <span className="text-secondary">Status</span>
-                      <span className="font-medium">{formData.is_available ? "Available" : "Not Available"}</span>
+                      <span className={`font-medium ${formData.is_available ? "text-green-600" : "text-red-600"}`}>
+                        {formData.is_available ? "Available" : "Not Available"}
+                      </span>
                     </div>
                     <div className="flex justify-between border-b pb-2">
                       <span className="text-secondary">Managed By</span>
