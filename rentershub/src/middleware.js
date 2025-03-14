@@ -47,7 +47,7 @@ export default auth(async (req) => {
 
   // Restrict /rentershub access only to Landlords and Ground Agents
   if (isRentersHubRoute) {
-    if (!["LANDLORD", "GROUNDAGENT"].includes(req.auth.user.role)) {
+    if (!["LANDLORD", "GROUNDAGENT", "ADMIN"].includes(req.auth.user.role)) {
       return Response.redirect(new URL("/login", nextUrl)); // Redirect unauthorized users
     }
     return null; // Allow access to Landlords & Ground Agents

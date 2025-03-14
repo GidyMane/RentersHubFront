@@ -1,0 +1,29 @@
+"use client";
+
+import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
+import RoleSelector from "@/components/Auth/role-selector";
+import AdminLoginForm from "@/components/Auth/AdminLogin";
+import UserLoginForm from "@/components/Auth/user-login-form";
+
+export default function Login() {
+  const searchParams = useSearchParams();
+  const [selectedRole, setSelectedRole] = useState<string | null>(null);
+
+  useEffect(() => {
+    const role = searchParams.get("role");
+    if (role) {
+      setSelectedRole(role.toUpperCase());
+    }
+  }, [searchParams]);
+
+  const renderLoginForm = () => {
+    if (!selectedRole) {
+      return <RoleSelector onRoleSelect={setSelectedRole} />;
+    }
+
+    return selectedRole === "ADMIN" ? <AdminLoginForm /> : <UserLoginForm />;
+  };
+
+  return <div className="min-h-screen bg-gray-50">{renderLoginForm()}</div>;
+}

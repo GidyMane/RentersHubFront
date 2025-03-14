@@ -54,18 +54,19 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       },
       {
 
+        title: "Post House",
+        url: "/admin/add-property",
+        icon: "/blog.png",
+
+      },
+      {
+
         title: "Connections",
         url: "/admin/connections",
         icon: "/list.png",
 
       },
-      // {
-
-      //   title: "Blogs",
-      //   url: "/rentershub/blogs",
-      //   icon: "/blog.png",
-
-      // },
+     
       // {
 
       //   title: "Testimonials",
