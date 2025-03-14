@@ -87,21 +87,21 @@ export const columns: ColumnDef<Landlords>[] = [
             );
         },
     },
-    {
-        accessorKey: "email",
-        header: ({ column }) => (
-            <DataTableColumnHeader column={column} title="Email" />
-        ),
-        cell: ({ row }) => {
-            return (
-                <div className="flex space-x-2">
-                    <span className="max-w-[500px] truncate font-medium">
-                        {row.getValue("email")}
-                    </span>
-                </div>
-            );
-        },
-    },
+    // {
+    //     accessorKey: "email",
+    //     header: ({ column }) => (
+    //         <DataTableColumnHeader column={column} title="Email" />
+    //     ),
+    //     cell: ({ row }) => {
+    //         return (
+    //             <div className="flex space-x-2">
+    //                 <span className="max-w-[500px] truncate font-medium">
+    //                     {row.getValue("email")}
+    //                 </span>
+    //             </div>
+    //         );
+    //     },
+    // },
     {
         accessorKey: "contact",
         header: ({ column }) => (
