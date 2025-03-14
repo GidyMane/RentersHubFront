@@ -1,7 +1,5 @@
 "use client"
 
-import { AlertDialogTrigger } from "@/components/ui/alert-dialog"
-
 import type React from "react"
 
 import { useState, useEffect } from "react"
@@ -12,11 +10,12 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import {  Droplet, Trash2, Shield, Edit, Save, X, Upload, MapPin, Plus, ImagePlus } from "lucide-react"
+import { Droplet, Trash2, Shield, Edit, Save, X, Upload, MapPin, Plus, ImagePlus } from "lucide-react"
 import { getSession } from "next-auth/react"
 import { baseUrl } from "@/utils/constants"
 import axios from "axios"
 import Image from "next/image"
+import { useRouter } from "next/navigation"
 
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import {
@@ -28,18 +27,20 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
+  AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import { toast } from "react-hot-toast"
-
 
 interface Feature {
   id: number
   name: string
 }
-interface Image {
+
+interface PropertyImage {
   id: string
   url: string
 }
+
 interface PropertyDetails {
   id: number
   title: string
@@ -57,7 +58,7 @@ interface PropertyDetails {
   rent_price: string
   deposit_amount: string
   main_image_url: { id: number; url: string }
-  images: Image[]
+  images: PropertyImage[]
   features: Feature[]
   amenities: number[]
   water_charges: string
@@ -69,6 +70,7 @@ interface PropertyDetails {
   managed_by: string
   propertytype: { id: number; name: string }
   property_features: Feature[]
+  onPropertyDeleted?: () => void
 }
 
 export default function PropertyDetails({
@@ -77,10 +79,7 @@ export default function PropertyDetails({
   description,
   propertytype,
   price,
- 
-
   address,
-
   is_available,
   is_approved,
   featured,
@@ -96,7 +95,9 @@ export default function PropertyDetails({
   other_charges,
   managed_by,
   features,
+  onPropertyDeleted,
 }: PropertyDetails) {
+  const router = useRouter()
   const [isDeleting, setIsDeleting] = useState(false)
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
   const [isEditing, setIsEditing] = useState(false)
@@ -106,8 +107,7 @@ export default function PropertyDetails({
   const [newFeature, setNewFeature] = useState("")
   const [activeTab, setActiveTab] = useState("details")
   const [showImageUpload, setShowImageUpload] = useState(false)
-  const [additionalImages, setAdditionalImages] = useState<Image[]>(images || []);
-
+  const [additionalImages, setAdditionalImages] = useState<PropertyImage[]>(images || [])
 
   const [formData, setFormData] = useState({
     title,
@@ -144,7 +144,6 @@ export default function PropertyDetails({
       other_charges,
       is_approved,
       images,
-
       main_image_url,
       property_features,
       is_available,
@@ -165,7 +164,6 @@ export default function PropertyDetails({
     security_charges,
     other_charges,
     is_approved,
-
     main_image_url,
     property_features,
     images,
@@ -183,35 +181,25 @@ export default function PropertyDetails({
         ...formData,
         property_features: featureList.filter((f) => selectedFeatures.includes(f.id)),
       }
-
-      const response = await axios.put(`${baseUrl}listing/property/${id}/`, updatedFormData, {
+     
+      
+      const response = await axios.patch(`${baseUrl}listing/property/${id}/`, updatedFormData, {
         headers: {
-          Authorization: `Bearer ${session.user.accessToken}`,
+          Authorization: `Bearer ${session?.user?.accessToken}`,
           "Content-Type": "application/json",
         },
       })
+      
 
       if (response.status === 200) {
-        toast({
-          title: "Success",
-          description: "Property updated successfully",
-          variant: "default",
-        })
+        toast.success("Property updated successfully")
         setIsEditing(false)
       } else {
-        toast({
-          title: "Error",
-          description: "Failed to update property",
-          variant: "destructive",
-        })
+        toast.error("Failed to update property")
       }
     } catch (error) {
       console.error("Error updating property:", error)
-      toast({
-        title: "Error",
-        description: "An error occurred while updating the property",
-        variant: "destructive",
-      })
+      toast.error("An error occurred while updating the property")
     } finally {
       setIsSaving(false)
     }
@@ -233,30 +221,21 @@ export default function PropertyDetails({
       })
 
       if (response.status === 204) {
-        toast({
-          title: "Success",
-          description: "Property deleted successfully",
-          variant: "default",
-        })
+        toast.success("Property deleted successfully")
 
-        // Redirect after successful deletion
-        setTimeout(() => {
-          window.location.href = "/rentershub/properties"
-        }, 1000)
+        // Use the callback for navigation instead of window.location
+        if (onPropertyDeleted) {
+          onPropertyDeleted()
+        } else {
+          // Fallback if callback not provided
+          router.push("/rentershub/properties")
+        }
       } else {
-        toast({
-          title: "Error",
-          description: "Failed to delete property",
-          variant: "destructive",
-        })
+        toast.error("Failed to delete property")
       }
     } catch (error) {
       console.error("Error deleting property:", error)
-      toast({
-        title: "Error",
-        description: "An error occurred while deleting the property",
-        variant: "destructive",
-      })
+      toast.error("An error occurred while deleting the property")
     } finally {
       setIsDeleting(false)
       setIsDeleteDialogOpen(false)
@@ -293,27 +272,25 @@ export default function PropertyDetails({
   }
 
   const handleAdditionalImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-  
-    const reader = new FileReader();
+    const file = e.target.files?.[0]
+    if (!file) return
+
+    const reader = new FileReader()
     reader.onloadend = () => {
-      const newImage: Image = {
+      const newImage: PropertyImage = {
         id: crypto.randomUUID(), // Generate a unique ID
         url: reader.result as string, // Use the data URL for preview
-      };
-  
-      setAdditionalImages((prev) => [...prev, newImage]);
-    };
-  
-    reader.readAsDataURL(file);
-  };
-  
+      }
 
-  const removeAdditionalImage = (id: string) => { 
-    setAdditionalImages((prev) => prev.filter((image) => image.id !== id));
-  };
-  
+      setAdditionalImages((prev) => [...prev, newImage])
+    }
+
+    reader.readAsDataURL(file)
+  }
+
+  const removeAdditionalImage = (id: string) => {
+    setAdditionalImages((prev) => prev.filter((image) => image.id !== id))
+  }
 
   const addNewFeature = () => {
     if (newFeature.trim()) {
@@ -373,16 +350,26 @@ export default function PropertyDetails({
         </div>
 
         <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
-        <div className="flex gap-2 mb-3">
-  <Badge
-    className={`cursor-pointer text-white ${
-      formData.is_approved ? "bg-green-500/90 hover:bg-green-500" : "bg-red-500/90 hover:bg-red-500"
-    }`}
-  >
-    {formData.is_approved ? "Approved" : "Not Approved"}
-  </Badge>
-</div>
+          <div className="flex gap-2 mb-3">
+            <Badge
+              className={`cursor-pointer text-white ${
+                formData.is_approved ? "bg-green-500/90 hover:bg-green-500" : "bg-red-500/90 hover:bg-red-500"
+              }`}
+            >
+              {formData.is_approved ? "Approved" : "Not Approved"}
+            </Badge>
 
+            {isEditing && (
+              <Badge
+                className={`cursor-pointer text-white ${
+                  formData.is_available ? "bg-blue-500/90 hover:bg-blue-500" : "bg-gray-500/90 hover:bg-gray-500"
+                }`}
+                onClick={toggleAvailability}
+              >
+                {formData.is_available ? "Available" : "Not Available"}
+              </Badge>
+            )}
+          </div>
 
           <h1 className="text-3xl md:text-4xl font-bold mb-2">
             {isEditing ? (
@@ -404,6 +391,7 @@ export default function PropertyDetails({
           </div>
         </div>
       </div>
+
       {/* Action Buttons - Fixed position for easy access */}
       <div className="sticky top-0 z-10 bg-background border-b mb-6 py-3 px-4">
         <div className="max-w-6xl mx-auto flex justify-end items-center gap-3">
@@ -597,16 +585,11 @@ export default function PropertyDetails({
         <TabsContent value="pricing" className="space-y-6">
           <Card className="border-none shadow-sm">
             <CardContent className="p-6">
-              <h3 className="text-lg font-semibold mb-4 flex items-center">
-                
-                Main Pricing
-                
-              </h3>
+              <h3 className="text-lg font-semibold mb-4 flex items-center">Main Pricing</h3>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div className="space-y-2">
                   <label className="text-sm font-medium">Price</label>
                   <div className="flex items-center gap-2 bg-muted/50 rounded-lg p-3">
-       
                     {isEditing ? (
                       <Input name="price" value={formData.price} onChange={handleInputChange} className="flex-1" />
                     ) : (
@@ -618,7 +601,6 @@ export default function PropertyDetails({
                 <div className="space-y-2">
                   <label className="text-sm font-medium">Rent (monthly)</label>
                   <div className="flex items-center gap-2 bg-muted/50 rounded-lg p-3">
-                  
                     {isEditing ? (
                       <Input
                         name="rent_price"
@@ -635,7 +617,6 @@ export default function PropertyDetails({
                 <div className="space-y-2">
                   <label className="text-sm font-medium">Deposit</label>
                   <div className="flex items-center gap-2 bg-muted/50 rounded-lg p-3">
-                  
                     {isEditing ? (
                       <Input
                         name="deposit_amount"
@@ -654,10 +635,7 @@ export default function PropertyDetails({
 
           <Card className="border-none shadow-sm">
             <CardContent className="p-6">
-              <h3 className="text-lg font-semibold mb-4 flex items-center">
-                
-                Additional Charges
-              </h3>
+              <h3 className="text-lg font-semibold mb-4 flex items-center">Additional Charges</h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                 <div className="space-y-2">
                   <label className="text-sm font-medium">Water Charges</label>
@@ -730,7 +708,6 @@ export default function PropertyDetails({
                 <div className="space-y-2">
                   <label className="text-sm font-medium">Other Charges</label>
                   <div className="flex items-center gap-2 bg-muted/50 rounded-lg p-3">
-                  
                     {isEditing ? (
                       <Input
                         name="other_charges"
@@ -785,99 +762,96 @@ export default function PropertyDetails({
           </Card>
 
           <Card className="border-none shadow-sm">
-  <CardContent className="p-6">
-    <div className="flex justify-between items-center mb-4">
-      <h3 className="text-lg font-semibold flex items-center">
-        <ImagePlus className="h-5 w-5 mr-2 text-primary" />
-        Property Gallery
-      </h3>
-      {isEditing && (
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => setShowImageUpload(!showImageUpload)}
-          className="flex items-center gap-1"
-        >
-          <ImagePlus className="h-4 w-4" />
-          Add Image
-        </Button>
-      )}
-    </div>
-
-    {isEditing && showImageUpload && (
-      <div className="mb-6 p-8 border border-dashed border-primary/40 rounded-xl flex flex-col items-center justify-center bg-muted/30">
-        <label htmlFor="additional-image-upload" className="cursor-pointer">
-          <div className="flex flex-col items-center">
-            <Upload className="w-10 h-10 text-primary/70" />
-            <span className="text-base font-medium mt-3">Upload additional image</span>
-            <span className="text-sm text-secondary mt-1">Click to browse files</span>
-          </div>
-          <input
-            id="additional-image-upload"
-            type="file"
-            accept="image/*"
-            className="hidden"
-            onChange={handleAdditionalImageUpload}
-          />
-        </label>
-      </div>
-    )}
-
-    {additionalImages.length > 0 ? (
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-        {additionalImages.map((image) => (
-          <div key={image.id} className="relative aspect-square group overflow-hidden rounded-xl border">
-            <Image
-              src={image.url || "/placeholder.svg?height=300&width=300"}
-              alt="Property image"
-              fill
-              className="object-cover transition-transform group-hover:scale-110 duration-300"
-            />
-            {isEditing && (
-              <div className="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity">
-                <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Button
-                        variant="destructive"
-                        size="icon"
-                        className="h-9 w-9 rounded-full"
-                        onClick={() => removeAdditionalImage(image.id)}
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>Remove image</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
+            <CardContent className="p-6">
+              <div className="flex justify-between items-center mb-4">
+                <h3 className="text-lg font-semibold flex items-center">
+                  <ImagePlus className="h-5 w-5 mr-2 text-primary" />
+                  Property Gallery
+                </h3>
+                {isEditing && (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setShowImageUpload(!showImageUpload)}
+                    className="flex items-center gap-1"
+                  >
+                    <ImagePlus className="h-4 w-4" />
+                    Add Image
+                  </Button>
+                )}
               </div>
-            )}
-          </div>
-        ))}
-      </div>
-    ) : (
-      <div className="text-center py-12 px-6 bg-muted/30 rounded-xl">
-        <ImagePlus className="h-12 w-12 text-secondary/50 mx-auto mb-3" />
-        <p className="text-secondary font-medium">No additional images available</p>
-        {isEditing && (
-          <p className="text-sm text-secondary mt-2">
-            Click the "Add Image" button to upload property photos
-          </p>
-        )}
-      </div>
-    )}
-  </CardContent>
-</Card>
 
+              {isEditing && showImageUpload && (
+                <div className="mb-6 p-8 border border-dashed border-primary/40 rounded-xl flex flex-col items-center justify-center bg-muted/30">
+                  <label htmlFor="additional-image-upload" className="cursor-pointer">
+                    <div className="flex flex-col items-center">
+                      <Upload className="w-10 h-10 text-primary/70" />
+                      <span className="text-base font-medium mt-3">Upload additional image</span>
+                      <span className="text-sm text-secondary mt-1">Click to browse files</span>
+                    </div>
+                    <input
+                      id="additional-image-upload"
+                      type="file"
+                      accept="image/*"
+                      className="hidden"
+                      onChange={handleAdditionalImageUpload}
+                    />
+                  </label>
+                </div>
+              )}
+
+              {additionalImages.length > 0 ? (
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+                  {additionalImages.map((image) => (
+                    <div key={image.id} className="relative aspect-square group overflow-hidden rounded-xl border">
+                      <Image
+                        src={image.url || "/placeholder.svg?height=300&width=300"}
+                        alt="Property image"
+                        fill
+                        className="object-cover transition-transform group-hover:scale-110 duration-300"
+                      />
+                      {isEditing && (
+                        <div className="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity">
+                          <TooltipProvider>
+                            <Tooltip>
+                              <TooltipTrigger asChild>
+                                <Button
+                                  variant="destructive"
+                                  size="icon"
+                                  className="h-9 w-9 rounded-full"
+                                  onClick={() => removeAdditionalImage(image.id)}
+                                >
+                                  <Trash2 className="h-4 w-4" />
+                                </Button>
+                              </TooltipTrigger>
+                              <TooltipContent>
+                                <p>Remove image</p>
+                              </TooltipContent>
+                            </Tooltip>
+                          </TooltipProvider>
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-12 px-6 bg-muted/30 rounded-xl">
+                  <ImagePlus className="h-12 w-12 text-secondary/50 mx-auto mb-3" />
+                  <p className="text-secondary font-medium">No additional images available</p>
+                  {isEditing && (
+                    <p className="text-sm text-secondary mt-2">
+                      Click the "Add Image" button to upload property photos
+                    </p>
+                  )}
+                </div>
+              )}
+            </CardContent>
+          </Card>
         </TabsContent>
       </Tabs>
 
       <div className="mt-8 mb-12 text-sm text-secondary bg-muted/30 p-4 rounded-lg text-center">
-        <p>
-        • Managed by: {managed_by}
-        </p>
+        <p>• Managed by: {managed_by}</p>
       </div>
     </div>
   )

@@ -5,7 +5,6 @@ import { useParams } from "next/navigation"
 import axios from "axios"
 import { getSession } from "next-auth/react"
 
-import { DashboardLayout } from "@/components/Test/Rentershub/DashbordLayout"
 import { baseUrl } from "@/utils/constants"
 import PropertyDetails from "@/components/Test/Rentershub/PropertyView"
 
