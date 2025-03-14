@@ -10,7 +10,7 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Droplet, Trash2, Shield, Edit, Save, X, Upload, MapPin, Plus, ImagePlus } from "lucide-react"
+import { Droplet, Trash2, Shield, Edit, Save, X, Upload, MapPin, Plus, ImagePlus, Loader2 } from "lucide-react"
 import { getSession } from "next-auth/react"
 import { baseUrl } from "@/utils/constants"
 import axios from "axios"
@@ -108,6 +108,9 @@ export default function PropertyDetails({
   const [activeTab, setActiveTab] = useState("details")
   const [showImageUpload, setShowImageUpload] = useState(false)
   const [additionalImages, setAdditionalImages] = useState<PropertyImage[]>(images || [])
+  const [availableFeatures, setAvailableFeatures] = useState<Feature[]>([])
+  const [isLoadingFeatures, setIsLoadingFeatures] = useState(false)
+  const [showFeatureSelector, setShowFeatureSelector] = useState(false)
 
   const [formData, setFormData] = useState({
     title,
@@ -181,15 +184,14 @@ export default function PropertyDetails({
         ...formData,
         property_features: featureList.filter((f) => selectedFeatures.includes(f.id)),
       }
-     
-      
+
+      // Use PATCH instead of PUT to update only changed fields
       const response = await axios.patch(`${baseUrl}listing/property/${id}/`, updatedFormData, {
         headers: {
-          Authorization: `Bearer ${session?.user?.accessToken}`,
+          Authorization: `Bearer ${session.user.accessToken}`,
           "Content-Type": "application/json",
         },
       })
-      
 
       if (response.status === 200) {
         toast.success("Property updated successfully")
@@ -333,6 +335,35 @@ export default function PropertyDetails({
     setAdditionalImages(images || [])
     setIsEditing(false)
   }
+
+  const fetchAvailableFeatures = async () => {
+    try {
+      setIsLoadingFeatures(true)
+      const session = await getSession()
+      if (!session?.user?.accessToken) throw new Error("User not authenticated")
+
+      const response = await axios.get(`${baseUrl}listing/propertyfeature`, {
+        headers: {
+          Authorization: `Bearer ${session.user.accessToken}`,
+        },
+      })
+
+      if (response.data && response.data.results) {
+        setAvailableFeatures(response.data.results)
+      }
+    } catch (error) {
+      console.error("Error fetching available features:", error)
+      toast.error("Failed to load available features")
+    } finally {
+      setIsLoadingFeatures(false)
+    }
+  }
+
+  useEffect(() => {
+    if (isEditing) {
+      fetchAvailableFeatures()
+    }
+  }, [isEditing])
 
   return (
     <div className="w-full max-w-6xl mx-auto bg-background">
@@ -505,27 +536,65 @@ export default function PropertyDetails({
                 <h3 className="text-lg font-semibold">Property Features</h3>
                 {isEditing && (
                   <div className="flex items-center gap-2 w-full sm:w-auto">
-                    <Input
-                      placeholder="Add new feature"
-                      value={newFeature}
-                      onChange={(e) => setNewFeature(e.target.value)}
-                      className="max-w-full sm:max-w-[200px]"
-                      onKeyDown={(e) => {
-                        if (e.key === "Enter") {
-                          e.preventDefault()
-                          addNewFeature()
-                        }
-                      }}
-                    />
                     <Button
                       size="sm"
                       variant="outline"
-                      onClick={addNewFeature}
+                      onClick={() => setShowFeatureSelector(!showFeatureSelector)}
                       className="flex items-center gap-1 whitespace-nowrap"
                     >
                       <Plus className="h-4 w-4" />
-                      Add
+                      {showFeatureSelector ? "Hide Features" : "Add Features"}
                     </Button>
+                  </div>
+                )}
+
+                {isEditing && showFeatureSelector && (
+                  <div className="mt-4 p-4 border rounded-lg bg-muted/10">
+                    <h4 className="text-sm font-medium mb-3">Available Features</h4>
+                    {isLoadingFeatures ? (
+                      <div className="flex items-center justify-center py-4">
+                        <Loader2 className="h-5 w-5 animate-spin mr-2" />
+                        <span>Loading features...</span>
+                      </div>
+                    ) : (
+                      <div className="grid grid-cols-1 gap-2 max-h-[300px] overflow-y-auto pr-2">
+                        {availableFeatures.map((feature) => (
+                          <div
+                            key={`available-${feature.id}`}
+                            className={`flex items-center p-3 rounded-lg border ${
+                              selectedFeatures.includes(feature.id) ? "border-primary/20 bg-primary/5" : "border-muted"
+                            }`}
+                          >
+                            <Checkbox
+                              id={`available-feature-${feature.id}`}
+                              checked={selectedFeatures.includes(feature.id)}
+                              onCheckedChange={() => {
+                                if (selectedFeatures.includes(feature.id)) {
+                                  // Remove from selected
+                                  setSelectedFeatures((prev) => prev.filter((id) => id !== feature.id))
+                                } else {
+                                  // Add to selected and to featureList if not already there
+                                  setSelectedFeatures((prev) => [...prev, feature.id])
+                                  if (!featureList.some((f) => f.id === feature.id)) {
+                                    setFeatureList((prev) => [...prev, feature])
+                                  }
+                                }
+                              }}
+                              className="data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
+                            />
+                            <label
+                              htmlFor={`available-feature-${feature.id}`}
+                              className="text-sm font-medium leading-none ml-2"
+                            >
+                              {feature.name}
+                            </label>
+                          </div>
+                        ))}
+                        {availableFeatures.length === 0 && (
+                          <p className="text-sm text-muted-foreground py-2">No available features found.</p>
+                        )}
+                      </div>
+                    )}
                   </div>
                 )}
               </div>
