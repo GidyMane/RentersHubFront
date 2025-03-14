@@ -315,7 +315,10 @@ export default function AddPropertyPage({ GOOGLE_MAPS_API_KEY }: { GOOGLE_MAPS_A
         toast.success("Property created successfully!")
 
         setIsSuccessModalOpen(true)
-        router.push("/rentershub/properties")
+       // Delay navigation to ensure modal is visible
+setTimeout(() => {
+  router.push("/rentershub/properties")
+}, 3000) 
       } catch (error) {
         console.error("Error submitting property:", error)
         toast.error("Error submitting property. Please try again.")
