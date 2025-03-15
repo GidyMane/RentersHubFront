@@ -187,92 +187,143 @@ export default function PropertyDetail({
 
   return (
     <div className="mx-auto relative pb-20 md:pb-0" style={{ fontFamily: "Georgia, serif" }}>
-      {/* Image Gallery - Full Width */}
-      <div className="relative w-full">
-        <div className="relative min-h-[400px] md:min-h-[500px] w-full bg-gray-100">
-          {images.length > 0 ? (
-            <Image
-              src={images[selectedImage] || "/placeholder.svg"}
-              alt="Property"
-              fill
-              className="object-contain bg-gray-100"
-              priority
-            />
-          ) : (
-            <div className="flex items-center justify-center h-full bg-gray-200">
-              <p className="text-gray-500">No images available</p>
-            </div>
-          )}
+      {/* Creative Background for Gallery Section */}
+      <div className="relative w-full bg-gradient-to-b from-primary/5 to-background">
+        {/* Decorative Elements */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute top-0 left-0 w-full h-full opacity-10">
+            <div className="absolute top-10 left-10 w-40 h-40 rounded-full bg-primary/20 blur-3xl"></div>
+            <div className="absolute top-40 right-20 w-60 h-60 rounded-full bg-secondary/20 blur-3xl"></div>
+            <div className="absolute bottom-10 left-1/3 w-40 h-40 rounded-full bg-primary/10 blur-3xl"></div>
 
-          {/* Image Navigation Controls */}
-          {images.length > 1 && (
-            <>
-              <button
-                onClick={prevImage}
-                className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 text-white p-2 rounded-full hover:bg-black/70 transition-colors"
-                aria-label="Previous image"
-              >
-                <ChevronLeft className="w-6 h-6" />
-              </button>
-              <button
-                onClick={nextImage}
-                className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 text-white p-2 rounded-full hover:bg-black/70 transition-colors"
-                aria-label="Next image"
-              >
-                <ChevronRight className="w-6 h-6" />
-              </button>
-            </>
-          )}
-
-          {/* Image Counter */}
-          <div className="absolute bottom-4 right-4 bg-black/50 text-white px-3 py-1 rounded-full text-sm">
-            {selectedImage + 1} / {images.length}
+            {/* Subtle Pattern Overlay */}
+            <div
+              className="absolute inset-0 opacity-5"
+              style={{
+                backgroundImage: `radial-gradient(circle at 25px 25px, black 2%, transparent 0%), 
+                                     radial-gradient(circle at 75px 75px, black 2%, transparent 0%)`,
+                backgroundSize: "100px 100px",
+                backgroundPosition: "0 0",
+              }}
+            ></div>
           </div>
-
-          {/* View All Photos Button */}
-          <Dialog>
-            <DialogTrigger asChild>
-              <button className="absolute bottom-4 left-4 bg-primary text-white px-4 py-2 rounded-full text-sm flex items-center hover:bg-primary/90 transition-colors font-medium">
-                <Camera className="w-4 h-4 mr-2" />
-                View all photos
-              </button>
-            </DialogTrigger>
-            <DialogContent className="max-w-5xl w-[95vw] h-[90vh] flex flex-col">
-              <div className="flex items-center justify-between mb-2 mt-4">
-                <DialogTitle className="text-lg font-semibold">Property Images</DialogTitle>
-                <DialogClose asChild>
-                  <Button variant="ghost" size="sm" className="rounded-full">
-                    Back
-                  </Button>
-                </DialogClose>
-              </div>
-              <div className="overflow-y-auto flex-grow">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  {images.map((src, idx) => (
-                    <div key={idx} className="relative aspect-video">
-                      <Image
-                        src={src || "/placeholder.svg"}
-                        alt={`Property ${idx + 1}`}
-                        fill
-                        className="rounded-lg object-contain bg-gray-100"
-                      />
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </DialogContent>
-          </Dialog>
         </div>
 
-        {/* Thumbnail Navigation */}
+        <div className="container mx-auto relative z-10 pt-6 pb-2">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-2">
+            {/* Main Image Section - Takes 8/12 on large screens */}
+            <div className="lg:col-span-8 relative">
+              <div className="relative aspect-[4/3] w-full">
+                {images.length > 0 ? (
+                  <div className="relative h-full w-full overflow-hidden rounded-xl shadow-lg">
+                    <Image
+                      src={images[selectedImage] || "/placeholder.svg"}
+                      alt="Property"
+                      fill
+                      className="object-contain bg-white/80 backdrop-blur-sm"
+                      priority
+                    />
+
+                    {/* Image Navigation Controls */}
+                    {images.length > 1 && (
+                      <>
+                        <button
+                          onClick={prevImage}
+                          className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 text-white p-2 rounded-full hover:bg-black/70 transition-colors"
+                          aria-label="Previous image"
+                        >
+                          <ChevronLeft className="w-6 h-6" />
+                        </button>
+                        <button
+                          onClick={nextImage}
+                          className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 text-white p-2 rounded-full hover:bg-black/70 transition-colors"
+                          aria-label="Next image"
+                        >
+                          <ChevronRight className="w-6 h-6" />
+                        </button>
+                      </>
+                    )}
+
+                    {/* Image Counter - Keeping original style */}
+                    <div className="absolute bottom-4 right-4 bg-black/50 text-white px-3 py-1 rounded-full text-sm backdrop-blur-sm">
+                      {selectedImage + 1} / {images.length}
+                    </div>
+
+                    {/* View All Photos Button - Keeping original style and position */}
+                    <Dialog>
+                      <DialogTrigger asChild>
+                        <button className="absolute bottom-4 left-4 bg-primary text-white px-4 py-2 rounded-full text-sm flex items-center hover:bg-primary/90 transition-colors font-medium shadow-md backdrop-blur-sm">
+                          <Camera className="w-4 h-4 mr-2" />
+                          View all photos
+                        </button>
+                      </DialogTrigger>
+                      <DialogContent className="max-w-5xl w-[95vw] h-[90vh] flex flex-col">
+                        <div className="flex items-center justify-between mb-2 mt-4">
+                          <DialogTitle className="text-lg font-semibold">Property Images</DialogTitle>
+                          <DialogClose asChild>
+                            <Button variant="ghost" size="sm" className="rounded-full">
+                              Back
+                            </Button>
+                          </DialogClose>
+                        </div>
+                        <div className="overflow-y-auto flex-grow">
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            {images.map((src, idx) => (
+                              <div key={idx} className="relative aspect-video">
+                                <Image
+                                  src={src || "/placeholder.svg"}
+                                  alt={`Property ${idx + 1}`}
+                                  fill
+                                  className="rounded-lg object-contain bg-gray-100"
+                                />
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      </DialogContent>
+                    </Dialog>
+                  </div>
+                ) : (
+                  <div className="flex items-center justify-center h-full bg-gray-200 rounded-xl">
+                    <p className="text-gray-500">No images available</p>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Right Side Gallery - Takes 4/12 on large screens */}
+            <div className="hidden lg:block lg:col-span-4">
+              <div className="grid grid-cols-2 grid-rows-2 gap-2 h-full">
+                {images.slice(0, 4).map((src, idx) => (
+                  <div
+                    key={idx}
+                    onClick={() => setSelectedImage(idx)}
+                    className={`relative overflow-hidden cursor-pointer transition-all rounded-xl shadow-md ${
+                      idx === 0 ? "col-span-2 row-span-1" : ""
+                    } ${selectedImage === idx ? "ring-2 ring-primary" : "hover:opacity-90"}`}
+                  >
+                    <Image src={src || "/placeholder.svg"} alt={`Gallery ${idx + 1}`} fill className="object-cover" />
+                    {idx === 3 && images.length > 4 && (
+                      <div className="absolute inset-0 bg-black/50 flex items-center justify-center backdrop-blur-sm">
+                        <span className="text-white font-medium">+{images.length - 4} more</span>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Thumbnail Navigation - Styled with creative background */}
         {images.length > 1 && (
-          <div className="flex overflow-x-auto gap-2 p-2 bg-gray-100 scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100">
+          <div className="flex overflow-x-auto gap-2 p-3 bg-white/30 backdrop-blur-sm scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-transparent border-y border-primary/10">
             {images.map((src, idx) => (
               <button
                 key={idx}
                 onClick={() => setSelectedImage(idx)}
-                className={`flex-shrink-0 relative w-20 h-20 rounded-md overflow-hidden border-2 ${
-                  selectedImage === idx ? "border-primary" : "border-transparent"
+                className={`flex-shrink-0 relative w-20 h-20 rounded-md overflow-hidden border-2 transition-transform hover:scale-105 ${
+                  selectedImage === idx ? "border-primary shadow-md" : "border-transparent"
                 }`}
               >
                 <Image src={src || "/placeholder.svg"} alt={`Thumbnail ${idx + 1}`} fill className="object-cover" />
@@ -280,6 +331,26 @@ export default function PropertyDetail({
             ))}
           </div>
         )}
+
+        {/* Property Quick Info Bar */}
+        <div className="bg-white/80 backdrop-blur-md shadow-md rounded-lg mx-2 lg:mx-auto lg:max-w-5xl p-4 relative z-10 -mt-2 mb-4 grid grid-cols-2 md:grid-cols-4 gap-4 border border-primary/10">
+          <div className="flex flex-col">
+            <span className="text-sm text-gray-500">Property Type</span>
+            <span className="font-semibold">{property?.propertytype?.name || "N/A"}</span>
+          </div>
+          <div className="flex flex-col">
+            <span className="text-sm text-gray-500">Location</span>
+            <span className="font-semibold truncate">{property?.address || "N/A"}</span>
+          </div>
+          <div className="flex flex-col">
+            <span className="text-sm text-gray-500">Price</span>
+            <span className="font-semibold text-primary">{formatCurrency(property?.rent_price)}</span>
+          </div>
+          <div className="flex flex-col">
+            <span className="text-sm text-gray-500">Managed By</span>
+            <span className="font-semibold">{property?.managed_by || "N/A"}</span>
+          </div>
+        </div>
       </div>
 
       {/* Main Content */}
@@ -314,7 +385,9 @@ export default function PropertyDetail({
                     <DialogTitle>Call Landlord</DialogTitle>
                     <CallLandlordForm
                       landlordPhone={property?.owners_contact}
-                      propertyId={property?.title?.toString() ?? ""}  propId={property?.id}                  />
+                      propertyId={property?.title?.toString() ?? ""}
+                      propId={property?.id}
+                    />
                   </DialogContent>
                 </Dialog>
 
@@ -329,7 +402,9 @@ export default function PropertyDetail({
                     <DialogTitle>Chat with Landlord</DialogTitle>
                     <ChatWithLandlord
                       landlordPhone={property?.owners_contact}
-                      propertyId={property?.title?.toString() ?? ""}  propId={property?.id}                  />
+                      propertyId={property?.title?.toString() ?? ""}
+                      propId={property?.id}
+                    />
                   </DialogContent>
                 </Dialog>
 
@@ -342,7 +417,9 @@ export default function PropertyDetail({
                   </DialogTrigger>
                   <DialogContent>
                     <DialogTitle>Share Property</DialogTitle>
-                    <ShareButton propertyLink={`https://rentershub.co.ke/Property/${encodeURIComponent(property?.title)}`} />
+                    <ShareButton
+                      propertyLink={`https://rentershub.co.ke/Property/${encodeURIComponent(property?.title)}`}
+                    />
                   </DialogContent>
                 </Dialog>
               </div>
@@ -351,8 +428,8 @@ export default function PropertyDetail({
         </div>
 
         {/* Price Details Card */}
-        <Card className="mb-8">
-          <CardHeader>
+        <Card className="mb-8 shadow-md border border-primary/10">
+          <CardHeader className="bg-primary/5 rounded-t-lg">
             <CardTitle>Price Details</CardTitle>
           </CardHeader>
           <CardContent>
@@ -399,7 +476,7 @@ export default function PropertyDetail({
           <div className="space-y-8">
             {/* Property Type and Management */}
             <div className="grid grid-cols-2 gap-4">
-              <Card>
+              <Card className="shadow-md border border-primary/10">
                 <CardContent className="pt-6">
                   <div className="flex items-center gap-2">
                     <Building2 className="w-4 h-4 text-muted" />
@@ -410,7 +487,7 @@ export default function PropertyDetail({
                   </div>
                 </CardContent>
               </Card>
-              <Card>
+              <Card className="shadow-md border border-primary/10">
                 <CardContent className="pt-6">
                   <div className="flex items-center gap-2">
                     <Cctv className="w-4 h-4 text-muted" />
@@ -424,8 +501,8 @@ export default function PropertyDetail({
             </div>
 
             {/* Description */}
-            <Card>
-              <CardHeader>
+            <Card className="shadow-md border border-primary/10">
+              <CardHeader className="bg-primary/5 rounded-t-lg">
                 <CardTitle>Description</CardTitle>
               </CardHeader>
               <CardContent>
@@ -434,8 +511,8 @@ export default function PropertyDetail({
             </Card>
 
             {/* Features */}
-            <Card>
-              <CardHeader>
+            <Card className="shadow-md border border-primary/10">
+              <CardHeader className="bg-primary/5 rounded-t-lg">
                 <CardTitle>Features</CardTitle>
               </CardHeader>
               <CardContent>
@@ -454,9 +531,9 @@ export default function PropertyDetail({
               </CardContent>
             </Card>
 
-            {/* Location */}
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between">
+            {/* Location - Keeping original icon and layout */}
+            <Card className="shadow-md border border-primary/10">
+              <CardHeader className="flex flex-row items-center justify-between bg-primary/5 rounded-t-lg">
                 <CardTitle>Location</CardTitle>
                 <Button
                   variant="secondary"
@@ -490,7 +567,7 @@ export default function PropertyDetail({
                   </div>
                 </div>
 
-                <div className="h-[300px] w-full rounded-lg overflow-hidden">
+                <div className="h-[300px] w-full rounded-lg overflow-hidden shadow-md">
                   <MapContainer center={position} zoom={13} className="w-full h-full z-0">
                     <TileLayer
                       url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -507,19 +584,25 @@ export default function PropertyDetail({
 
           {/* Right Column - Contact Form - Hidden on mobile */}
           <div className="hidden md:block space-y-6">
-            <Card className="sticky top-6">
-              <CardHeader>
+            <Card className="sticky top-6 shadow-md border border-primary/10">
+              <CardHeader className="bg-primary/5 rounded-t-lg">
                 <CardTitle>Contact Landlord</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
                   <CallLandlordForm
                     landlordPhone={property?.owners_contact}
-                    propertyId={property?.title?.toString() ?? ""} propId={property?.id}                 />
+                    propertyId={property?.title?.toString() ?? ""}
+                    propId={property?.id}
+                  />
                   <ChatWithLandlord
                     landlordPhone={property?.owners_contact}
-                    propertyId={property?.title?.toString() ?? ""} propId={property?.id}                  />
-                  <ShareButton propertyLink={`https://rentershub.co.ke/Property/${encodeURIComponent(property?.title)}`} />
+                    propertyId={property?.title?.toString() ?? ""}
+                    propId={property?.id}
+                  />
+                  <ShareButton
+                    propertyLink={`https://rentershub.co.ke/Property/${encodeURIComponent(property?.title)}`}
+                  />
                 </div>
               </CardContent>
             </Card>
@@ -550,7 +633,7 @@ export default function PropertyDetail({
       </div>
 
       {/* Mobile Fixed Contact Bar - Visible only on small screens */}
-      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-3 z-50">
+      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-3 z-50 shadow-lg">
         <div className="grid grid-cols-3 gap-2">
           <Button className="w-full" onClick={() => setShowCallDialog(true)}>
             <Phone className="mr-2 h-4 w-4" />
