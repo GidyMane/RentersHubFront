@@ -24,13 +24,14 @@ const SearchForm = ({ propertytypes, api_key, classname }: { propertytypes: any;
 
                 <div className='flex flex-col gap-2'>
                     <label htmlFor="" className='cursor-none  font-medium   '  style={{ fontFamily: "Georgia, serif" }}>Select House type</label>
-                    <Select name='propertytype_name' defaultValue={searchParams.get("propertytype_name") ?? ""} >
+                    {/* <Select name='propertytype_name' defaultValue={searchParams.get("propertytype_name") ?? ""} >
                         <SelectTrigger className="w-full border-primary"  style={{ fontFamily: "Georgia, serif" }}>
                             <SelectValue placeholder="House type" className='text-secondary'  style={{ fontFamily: "Georgia, serif" }} />
                         </SelectTrigger>
                         <SelectContent>
                             <SelectGroup>
                                 <SelectLabel>House type</SelectLabel>
+                                <SelectItem value="test">-----</SelectItem>
                                 {propertytypes[0] == 200 && propertytypes[1]?.results?.map((propetytype: { name: string; id: number }, idx: number) => (
                                     <SelectItem value={propetytype.name} key={idx}>{propetytype.name}</SelectItem>
 
@@ -38,7 +39,23 @@ const SearchForm = ({ propertytypes, api_key, classname }: { propertytypes: any;
 
                             </SelectGroup>
                         </SelectContent>
-                    </Select>
+                    </Select> */}
+
+
+<select 
+    name="propertytype_name" 
+    defaultValue={searchParams.get("propertytype_name") ?? ""} 
+    className="w-full border border-primary p-2 rounded-md"
+    style={{ fontFamily: "Georgia, serif" }}
+>
+    <option value="">House type</option>
+    
+    {propertytypes[0] == 200 && propertytypes[1]?.results?.map((propertytype: { name: string; id: number }, idx: number) => (
+        <option value={propertytype.name} key={idx}>{propertytype.name}</option>
+    ))}
+</select>
+
+
                 </div>
 
                 <div className='flex flex-col gap-2'>
