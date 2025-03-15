@@ -1,6 +1,8 @@
 "use client"
 
-import { Suspense, useState } from "react"
+import type React from "react"
+
+import { Suspense, useState, useEffect } from "react"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -17,6 +19,8 @@ import {
   Phone,
   MessageSquare,
   Share2,
+  X,
+  Maximize2,
 } from "lucide-react"
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet"
 import "leaflet/dist/leaflet.css"
@@ -150,6 +154,13 @@ export default function PropertyDetail({
   const [showCallDialog, setShowCallDialog] = useState(false)
   const [showChatDialog, setShowChatDialog] = useState(false)
   const [showShareDialog, setShowShareDialog] = useState(false)
+  const [showFullscreenImage, setShowFullscreenImage] = useState(false)
+  const [isZoomed, setIsZoomed] = useState(false)
+  const [touchStart, setTouchStart] = useState(0)
+  const [touchEnd, setTouchEnd] = useState(0)
+  const [autoplay, setAutoplay] = useState(false)
+  const [showGalleryDialog, setShowGalleryDialog] = useState(false)
+  const [galleryViewMode, setGalleryViewMode] = useState<"grid" | "slideshow">("grid")
 
   const position: [number, number] = property?.location_coords
     ? [Number(property.location_coords[1]), Number(property.location_coords[0])]
@@ -165,6 +176,19 @@ export default function PropertyDetail({
     threshold: 0.1,
   })
 
+  // Handle autoplay for slideshow
+  useEffect(() => {
+    let interval: NodeJS.Timeout
+
+    if (autoplay && showGalleryDialog && galleryViewMode === "slideshow") {
+      interval = setInterval(() => {
+        setSelectedImage((prev) => (prev === images.length - 1 ? 0 : prev + 1))
+      }, 3000)
+    }
+
+    return () => clearInterval(interval)
+  }, [autoplay, showGalleryDialog, galleryViewMode, images.length])
+
   const nextImage = () => {
     setSelectedImage((prev) => (prev === images.length - 1 ? 0 : prev + 1))
   }
@@ -172,6 +196,44 @@ export default function PropertyDetail({
   const prevImage = () => {
     setSelectedImage((prev) => (prev === 0 ? images.length - 1 : prev - 1))
   }
+
+  // Handle touch events for swipe navigation
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchStart(e.targetTouches[0].clientX)
+  }
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX)
+  }
+
+  const handleTouchEnd = () => {
+    if (touchStart - touchEnd > 100) {
+      // Swipe left
+      nextImage()
+    }
+
+    if (touchStart - touchEnd < -100) {
+      // Swipe right
+      prevImage()
+    }
+  }
+
+  // Handle keyboard navigation
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (showGalleryDialog || showFullscreenImage) {
+        if (e.key === "ArrowRight") nextImage()
+        if (e.key === "ArrowLeft") prevImage()
+        if (e.key === "Escape") {
+          setShowGalleryDialog(false)
+          setShowFullscreenImage(false)
+        }
+      }
+    }
+
+    window.addEventListener("keydown", handleKeyDown)
+    return () => window.removeEventListener("keydown", handleKeyDown)
+  }, [showGalleryDialog, showFullscreenImage])
 
   const formatCurrency = (amount: string | number) => {
     return `Ksh ${new Intl.NumberFormat("en-US", {
@@ -209,33 +271,48 @@ export default function PropertyDetail({
           </div>
         </div>
 
-        <div className="container mx-auto relative z-10 pt-6 pb-2">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-2">
-            {/* Main Image Section - Takes 8/12 on large screens */}
-            <div className="lg:col-span-8 relative">
-              <div className="relative aspect-[4/3] w-full">
+        {/* Full-width container for mobile */}
+        <div className="w-full relative z-10 pt-0 md:pt-6 pb-0 md:pb-2 px-0 md:px-4">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-0 md:gap-2">
+            {/* Main Image Section - Full width on mobile, 8/12 on large screens */}
+            <div className="lg:col-span-8 relative w-full">
+              <div
+                className="relative w-full h-[70vh] sm:h-[60vh] md:h-auto md:aspect-[4/3]"
+                onTouchStart={handleTouchStart}
+                onTouchMove={handleTouchMove}
+                onTouchEnd={handleTouchEnd}
+              >
                 {images.length > 0 ? (
-                  <div className="relative h-full w-full overflow-hidden rounded-xl shadow-lg">
+                  <div className="relative h-full w-full overflow-hidden md:rounded-xl shadow-lg">
                     <Image
                       src={images[selectedImage] || "/placeholder.svg"}
                       alt="Property"
                       fill
-                      className="object-contain bg-white/80 backdrop-blur-sm"
+                      className={`object-contain bg-white/80 backdrop-blur-sm transition-transform duration-300 ${
+                        isZoomed ? "scale-150" : "scale-100"
+                      }`}
                       priority
+                      onClick={() => setIsZoomed(!isZoomed)}
                     />
 
                     {/* Image Navigation Controls */}
                     {images.length > 1 && (
                       <>
                         <button
-                          onClick={prevImage}
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            prevImage()
+                          }}
                           className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 text-white p-2 rounded-full hover:bg-black/70 transition-colors"
                           aria-label="Previous image"
                         >
                           <ChevronLeft className="w-6 h-6" />
                         </button>
                         <button
-                          onClick={nextImage}
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            nextImage()
+                          }}
                           className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 text-white p-2 rounded-full hover:bg-black/70 transition-colors"
                           aria-label="Next image"
                         >
@@ -245,46 +322,33 @@ export default function PropertyDetail({
                     )}
 
                     {/* Image Counter - Keeping original style */}
-                    <div className="absolute bottom-4 right-4 bg-black/50 text-white px-3 py-1 rounded-full text-sm backdrop-blur-sm">
+                    <div className="absolute bottom-4 right-4 bg-black/50 text-white px-2 py-1 text-xs md:text-sm rounded-full backdrop-blur-sm">
                       {selectedImage + 1} / {images.length}
                     </div>
 
-                    {/* View All Photos Button - Keeping original style and position */}
-                    <Dialog>
-                      <DialogTrigger asChild>
-                        <button className="absolute bottom-4 left-4 bg-primary text-white px-4 py-2 rounded-full text-sm flex items-center hover:bg-primary/90 transition-colors font-medium shadow-md backdrop-blur-sm">
-                          <Camera className="w-4 h-4 mr-2" />
-                          View all photos
-                        </button>
-                      </DialogTrigger>
-                      <DialogContent className="max-w-5xl w-[95vw] h-[90vh] flex flex-col">
-                        <div className="flex items-center justify-between mb-2 mt-4">
-                          <DialogTitle className="text-lg font-semibold">Property Images</DialogTitle>
-                          <DialogClose asChild>
-                            <Button variant="ghost" size="sm" className="rounded-full">
-                              Back
-                            </Button>
-                          </DialogClose>
-                        </div>
-                        <div className="overflow-y-auto flex-grow">
-                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            {images.map((src, idx) => (
-                              <div key={idx} className="relative aspect-video">
-                                <Image
-                                  src={src || "/placeholder.svg"}
-                                  alt={`Property ${idx + 1}`}
-                                  fill
-                                  className="rounded-lg object-contain bg-gray-100"
-                                />
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      </DialogContent>
-                    </Dialog>
+                    {/* Fullscreen button */}
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        setShowFullscreenImage(true)
+                      }}
+                      className="absolute top-4 right-4 bg-black/50 text-white p-2 rounded-full hover:bg-black/70 transition-colors"
+                      aria-label="View fullscreen"
+                    >
+                      <Maximize2 className="w-4 h-4" />
+                    </button>
+
+                    {/* View All Photos Button - Smaller on mobile */}
+                    <button
+                      onClick={() => setShowGalleryDialog(true)}
+                      className="absolute bottom-4 left-4 bg-primary text-white px-2 py-1 md:px-4 md:py-2 rounded-full text-xs md:text-sm flex items-center hover:bg-primary/90 transition-colors font-medium shadow-md backdrop-blur-sm"
+                    >
+                      <Camera className="w-3 h-3 md:w-4 md:h-4 mr-1 md:mr-2" />
+                      <span className="whitespace-nowrap">View all</span>
+                    </button>
                   </div>
                 ) : (
-                  <div className="flex items-center justify-center h-full bg-gray-200 rounded-xl">
+                  <div className="flex items-center justify-center h-full bg-gray-200 md:rounded-xl">
                     <p className="text-gray-500">No images available</p>
                   </div>
                 )}
@@ -304,7 +368,13 @@ export default function PropertyDetail({
                   >
                     <Image src={src || "/placeholder.svg"} alt={`Gallery ${idx + 1}`} fill className="object-cover" />
                     {idx === 3 && images.length > 4 && (
-                      <div className="absolute inset-0 bg-black/50 flex items-center justify-center backdrop-blur-sm">
+                      <div
+                        className="absolute inset-0 bg-black/50 flex items-center justify-center backdrop-blur-sm"
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          setShowGalleryDialog(true)
+                        }}
+                      >
                         <span className="text-white font-medium">+{images.length - 4} more</span>
                       </div>
                     )}
@@ -317,12 +387,12 @@ export default function PropertyDetail({
 
         {/* Thumbnail Navigation - Styled with creative background */}
         {images.length > 1 && (
-          <div className="flex overflow-x-auto gap-2 p-3 bg-white/30 backdrop-blur-sm scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-transparent border-y border-primary/10">
+          <div className="flex overflow-x-auto gap-2 p-2 md:p-3 bg-white/30 backdrop-blur-sm scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-transparent border-y border-primary/10">
             {images.map((src, idx) => (
               <button
                 key={idx}
                 onClick={() => setSelectedImage(idx)}
-                className={`flex-shrink-0 relative w-20 h-20 rounded-md overflow-hidden border-2 transition-transform hover:scale-105 ${
+                className={`flex-shrink-0 relative w-16 h-16 md:w-20 md:h-20 rounded-md overflow-hidden border-2 transition-transform hover:scale-105 ${
                   selectedImage === idx ? "border-primary shadow-md" : "border-transparent"
                 }`}
               >
@@ -352,6 +422,167 @@ export default function PropertyDetail({
           </div>
         </div>
       </div>
+
+      {/* Enhanced Gallery Dialog */}
+      <Dialog open={showGalleryDialog} onOpenChange={setShowGalleryDialog}>
+        <DialogContent className="max-w-6xl w-[95vw] h-[90vh] p-0 flex flex-col">
+          <div className="flex items-center justify-between p-4 border-b">
+            <div className="flex items-center gap-4">
+              <DialogTitle className="text-lg font-semibold">Property Images</DialogTitle>
+              <div className="flex items-center gap-2 border rounded-full p-1">
+                <button
+                  onClick={() => setGalleryViewMode("grid")}
+                  className={`px-3 py-1 rounded-full text-sm ${galleryViewMode === "grid" ? "bg-primary text-white" : "hover:bg-gray-100"}`}
+                >
+                  Grid
+                </button>
+                <button
+                  onClick={() => setGalleryViewMode("slideshow")}
+                  className={`px-3 py-1 rounded-full text-sm ${galleryViewMode === "slideshow" ? "bg-primary text-white" : "hover:bg-gray-100"}`}
+                >
+                  Slideshow
+                </button>
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              {galleryViewMode === "slideshow" && (
+                <Button variant="outline" size="sm" className="rounded-full" onClick={() => setAutoplay(!autoplay)}>
+                  {autoplay ? "Pause" : "Autoplay"}
+                </Button>
+              )}
+              <DialogClose asChild>
+                <Button variant="ghost" size="icon" className="rounded-full">
+                  <X className="w-4 h-4" />
+                </Button>
+              </DialogClose>
+            </div>
+          </div>
+
+          <div className="overflow-y-auto flex-grow">
+            {galleryViewMode === "grid" ? (
+              <div className="columns-1 sm:columns-2 lg:columns-3 gap-4 p-4 space-y-4">
+                {images.map((src, idx) => (
+                  <div key={idx} className="break-inside-avoid mb-4">
+                    <div
+                      className="relative rounded-lg overflow-hidden cursor-pointer"
+                      onClick={() => {
+                        setSelectedImage(idx)
+                        setGalleryViewMode("slideshow")
+                      }}
+                    >
+                      <Image
+                        src={src || "/placeholder.svg"}
+                        alt={`Property ${idx + 1}`}
+                        width={600}
+                        height={400}
+                        className="w-full h-auto object-cover hover:opacity-90 transition-opacity"
+                      />
+                      <div className="absolute bottom-2 right-2 bg-black/50 text-white px-2 py-1 text-xs rounded-full">
+                        {idx + 1} / {images.length}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="flex flex-col items-center justify-center h-full p-4">
+                <div className="relative w-full max-w-3xl h-[70vh] mx-auto">
+                  <Image
+                    src={images[selectedImage] || "/placeholder.svg"}
+                    alt={`Property ${selectedImage + 1}`}
+                    fill
+                    className="object-contain"
+                  />
+
+                  <button
+                    onClick={prevImage}
+                    className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 text-white p-3 rounded-full hover:bg-black/70 transition-colors"
+                    aria-label="Previous image"
+                  >
+                    <ChevronLeft className="w-6 h-6" />
+                  </button>
+                  <button
+                    onClick={nextImage}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 text-white p-3 rounded-full hover:bg-black/70 transition-colors"
+                    aria-label="Next image"
+                  >
+                    <ChevronRight className="w-6 h-6" />
+                  </button>
+
+                  <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/50 text-white px-3 py-1 rounded-full text-sm">
+                    {selectedImage + 1} / {images.length}
+                  </div>
+                </div>
+
+                <div className="flex overflow-x-auto gap-2 mt-4 max-w-full">
+                  {images.map((src, idx) => (
+                    <button
+                      key={idx}
+                      onClick={() => setSelectedImage(idx)}
+                      className={`flex-shrink-0 relative w-16 h-16 rounded-md overflow-hidden border-2 ${
+                        selectedImage === idx ? "border-primary" : "border-transparent"
+                      }`}
+                    >
+                      <Image
+                        src={src || "/placeholder.svg"}
+                        alt={`Thumbnail ${idx + 1}`}
+                        fill
+                        className="object-cover"
+                      />
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Fullscreen Image Dialog */}
+      <Dialog open={showFullscreenImage} onOpenChange={setShowFullscreenImage}>
+        <DialogContent className="max-w-none w-screen h-screen p-0 border-0 bg-black">
+          <div
+            className="relative w-full h-full flex items-center justify-center"
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
+          >
+            <Image
+              src={images[selectedImage] || "/placeholder.svg"}
+              alt={`Property ${selectedImage + 1}`}
+              fill
+              className="object-contain"
+            />
+
+            <button
+              onClick={prevImage}
+              className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/20 text-white p-3 rounded-full hover:bg-white/30 transition-colors"
+              aria-label="Previous image"
+            >
+              <ChevronLeft className="w-6 h-6" />
+            </button>
+            <button
+              onClick={nextImage}
+              className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/20 text-white p-3 rounded-full hover:bg-white/30 transition-colors"
+              aria-label="Next image"
+            >
+              <ChevronRight className="w-6 h-6" />
+            </button>
+
+            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/50 text-white px-3 py-1 rounded-full text-sm">
+              {selectedImage + 1} / {images.length}
+            </div>
+
+            <button
+              onClick={() => setShowFullscreenImage(false)}
+              className="absolute top-4 right-4 bg-white/20 text-white p-2 rounded-full hover:bg-white/30 transition-colors"
+              aria-label="Close fullscreen"
+            >
+              <X className="w-6 h-6" />
+            </button>
+          </div>
+        </DialogContent>
+      </Dialog>
 
       {/* Main Content */}
       <div className="container mx-auto px-4 py-6">

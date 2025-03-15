@@ -22,7 +22,8 @@ const PropertyRender = ({ property}: { property: any; }) => {
                 imageUrl={property.main_image_url?.url || "/placeholder.svg"}
                 propertyType={property.propertytype?.name}
                 city={property.city}
-                state={property.state}                              
+                state={property.state} 
+                address={property.address}                             
                 managed_by={property.managed_by || ""}
                 updated_at={property.updated_at}
               />

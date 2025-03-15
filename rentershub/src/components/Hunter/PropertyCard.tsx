@@ -16,6 +16,7 @@ interface PropertyCardProps {
   state: string;
   managed_by: string;
   updated_at: Date;
+  address: string;
 }
 
 // Handle WhatsApp share
@@ -37,6 +38,7 @@ export function PropertyCard({
   title,
   propertyType,
   rentPrice,
+  address,
   city,
   state,
 }: PropertyCardProps) {
@@ -79,7 +81,7 @@ export function PropertyCard({
             </Badge>
             <div className="flex items-center gap-1 text-muted">
               <MapPin className="h-4 w-4" />
-              <span className="text-sm text-black">{city}, {state}</span>
+              <span className="text-sm text-black">{address}, {state}</span>
             </div>
             <h3 className="text font-bold text-primary mt-2">
               {rentPrice.toLocaleString()} pm
