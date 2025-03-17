@@ -149,7 +149,7 @@ const AuthOptions: React.FC = () => {
               <div className="transition-all duration-300 ease-in-out">
               <OptionButton
   icon={<LogIn className="h-8 w-8" />}
-  title="Login to Your Account"
+  title="Login to My Account"
   description=""
   onClick={async () => {
     try {
