@@ -295,6 +295,11 @@ export default function PropertyDetail({
                       onClick={() => setIsZoomed(!isZoomed)}
                     />
 
+                    {/* Watermark */}
+                    <div className="absolute inset-0 pointer-events-none flex items-center justify-center opacity-30">
+                      <Image src="/RH1.png" alt="Watermark" width={150} height={150} className="object-contain" />
+                    </div>
+
                     {/* Image Navigation Controls */}
                     {images.length > 1 && (
                       <>
@@ -367,6 +372,12 @@ export default function PropertyDetail({
                     } ${selectedImage === idx ? "ring-2 ring-primary" : "hover:opacity-90"}`}
                   >
                     <Image src={src || "/placeholder.svg"} alt={`Gallery ${idx + 1}`} fill className="object-cover" />
+
+                    {/* Watermark for right side gallery */}
+                    <div className="absolute inset-0 pointer-events-none flex items-center justify-center opacity-30">
+                      <Image src="/RH1.png" alt="Watermark" width={60} height={60} className="object-contain" />
+                    </div>
+
                     {idx === 3 && images.length > 4 && (
                       <div
                         className="absolute inset-0 bg-black/50 flex items-center justify-center backdrop-blur-sm"
@@ -477,6 +488,12 @@ export default function PropertyDetail({
                         height={400}
                         className="w-full h-auto object-cover hover:opacity-90 transition-opacity"
                       />
+
+                      {/* Watermark for grid view */}
+                      <div className="absolute inset-0 pointer-events-none flex items-center justify-center opacity-30">
+                        <Image src="/RH1.png" alt="Watermark" width={80} height={80} className="object-contain" />
+                      </div>
+
                       <div className="absolute bottom-2 right-2 bg-black/50 text-white px-2 py-1 text-xs rounded-full">
                         {idx + 1} / {images.length}
                       </div>
@@ -493,6 +510,11 @@ export default function PropertyDetail({
                     fill
                     className="object-contain"
                   />
+
+                  {/* Watermark for gallery slideshow */}
+                  <div className="absolute inset-0 pointer-events-none flex items-center justify-center opacity-30">
+                    <Image src="/RH1.png" alt="Watermark" width={180} height={180} className="object-contain" />
+                  </div>
 
                   <button
                     onClick={prevImage}
@@ -553,6 +575,11 @@ export default function PropertyDetail({
               fill
               className="object-contain"
             />
+
+            {/* Watermark for fullscreen view */}
+            <div className="absolute inset-0 pointer-events-none flex items-center justify-center opacity-30">
+              <Image src="/RH1.png" alt="Watermark" width={200} height={200} className="object-contain" />
+            </div>
 
             <button
               onClick={prevImage}
