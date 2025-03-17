@@ -59,7 +59,7 @@ export function PropertyCard({
         className="overflow-hidden group cursor-pointer transition-all duration-300 hover:shadow-lg hover:translate-y-[-5px] h-full flex flex-col bg-white border border-gray-100"
         style={{ fontFamily: "Georgia, serif" }}
       >
-        {/* Image Container with Overlay */}
+        {/* Image Container with clean overlay */}
         <div className="relative overflow-hidden">
           <div className="aspect-[4/3] relative">
             <Image
@@ -70,26 +70,6 @@ export function PropertyCard({
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
           </div>
-
-          {/* Property Type Badge */}
-          <Badge variant="secondary" className="absolute top-3 left-3 bg-white/90 text-primary font-medium shadow-sm">
-            {propertyType}
-          </Badge>
-
-          {/* Share Button */}
-          <Button
-            size="icon"
-            variant="secondary"
-            className="absolute top-3 right-3 bg-white/90 hover:bg-white text-primary rounded-full h-8 w-8 shadow-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-            onClick={(e) => handleShare(id, title, e)}
-          >
-            <Share2 className="h-4 w-4" />
-          </Button>
-
-          {/* Price Tag */}
-          <div className="absolute bottom-3 right-3 bg-primary text-white px-3 py-1 rounded-full text-sm font-bold shadow-md">
-            {formatPrice(rentPrice)} pm
-          </div>
         </div>
 
         {/* Content */}
@@ -97,12 +77,34 @@ export function PropertyCard({
           <div>
             <h3 className="text-lg font-bold mb-2 line-clamp-2">{truncateTitle(title)}</h3>
 
+            {/* Property details moved below title */}
+            <div className="flex items-center justify-between mb-2">
+              <Badge variant="secondary" className="bg-gray-100 text-primary font-medium">
+                {propertyType}
+              </Badge>
+
+             
+            </div>
+            <div className="flex items-center justify-between mb-2">
+            <div className="text-primary font-bold">{formatPrice(rentPrice)} pm</div>
+            </div>
             <div className="flex items-center gap-1 text-black mb-2">
               <MapPin className="h-4 w-4 flex-shrink-0 text-primary" />
               <span className="text-sm truncate">
                 {address}, {state}
               </span>
             </div>
+
+            {/* Share button moved below */}
+            <Button
+              size="sm"
+              variant="outline"
+              className="mt-2 w-full text-primary border-primary hover:bg-primary/10"
+              onClick={(e) => handleShare(id, title, e)}
+            >
+              <Share2 className="h-4 w-4 mr-2" />
+              Share
+            </Button>
           </div>
 
           {/* Additional Details */}
