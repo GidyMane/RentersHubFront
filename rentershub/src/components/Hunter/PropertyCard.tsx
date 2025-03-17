@@ -61,16 +61,24 @@ export function PropertyCard({
       >
         {/* Image Container with clean overlay */}
         <div className="relative overflow-hidden">
-          <div className="aspect-[4/3] relative">
-            <Image
-              src={imageUrl || "/placeholder.svg"}
-              alt={title}
-              fill
-              className="object-cover transition-transform duration-500 group-hover:scale-110"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-          </div>
-        </div>
+  <div className="aspect-[4/3] relative">
+    {/* Property Image */}
+    <Image
+      src={imageUrl || "/placeholder.svg"}
+      alt={title}
+      fill
+      className="object-cover transition-transform duration-500 group-hover:scale-110"
+    />
+    {/* Gradient overlay for better visibility */}
+    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+
+    {/* Watermark/Logo */}
+    <div className="absolute bottom-2 right-2 opacity-50">
+      <Image src="/RH1.png" alt="Watermark" width={50} height={50} />
+    </div>
+  </div>
+</div>
+
 
         {/* Content */}
         <div className="p-4 flex-grow flex flex-col justify-between">
