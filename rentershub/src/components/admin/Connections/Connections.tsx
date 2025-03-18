@@ -1,20 +1,26 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { Download, ExternalLink, Eye, Pencil, Save, X } from "lucide-react"
+import { Download, Eye, Pencil, Save, X, LinkIcon } from "lucide-react"
 import { baseUrl } from "@/utils/constants"
+import { useRouter } from "next/navigation"
+import { useSession } from "next-auth/react"
 
 import { Button } from "@/components/ui/button"
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
-
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Skeleton } from "@/components/ui/skeleton"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Switch } from "@/components/ui/switch"
+import { Label } from "@/components/ui/label"
+
+
 import Link from "next/link"
+import { format } from "date-fns"
 import toast from "react-hot-toast"
+import AddConnectionForm from "./AddConnectionForm"
 
 interface PropertyType {
   id: number
@@ -66,7 +72,10 @@ interface ConnectionsTableProps {
 }
 
 export default function ConnectionsTable({ apiEndpoint }: ConnectionsTableProps) {
+  const router = useRouter()
+  const { data: session } = useSession()
   const [connections, setConnections] = useState<Connection[]>([])
+  const [filteredConnections, setFilteredConnections] = useState<Connection[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [editingId, setEditingId] = useState<number | null>(null)
@@ -77,19 +86,73 @@ export default function ConnectionsTable({ apiEndpoint }: ConnectionsTableProps)
     is_paid: boolean
     moved_in: boolean
   } | null>(null)
-  
+
+  // Filters
+  const [filters, setFilters] = useState({
+    movedIn: null as boolean | null,
+    paid: null as boolean | null,
+    date: undefined as Date | undefined,
+  })
 
   useEffect(() => {
     fetchConnections()
-  }, [apiEndpoint])
+  }, [apiEndpoint, session])
+
+  useEffect(() => {
+    applyFilters()
+  }, [connections, filters])
+
+  const applyFilters = () => {
+    let filtered = [...connections]
+
+    // Apply moved in filter
+    if (filters.movedIn !== null) {
+      filtered = filtered.filter((conn) => conn.moved_in === filters.movedIn)
+    }
+
+    // Apply paid filter
+    if (filters.paid !== null) {
+      filtered = filtered.filter((conn) => conn.is_paid === filters.paid)
+    }
+
+    // Apply date filter
+    if (filters.date) {
+      const filterDate = format(filters.date, "yyyy-MM-dd")
+      filtered = filtered.filter((conn) => {
+        const connDate = format(new Date(conn.created_at), "yyyy-MM-dd")
+        return connDate === filterDate
+      })
+    }
+
+    setFilteredConnections(filtered)
+  }
+
+  const resetFilters = () => {
+    setFilters({
+      movedIn: null,
+      paid: null,
+      date: undefined,
+    })
+  }
 
   const fetchConnections = async () => {
+    if (!session?.user?.accessToken) {
+      console.error("No access token available")
+      setError("Authentication required")
+      setLoading(false)
+      return
+    }
+
     try {
       setLoading(true)
       // Use a try-catch inside the fetch to handle network errors
       let data: ConnectionResponse
       try {
-        const response = await fetch(apiEndpoint)
+        const response = await fetch(apiEndpoint, {
+          headers: {
+            Authorization: `Bearer ${session.user.accessToken}`,
+          },
+        })
 
         if (!response.ok) {
           throw new Error(`Status ${response.status}`)
@@ -108,6 +171,7 @@ export default function ConnectionsTable({ apiEndpoint }: ConnectionsTableProps)
       }))
 
       setConnections(connectionsWithIds)
+      setFilteredConnections(connectionsWithIds)
       setError(null)
     } catch (err) {
       console.error("Error in fetchConnections:", err)
@@ -122,11 +186,24 @@ export default function ConnectionsTable({ apiEndpoint }: ConnectionsTableProps)
   }
 
   const fetchConnectionDetails = async (id: number) => {
+    if (!session?.user?.accessToken) {
+      console.error("No access token available")
+      toast({
+        description: "Authentication required",
+        variant: "destructive",
+      })
+      return
+    }
+
     try {
       // Use a try-catch inside the fetch to handle network errors
       let data
       try {
-        const response = await fetch(`${baseUrl}accounts/connection/${id}/`)
+        const response = await fetch(`${baseUrl}accounts/connection/${id}/`, {
+          headers: {
+            Authorization: `Bearer ${session.user.accessToken}`,
+          },
+        })
 
         if (!response.ok) {
           throw new Error(`Failed to fetch connection details: ${response.status}`)
@@ -144,6 +221,108 @@ export default function ConnectionsTable({ apiEndpoint }: ConnectionsTableProps)
       console.error("Error in fetchConnectionDetails:", err)
       toast({
         description: "Failed to load connection details",
+        variant: "destructive",
+      })
+    }
+  }
+
+  const viewConnectionDetails = (connection: Connection) => {
+    router.push(`/connections/${connection.id}`)
+  }
+
+  const toggleMovedIn = async (connection: Connection) => {
+    if (!session?.user?.accessToken) {
+      console.error("No access token available")
+      toast({
+        description: "Authentication required",
+        variant: "destructive",
+      })
+      return
+    }
+
+    try {
+      const newStatus = !connection.moved_in
+
+      const response = await fetch(`${baseUrl}accounts/connection/${connection.id}/`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${session.user.accessToken}`,
+        },
+        body: JSON.stringify({ moved_in: newStatus }),
+      })
+
+      if (!response.ok) throw new Error("Failed to update moved in status")
+
+      // Update local state
+      const updatedConnections = connections.map((conn) => {
+        if (conn.id === connection.id) {
+          return {
+            ...conn,
+            moved_in: newStatus,
+          }
+        }
+        return conn
+      })
+
+      setConnections(updatedConnections)
+
+      toast({
+        description: `Status updated: ${newStatus ? "Moved In" : "Not Moved In"}`,
+      })
+    } catch (err) {
+      console.error("Error toggling moved in status:", err)
+      toast({
+        description: "Failed to update status",
+        variant: "destructive",
+      })
+    }
+  }
+
+  const togglePaid = async (connection: Connection) => {
+    if (!session?.user?.accessToken) {
+      console.error("No access token available")
+      toast({
+        description: "Authentication required",
+        variant: "destructive",
+      })
+      return
+    }
+
+    try {
+      const newStatus = !connection.is_paid
+
+      const response = await fetch(`${baseUrl}accounts/connection/${connection.id}/`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${session.user.accessToken}`,
+        },
+        body: JSON.stringify({ is_paid: newStatus }),
+      })
+
+      if (!response.ok) throw new Error("Failed to update paid status")
+
+      // Update local state
+      const updatedConnections = connections.map((conn) => {
+        if (conn.id === connection.id) {
+          return {
+            ...conn,
+            is_paid: newStatus,
+          }
+        }
+        return conn
+      })
+
+      setConnections(updatedConnections)
+
+      toast({
+        description: `Status updated: ${newStatus ? "Paid" : "Not Paid"}`,
+      })
+    } catch (err) {
+      console.error("Error toggling paid status:", err)
+      toast({
+        description: "Failed to update status",
         variant: "destructive",
       })
     }
@@ -173,7 +352,7 @@ export default function ConnectionsTable({ apiEndpoint }: ConnectionsTableProps)
   }
 
   const saveChanges = async (connectionId: number) => {
-    if (!editData) return
+    if (!editData || !session?.user?.accessToken) return
 
     try {
       // Use a try-catch inside the fetch to handle network errors
@@ -182,6 +361,7 @@ export default function ConnectionsTable({ apiEndpoint }: ConnectionsTableProps)
           method: "PATCH",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${session.user.accessToken}`,
           },
           body: JSON.stringify(editData),
         })
@@ -297,10 +477,8 @@ export default function ConnectionsTable({ apiEndpoint }: ConnectionsTableProps)
   if (loading && connections.length === 0) {
     return (
       <div className="space-y-4">
-        <div className="flex justify-between items-center">    
-
-
-          <h2 className="text-xl font-semibold"> Property Connections</h2>
+        <div className="flex justify-between items-center">
+          <h2 className="text-xl font-semibold">Property Connections</h2>
           <Skeleton className="h-10 w-40" />
         </div>
         <div className="rounded-md border">
@@ -318,12 +496,93 @@ export default function ConnectionsTable({ apiEndpoint }: ConnectionsTableProps)
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="text-xl font-semibold">Connections</h2>
-        <Button onClick={downloadAsSheet} className="flex items-center gap-2">
-          <Download className="h-4 w-4" />
-          Download as Sheet
-        </Button>
+      <div className="flex flex-col gap-4 mb-4">
+        <div className="flex justify-between items-center">
+          <h2 className="text-xl font-semibold">Connections</h2>
+          <div className="flex gap-2">
+            <AddConnectionForm onConnectionAdded={fetchConnections} />
+            <Button onClick={downloadAsSheet} className="flex items-center gap-2">
+              <Download className="h-4 w-4" />
+              Download as Sheet
+            </Button>
+          </div>
+        </div>
+
+        {/* Separate filter controls */}
+        <div className="flex flex-wrap gap-4 p-4 bg-muted/20 rounded-md border">
+          <div className="flex flex-col gap-1">
+            <Label htmlFor="moved-in-filter">Moved In Status</Label>
+            <Select
+              value={filters.movedIn === null ? "all" : filters.movedIn.toString()}
+              onValueChange={(value) => {
+                if (value === "all") {
+                  setFilters({ ...filters, movedIn: null })
+                } else {
+                  setFilters({ ...filters, movedIn: value === "true" })
+                }
+              }}
+            >
+              <SelectTrigger id="moved-in-filter" className="w-[180px]">
+                <SelectValue placeholder="All statuses" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All statuses</SelectItem>
+                <SelectItem value="true">Moved In</SelectItem>
+                <SelectItem value="false">Not Moved In</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="flex flex-col gap-1">
+            <Label htmlFor="paid-filter">Payment Status</Label>
+            <Select
+              value={filters.paid === null ? "all" : filters.paid.toString()}
+              onValueChange={(value) => {
+                if (value === "all") {
+                  setFilters({ ...filters, paid: null })
+                } else {
+                  setFilters({ ...filters, paid: value === "true" })
+                }
+              }}
+            >
+              <SelectTrigger id="paid-filter" className="w-[180px]">
+                <SelectValue placeholder="All statuses" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All statuses</SelectItem>
+                <SelectItem value="true">Paid</SelectItem>
+                <SelectItem value="false">Not Paid</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="flex flex-col gap-1">
+            <Label htmlFor="date-filter">Date Created</Label>
+            <div className="flex gap-2">
+              <Input
+                id="date-filter"
+                type="date"
+                className="w-[180px]"
+                value={filters.date ? format(filters.date, "yyyy-MM-dd") : ""}
+                onChange={(e) => {
+                  const date = e.target.value ? new Date(e.target.value) : undefined
+                  setFilters({ ...filters, date })
+                }}
+              />
+              {filters.date && (
+                <Button variant="ghost" size="icon" onClick={() => setFilters({ ...filters, date: undefined })}>
+                  <X className="h-4 w-4" />
+                </Button>
+              )}
+            </div>
+          </div>
+
+          <div className="flex items-end">
+            <Button variant="outline" onClick={resetFilters}>
+              Reset All Filters
+            </Button>
+          </div>
+        </div>
       </div>
 
       {error && (
@@ -335,220 +594,147 @@ export default function ConnectionsTable({ apiEndpoint }: ConnectionsTableProps)
         </div>
       )}
 
-      <div className="rounded-md border overflow-x-auto">
-        <Table>
-          <TableCaption>A list of all property connections.</TableCaption>
-          <TableHeader className="bg-muted">
-            <TableRow>
-              <TableHead className="font-medium">Name</TableHead>
-              <TableHead className="font-medium">Contact</TableHead>
-              <TableHead className="font-medium">Property</TableHead>
-              <TableHead className="font-medium">Managed By</TableHead>
-              <TableHead className="font-medium">Moved In</TableHead>
-              <TableHead className="font-medium">Paid</TableHead>
-              <TableHead className="font-medium">Commission</TableHead>
-              <TableHead className="font-medium">Created</TableHead>
-              <TableHead className="text-right font-medium">Actions</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {connections.length > 0 ? (
-              connections.map((connection) => (
-                <TableRow key={connection.id} className="hover:bg-muted/50">
-                  <TableCell className="font-medium">{connection.connectionfullname}</TableCell>
-                  <TableCell>{connection.contact}</TableCell>
-                  <TableCell>
-                    <div className="flex flex-col">
-                      <span>{connection.propertydata.title}</span>
-                      <span className="text-xs text-black">{connection.propertydata.address}</span>
-                    </div>
-                  </TableCell>
-                  <TableCell>{connection.propertydata.managed_by}</TableCell>
-                  <TableCell>
-                    {editingId === connection.id ? (
-                      <Checkbox
-                        checked={editData?.moved_in}
-                        onCheckedChange={(checked) => handleEditChange("moved_in", !!checked)}
-                      />
-                    ) : (
-                      <Badge variant={connection.moved_in ? "default" : "outline"}>
-                        {connection.moved_in ? "Yes" : "No"}
-                      </Badge>
-                    )}
-                  </TableCell>
-                  <TableCell>
-                    {editingId === connection.id ? (
-                      <Checkbox
-                        checked={editData?.is_paid}
-                        onCheckedChange={(checked) => handleEditChange("is_paid", !!checked)}
-                      />
-                    ) : (
-                      <Badge variant={connection.is_paid ? "default" : "outline"}>
-                        {connection.is_paid ? "Yes" : "No"}
-                      </Badge>
-                    )}
-                  </TableCell>
-                  <TableCell>
-                    {editingId === connection.id ? (
-                      <Input
-                        value={editData?.commission}
-                        onChange={(e) => handleEditChange("commission", e.target.value)}
-                        className="w-32"
-                      />
-                    ) : (
-                      formatCurrency(connection.commission)
-                    )}
-                  </TableCell>
-                  <TableCell>{formatDate(connection.created_at)}</TableCell>
-                  <TableCell className="text-right">
-                    <div className="flex justify-end gap-2">
-                      {editingId === connection.id ? (
-                        <>
-                          <Button size="icon" variant="outline" onClick={() => saveChanges(connection.id)}>
-                            <Save className="h-4 w-4" />
-                            <span className="sr-only">Save</span>
-                          </Button>
-                          <Button size="icon" variant="outline" onClick={cancelEditing}>
-                            <X className="h-4 w-4" />
-                            <span className="sr-only">Cancel</span>
-                          </Button>
-                        </>
+      <div className="rounded-md border">
+        <div className="overflow-auto max-h-[calc(100vh-220px)]">
+          <Table>
+            <TableHeader className="sticky top-0 z-20">
+              <TableRow className="bg-background border-b">
+                <TableHead className="font-medium bg-primary">Name</TableHead>
+                <TableHead className="font-medium bg-primary">Contact</TableHead>
+                <TableHead className="font-medium bg-primary">Property</TableHead>
+                <TableHead className="font-medium bg-primary">Link</TableHead>
+                <TableHead className="font-medium bg-primary">Owner's Contact</TableHead>
+                <TableHead className="font-medium bg-primary">Managed By</TableHead>
+                <TableHead className="font-medium bg-primary">Moved In</TableHead>
+                <TableHead className="font-medium bg-primary">Paid</TableHead>
+                <TableHead className="font-medium bg-primary">Commission</TableHead>
+                <TableHead className="font-medium bg-primary">Created</TableHead>
+                <TableHead className="text-right font-medium bg-primary">Actions</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableCaption>
+              {filteredConnections.length === connections.length
+                ? `A list of all property connections (${connections.length} total).`
+                : `Showing ${filteredConnections.length} of ${connections.length} connections.`}
+            </TableCaption>
+            <TableBody>
+              {filteredConnections.length > 0 ? (
+                filteredConnections.map((connection) => (
+                  <TableRow key={connection.id} className="hover:bg-muted/50">
+                    <TableCell className="font-medium">{connection.connectionfullname}</TableCell>
+                    <TableCell>{connection.contact}</TableCell>
+                    <TableCell>
+                      <div className="flex flex-col">
+                        <span>{connection.propertydata.title}</span>
+                        <span className="text-xs text-black">{connection.propertydata.address}</span>
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      {connection.propertylink ? (
+                        <Link
+                          href={connection.propertylink}
+                          target="_blank"
+                          className="text-primary hover:underline flex items-center"
+                        >
+                          <LinkIcon className="h-3 w-3 mr-1" />
+                          Link
+                        </Link>
                       ) : (
-                        <>
-                          {/* <Button size="icon" variant="outline" onClick={() => fetchConnectionDetails(connection.id)}>
-                            <Eye className="h-4 w-4" />
-                            <span className="sr-only">View</span>
-                          </Button> */}
-                          <Button size="icon" variant="outline" onClick={() => startEditing(connection)}>
-                            <Pencil className="h-4 w-4" />
-                            <span className="sr-only">Edit</span>
-                          </Button>
-                        </>
+                        <span className="text-muted-foreground">No link</span>
                       )}
-                    </div>
+                    </TableCell>
+                    <TableCell>{connection.propertydata.owners_contact}</TableCell>
+                    <TableCell>{connection.propertydata.managed_by}</TableCell>
+                    <TableCell>
+                      {editingId === connection.id ? (
+                        <Checkbox
+                          checked={editData?.moved_in}
+                          onCheckedChange={(checked) => handleEditChange("moved_in", !!checked)}
+                        />
+                      ) : (
+                        <div className="flex items-center">
+                          <Switch
+                            checked={connection.moved_in}
+                            onCheckedChange={() => toggleMovedIn(connection)}
+                            className="mr-2"
+                          />
+                          <Badge variant={connection.moved_in ? "default" : "outline"}>
+                            {connection.moved_in ? "Yes" : "No"}
+                          </Badge>
+                        </div>
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      {editingId === connection.id ? (
+                        <Checkbox
+                          checked={editData?.is_paid}
+                          onCheckedChange={(checked) => handleEditChange("is_paid", !!checked)}
+                        />
+                      ) : (
+                        <div className="flex items-center">
+                          <Switch
+                            checked={connection.is_paid}
+                            onCheckedChange={() => togglePaid(connection)}
+                            className="mr-2"
+                          />
+                          <Badge variant={connection.is_paid ? "default" : "outline"}>
+                            {connection.is_paid ? "Yes" : "No"}
+                          </Badge>
+                        </div>
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      {editingId === connection.id ? (
+                        <Input
+                          value={editData?.commission}
+                          onChange={(e) => handleEditChange("commission", e.target.value)}
+                          className="w-32"
+                        />
+                      ) : (
+                        formatCurrency(connection.commission)
+                      )}
+                    </TableCell>
+                    <TableCell>{formatDate(connection.created_at)}</TableCell>
+                    <TableCell className="text-right">
+                      <div className="flex justify-end gap-2">
+                        {editingId === connection.id ? (
+                          <>
+                            <Button size="icon" variant="outline" onClick={() => saveChanges(connection.id)}>
+                              <Save className="h-4 w-4" />
+                              <span className="sr-only">Save</span>
+                            </Button>
+                            <Button size="icon" variant="outline" onClick={cancelEditing}>
+                              <X className="h-4 w-4" />
+                              <span className="sr-only">Cancel</span>
+                            </Button>
+                          </>
+                        ) : (
+                          <>
+                            <Button size="icon" variant="outline" onClick={() => viewConnectionDetails(connection)}>
+                              <Eye className="h-4 w-4" />
+                              <span className="sr-only">View</span>
+                            </Button>
+                            <Button size="icon" variant="outline" onClick={() => startEditing(connection)}>
+                              <Pencil className="h-4 w-4" />
+                              <span className="sr-only">Edit</span>
+                            </Button>
+                          </>
+                        )}
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={11} className="h-24 text-center">
+                    No connections found. {error ? "There was an error loading the data." : ""}
                   </TableCell>
                 </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell colSpan={9} className="h-24 text-center">
-                  No connections found. {error ? "There was an error loading the data." : ""}
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
+              )}
+            </TableBody>
+          </Table>
+        </div>
       </div>
-
-      {/* Connection Details Dialog */}
-      <Dialog open={isViewDialogOpen} onOpenChange={setIsViewDialogOpen}>
-        <DialogContent className="max-w-3xl">
-          <DialogHeader>
-            <DialogTitle>Connection Details</DialogTitle>
-            <DialogDescription>Detailed information about this property connection.</DialogDescription>
-          </DialogHeader>
-
-          {viewingConnection ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Connection Information</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div>
-                    <h4 className="text-sm font-medium text-muted-foreground">Name</h4>
-                    <p>{viewingConnection.connectionfullname}</p>
-                  </div>
-                  <div>
-                    <h4 className="text-sm font-medium text-muted-foreground">Contact</h4>
-                    <p>{viewingConnection.contact}</p>
-                  </div>
-                  <div>
-                    <h4 className="text-sm font-medium text-muted-foreground">Property Link</h4>
-                    <div className="flex items-center gap-2">
-                      <Link
-                        href={viewingConnection.propertylink}
-                        target="_blank"
-                        className="text-primary hover:underline flex items-center"
-                      >
-                        View Property <ExternalLink className="h-3 w-3 ml-1" />
-                      </Link>
-                    </div>
-                  </div>
-                  <div>
-                    <h4 className="text-sm font-medium text-muted-foreground">Status</h4>
-                    <div className="flex gap-2 mt-1">
-                      <Badge variant={viewingConnection.moved_in ? "default" : "outline"}>
-                        {viewingConnection.moved_in ? "Moved In" : "Not Moved In"}
-                      </Badge>
-                      <Badge variant={viewingConnection.is_paid ? "default" : "outline"}>
-                        {viewingConnection.is_paid ? "Paid" : "Not Paid"}
-                      </Badge>
-                    </div>
-                  </div>
-                  <div>
-                    <h4 className="text-sm font-medium text-muted-foreground">Commission</h4>
-                    <p>{formatCurrency(viewingConnection.commission)}</p>
-                  </div>
-                  <div>
-                    <h4 className="text-sm font-medium text-muted-foreground">Created</h4>
-                    <p>{formatDate(viewingConnection.created_at)}</p>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle>Property Information</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div>
-                    <h4 className="text-sm font-medium text-muted-foreground">Property</h4>
-                    <p>{viewingConnection.propertydata.title}</p>
-                  </div>
-                  <div>
-                    <h4 className="text-sm font-medium text-muted-foreground">Type</h4>
-                    <p>{viewingConnection.propertydata.propertytype.name}</p>
-                  </div>
-                  <div>
-                    <h4 className="text-sm font-medium text-muted-foreground">Address</h4>
-                    <p>{viewingConnection.propertydata.address}</p>
-                  </div>
-                  <div>
-                    <h4 className="text-sm font-medium text-muted-foreground">Owner's Contact</h4>
-                    <p>{viewingConnection.propertydata.owners_contact}</p>
-                  </div>
-                  <div>
-                    <h4 className="text-sm font-medium text-muted-foreground">Managed By</h4>
-                    <p>{viewingConnection.propertydata.managed_by}</p>
-                  </div>
-                  <div>
-                    <h4 className="text-sm font-medium text-muted-foreground">Rent Price</h4>
-                    <p>{formatCurrency(viewingConnection.propertydata.rent_price)}</p>
-                  </div>
-                </CardContent>
-                <CardFooter className="flex justify-between">
-                  <Button variant="outline" onClick={() => setIsViewDialogOpen(false)}>
-                    Close
-                  </Button>
-                  <Button
-                    onClick={() => {
-                      setIsViewDialogOpen(false)
-                      startEditing(viewingConnection)
-                    }}
-                  >
-                    Edit Connection
-                  </Button>
-                </CardFooter>
-              </Card>
-            </div>
-          ) : (
-            <div className="flex justify-center items-center h-40">
-              <p>Loading connection details...</p>
-            </div>
-          )}
-        </DialogContent>
-      </Dialog>
     </div>
   )
 }
