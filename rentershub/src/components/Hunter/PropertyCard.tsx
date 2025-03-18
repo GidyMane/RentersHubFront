@@ -104,7 +104,7 @@ export function PropertyCard({
             </div>
 
             {/* Share button moved below */}
-            <Button
+            {/* <Button
               size="sm"
               variant="outline"
               className="mt-2 w-full text-primary border-primary hover:bg-primary/10"
@@ -112,18 +112,18 @@ export function PropertyCard({
             >
               <Share2 className="h-4 w-4 mr-2" />
               Share
-            </Button>
+            </Button> */}
           </div>
 
           {/* Additional Details */}
-          <div className="mt-3 pt-3 border-t border-gray-100">
+          {/* <div className="mt-3 pt-3 border-t border-gray-100">
             <div className="flex items-center text-xs text-black">
               <div className="flex items-center gap-1">
                 <User className="h-3 w-3" />
                 <span>{managed_by || "Private Owner"}</span>
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
       </Card>
     </Link>
