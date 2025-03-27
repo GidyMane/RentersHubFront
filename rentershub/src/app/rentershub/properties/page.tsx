@@ -13,17 +13,18 @@ export default function PropertiesPage() {
   const [status, setStatus] = useState("all")
   const [sortOrder, setSortOrder] = useState("newest")
   const [properties, setProperties] = useState<any[]>([])
-  const [currentPage, setCurrentPage] = useState(1)
+  const [offset, setOffset] = useState(0)
+  const [limit, setLimit] = useState(20)
   const [totalPages, setTotalPages] = useState(1)
   const [isLoading, setIsLoading] = useState(false)
   const [totalCount, setTotalCount] = useState(0)
-  const pageSize = 20 // Number of items per page from the API
+  // Number of items per page from the API
 
   useEffect(() => {
-    fetchProperties(currentPage)
-  }, [currentPage, status, sortOrder])
+    fetchProperties(offset, limit)
+  }, [offset, limit, status, sortOrder])
 
-  const fetchProperties = async (page: number) => {
+  const fetchProperties = async (offset: number, limit: number) => {
     setIsLoading(true)
     try {
       const session = await getSession()
@@ -33,8 +34,8 @@ export default function PropertiesPage() {
         throw new Error("User ID not found in session")
       }
 
-      // Add pagination parameters to the API call
-      const response = await axios.get(`${baseUrl}listing/property?userid=${userId}&page=${page}&limit=${pageSize}`, {
+      // Use limit and offset parameters for pagination
+      const response = await axios.get(`${baseUrl}listing/property?userid=${userId}&limit=${limit}&offset=${offset}`, {
         headers: {
           Authorization: `Bearer ${session.user.accessToken}`,
         },
@@ -48,7 +49,7 @@ export default function PropertiesPage() {
       // Calculate total pages based on total count from API
       if (response.data.count) {
         setTotalCount(response.data.count)
-        setTotalPages(Math.ceil(response.data.count / pageSize))
+        setTotalPages(Math.ceil(response.data.count / limit))
       }
     } catch (error) {
       console.error(error)
@@ -78,25 +79,26 @@ export default function PropertiesPage() {
   })
 
   const goToNextPage = () => {
-    if (currentPage < totalPages) {
-      setCurrentPage(currentPage + 1)
+    if (offset / limit + 1 < totalPages) {
+      setOffset(offset + limit)
     }
   }
 
   const goToPreviousPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1)
+    if (offset >= limit) {
+      setOffset(offset - limit)
     }
   }
 
   const goToPage = (page: number) => {
-    setCurrentPage(page)
+    setOffset((page - 1) * limit)
   }
 
   // Generate page numbers to display
   const getPageNumbers = () => {
     const pageNumbers = []
     const maxPagesToShow = 5
+    const currentPageNumber = offset / limit + 1
 
     if (totalPages <= maxPagesToShow) {
       // If we have fewer pages than our max, show all pages
@@ -108,16 +110,16 @@ export default function PropertiesPage() {
       pageNumbers.push(1)
 
       // Calculate start and end of page range around current page
-      let startPage = Math.max(2, currentPage - 1)
-      let endPage = Math.min(totalPages - 1, currentPage + 1)
+      let startPage = Math.max(2, currentPageNumber - 1)
+      let endPage = Math.min(totalPages - 1, currentPageNumber + 1)
 
       // Adjust if we're near the beginning
-      if (currentPage <= 3) {
+      if (currentPageNumber <= 3) {
         endPage = Math.min(totalPages - 1, 4)
       }
 
       // Adjust if we're near the end
-      if (currentPage >= totalPages - 2) {
+      if (currentPageNumber >= totalPages - 2) {
         startPage = Math.max(2, totalPages - 3)
       }
 
@@ -201,7 +203,7 @@ export default function PropertiesPage() {
                 <Button
                   variant="outline"
                   onClick={goToPreviousPage}
-                  disabled={currentPage === 1}
+                  disabled={offset === 0}
                   className="h-10 px-4 py-2 border border-[#1C4532] text-[#1C4532] hover:bg-[#E6F0EB]"
                 >
                   <ChevronLeft className="h-4 w-4 mr-1" />
@@ -213,10 +215,10 @@ export default function PropertiesPage() {
                     typeof page === "number" ? (
                       <Button
                         key={index}
-                        variant={currentPage === page ? "default" : "outline"}
+                        variant={offset / limit + 1 === page ? "default" : "outline"}
                         onClick={() => goToPage(page)}
                         className={`mx-1 h-10 w-10 ${
-                          currentPage === page
+                          (offset / limit + 1) === page
                             ? "bg-[#1C4532] text-white"
                             : "border border-[#1C4532] text-[#1C4532] hover:bg-[#E6F0EB]"
                         }`}
@@ -234,7 +236,7 @@ export default function PropertiesPage() {
                 <Button
                   variant="outline"
                   onClick={goToNextPage}
-                  disabled={currentPage === totalPages}
+                  disabled={offset / limit + 1 === totalPages}
                   className="h-10 px-4 py-2 border border-[#1C4532] text-[#1C4532] hover:bg-[#E6F0EB]"
                 >
                   Next
@@ -245,8 +247,7 @@ export default function PropertiesPage() {
 
             {/* Showing results summary */}
             <div className="text-center text-sm text-primary mt-4">
-              Showing {(currentPage - 1) * pageSize + 1} to {Math.min(currentPage * pageSize, totalCount)} of{" "}
-              {totalCount} properties
+              Showing {offset + 1} to {Math.min(offset + limit, totalCount)} of {totalCount} properties
             </div>
           </>
         )}

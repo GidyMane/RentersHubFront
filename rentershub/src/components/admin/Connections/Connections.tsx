@@ -227,7 +227,7 @@ export default function ConnectionsTable({ apiEndpoint }: ConnectionsTableProps)
   }
 
   const viewConnectionDetails = (connection: Connection) => {
-    router.push(`/connections/${connection.id}`)
+    router.push(`/admin/connections/${connection.id}`)
   }
 
   const toggleMovedIn = async (connection: Connection) => {
