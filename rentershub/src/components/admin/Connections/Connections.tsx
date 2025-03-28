@@ -16,7 +16,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Switch } from "@/components/ui/switch"
 import { Label } from "@/components/ui/label"
 
-
 import Link from "next/link"
 import { format } from "date-fns"
 import toast from "react-hot-toast"
@@ -176,67 +175,22 @@ export default function ConnectionsTable({ apiEndpoint }: ConnectionsTableProps)
     } catch (err) {
       console.error("Error in fetchConnections:", err)
       setError(err instanceof Error ? err.message : "An unknown error occurred")
-      toast({
-        description: "Failed to load connections. You can still view any cached data.",
-        variant: "destructive",
-      })
+      toast.error("Failed to load connections. You can still view any cached data.")
     } finally {
       setLoading(false)
     }
   }
 
-  const fetchConnectionDetails = async (id: number) => {
-    if (!session?.user?.accessToken) {
-      console.error("No access token available")
-      toast({
-        description: "Authentication required",
-        variant: "destructive",
-      })
-      return
-    }
-
-    try {
-      // Use a try-catch inside the fetch to handle network errors
-      let data
-      try {
-        const response = await fetch(`${baseUrl}accounts/connection/${id}/`, {
-          headers: {
-            Authorization: `Bearer ${session.user.accessToken}`,
-          },
-        })
-
-        if (!response.ok) {
-          throw new Error(`Failed to fetch connection details: ${response.status}`)
-        }
-
-        data = await response.json()
-      } catch (fetchErr) {
-        console.error("Fetch error:", fetchErr)
-        throw new Error("Failed to fetch connection details")
-      }
-
-      setViewingConnection(data)
-      setIsViewDialogOpen(true)
-    } catch (err) {
-      console.error("Error in fetchConnectionDetails:", err)
-      toast({
-        description: "Failed to load connection details",
-        variant: "destructive",
-      })
-    }
-  }
-
   const viewConnectionDetails = (connection: Connection) => {
+    // Ensure we're using the correct ID and navigation method
+    console.log("Navigating to connection ID:", connection.id)
     router.push(`/admin/connections/${connection.id}`)
   }
 
   const toggleMovedIn = async (connection: Connection) => {
     if (!session?.user?.accessToken) {
       console.error("No access token available")
-      toast({
-        description: "Authentication required",
-        variant: "destructive",
-      })
+      toast.error("Authentication required")
       return
     }
 
@@ -267,25 +221,17 @@ export default function ConnectionsTable({ apiEndpoint }: ConnectionsTableProps)
 
       setConnections(updatedConnections)
 
-      toast({
-        description: `Status updated: ${newStatus ? "Moved In" : "Not Moved In"}`,
-      })
+      toast.success(`Status updated: ${newStatus ? "Moved In" : "Not Moved In"}`)
     } catch (err) {
       console.error("Error toggling moved in status:", err)
-      toast({
-        description: "Failed to update status",
-        variant: "destructive",
-      })
+      toast.error("Failed to update status")
     }
   }
 
   const togglePaid = async (connection: Connection) => {
     if (!session?.user?.accessToken) {
       console.error("No access token available")
-      toast({
-        description: "Authentication required",
-        variant: "destructive",
-      })
+      toast.error("Authentication required")
       return
     }
 
@@ -316,15 +262,10 @@ export default function ConnectionsTable({ apiEndpoint }: ConnectionsTableProps)
 
       setConnections(updatedConnections)
 
-      toast({
-        description: `Status updated: ${newStatus ? "Paid" : "Not Paid"}`,
-      })
+      toast.success(`Status updated: ${newStatus ? "Paid" : "Not Paid"}`)
     } catch (err) {
       console.error("Error toggling paid status:", err)
-      toast({
-        description: "Failed to update status",
-        variant: "destructive",
-      })
+      toast.error("Failed to update status")
     }
   }
 
@@ -389,15 +330,10 @@ export default function ConnectionsTable({ apiEndpoint }: ConnectionsTableProps)
       setEditingId(null)
       setEditData(null)
 
-      toast({
-        description: "Connection updated successfully",
-      })
+      toast.success("Connection updated successfully")
     } catch (err) {
       console.error("Error in saveChanges:", err)
-      toast({
-        description: "Failed to update connection",
-        variant: "destructive",
-      })
+      toast.error("Failed to update connection")
     }
   }
 
@@ -447,9 +383,7 @@ export default function ConnectionsTable({ apiEndpoint }: ConnectionsTableProps)
     link.click()
     document.body.removeChild(link)
 
-    toast({
-      description: "Downloaded connections data as CSV",
-    })
+    toast.success("Downloaded connections data as CSV")
   }
 
   const formatCurrency = (amount: string) => {
@@ -710,7 +644,14 @@ export default function ConnectionsTable({ apiEndpoint }: ConnectionsTableProps)
                           </>
                         ) : (
                           <>
-                            <Button size="icon" variant="outline" onClick={() => viewConnectionDetails(connection)}>
+                            <Button
+                              size="icon"
+                              variant="outline"
+                              onClick={() => {
+                                console.log("View button clicked for connection ID:", connection.id)
+                                viewConnectionDetails(connection)
+                              }}
+                            >
                               <Eye className="h-4 w-4" />
                               <span className="sr-only">View</span>
                             </Button>

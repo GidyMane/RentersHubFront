@@ -13,9 +13,8 @@ import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
+import { Alert, AlertDescription } from "@/components/ui/alert"
 import toast from "react-hot-toast"
-
-
 
 interface Property {
   id: number
@@ -31,6 +30,8 @@ export default function AddConnectionForm({ onConnectionAdded }: { onConnectionA
   const [isLoading, setIsLoading] = useState(false)
   const [properties, setProperties] = useState<Property[]>([])
   const [isLoadingProperties, setIsLoadingProperties] = useState(false)
+  const [propertyError, setPropertyError] = useState<string | null>(null)
+  const [submitError, setSubmitError] = useState<string | null>(null)
 
   const [formData, setFormData] = useState({
     connectionfullname: "",
@@ -52,15 +53,14 @@ export default function AddConnectionForm({ onConnectionAdded }: { onConnectionA
 
   const fetchProperties = async () => {
     if (!session?.user?.accessToken) {
-      toast({
-        description: "Authentication required",
-        variant: "destructive",
-      })
+      setPropertyError("Authentication required to load properties")
       return
     }
 
     try {
       setIsLoadingProperties(true)
+      setPropertyError(null)
+
       const response = await fetch(`${baseUrl}properties/`, {
         headers: {
           Authorization: `Bearer ${session.user.accessToken}`,
@@ -75,10 +75,7 @@ export default function AddConnectionForm({ onConnectionAdded }: { onConnectionA
       setProperties(data.results || [])
     } catch (err) {
       console.error("Error fetching properties:", err)
-      toast({
-        description: "Failed to load properties",
-        variant: "destructive",
-      })
+      setPropertyError("Failed to load properties. Please try again later.")
     } finally {
       setIsLoadingProperties(false)
     }
@@ -96,6 +93,11 @@ export default function AddConnectionForm({ onConnectionAdded }: { onConnectionA
         ...errors,
         [field]: "",
       })
+    }
+
+    // Clear submit error when user makes any changes
+    if (submitError) {
+      setSubmitError(null)
     }
   }
 
@@ -133,16 +135,14 @@ export default function AddConnectionForm({ onConnectionAdded }: { onConnectionA
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    setSubmitError(null)
 
     if (!validateForm()) {
       return
     }
 
     if (!session?.user?.accessToken) {
-      toast({
-        description: "Authentication required",
-        variant: "destructive",
-      })
+      setSubmitError("Authentication required. Please log in again.")
       return
     }
 
@@ -169,9 +169,7 @@ export default function AddConnectionForm({ onConnectionAdded }: { onConnectionA
         throw new Error(errorData.detail || `Failed to create connection: ${response.status}`)
       }
 
-      toast({
-        description: "Connection created successfully",
-      })
+      toast.success("Connection created successfully")
 
       // Reset form
       setFormData({
@@ -187,21 +185,37 @@ export default function AddConnectionForm({ onConnectionAdded }: { onConnectionA
       // Close the sheet
       setIsOpen(false)
 
-      // Notify parent to refresh connections
-      onConnectionAdded()
+      // Safely call the refresh function
+      try {
+        onConnectionAdded()
+      } catch (refreshError) {
+        console.error("Error refreshing connections:", refreshError)
+        toast.error("Connection was created but the list couldn't be refreshed. Please reload the page.")
+      }
     } catch (err) {
       console.error("Error creating connection:", err)
-      toast({
-        description: err instanceof Error ? err.message : "Failed to create connection",
-        variant: "destructive",
-      })
+      setSubmitError(err instanceof Error ? err.message : "Failed to create connection. Please try again.")
     } finally {
       setIsLoading(false)
     }
   }
 
+  const retryFetchProperties = () => {
+    fetchProperties()
+  }
+
   return (
-    <Sheet open={isOpen} onOpenChange={setIsOpen}>
+    <Sheet
+      open={isOpen}
+      onOpenChange={(open) => {
+        setIsOpen(open)
+        if (!open) {
+          // Reset errors when closing
+          setErrors({})
+          setSubmitError(null)
+        }
+      }}
+    >
       <SheetTrigger asChild>
         <Button className="flex items-center gap-2">
           <Plus className="h-4 w-4" />
@@ -213,6 +227,12 @@ export default function AddConnectionForm({ onConnectionAdded }: { onConnectionA
           <SheetTitle>Add New Connection</SheetTitle>
           <SheetDescription>Create a new connection between a client and a property.</SheetDescription>
         </SheetHeader>
+
+        {submitError && (
+          <Alert variant="destructive" className="mb-4">
+            <AlertDescription>{submitError}</AlertDescription>
+          </Alert>
+        )}
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-4">
@@ -248,27 +268,51 @@ export default function AddConnectionForm({ onConnectionAdded }: { onConnectionA
               <Label htmlFor="property" className="required">
                 Property
               </Label>
-              <Select value={formData.property} onValueChange={(value) => handleChange("property", value)}>
-                <SelectTrigger id="property" className={errors.property ? "border-destructive" : ""}>
-                  <SelectValue placeholder="Select a property" />
-                </SelectTrigger>
-                <SelectContent>
-                  {isLoadingProperties ? (
-                    <div className="flex items-center justify-center py-2">
-                      <Loader2 className="h-4 w-4 animate-spin mr-2" />
-                      Loading properties...
-                    </div>
-                  ) : properties.length > 0 ? (
-                    properties.map((property) => (
-                      <SelectItem key={property.id} value={property.id.toString()}>
-                        {property.title} - {property.address}
-                      </SelectItem>
-                    ))
-                  ) : (
-                    <div className="p-2 text-center text-muted-foreground">No properties found</div>
-                  )}
-                </SelectContent>
-              </Select>
+              {propertyError ? (
+                <div className="space-y-2">
+                  <Alert variant="destructive">
+                    <AlertDescription>{propertyError}</AlertDescription>
+                  </Alert>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={retryFetchProperties}
+                    disabled={isLoadingProperties}
+                    className="w-full"
+                  >
+                    {isLoadingProperties ? (
+                      <>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        Loading...
+                      </>
+                    ) : (
+                      "Retry Loading Properties"
+                    )}
+                  </Button>
+                </div>
+              ) : (
+                <Select value={formData.property} onValueChange={(value) => handleChange("property", value)}>
+                  <SelectTrigger id="property" className={errors.property ? "border-destructive" : ""}>
+                    <SelectValue placeholder="Select a property" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {isLoadingProperties ? (
+                      <div className="flex items-center justify-center py-2">
+                        <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                        Loading properties...
+                      </div>
+                    ) : properties.length > 0 ? (
+                      properties.map((property) => (
+                        <SelectItem key={property.id} value={property.id.toString()}>
+                          {property.title} - {property.address}
+                        </SelectItem>
+                      ))
+                    ) : (
+                      <div className="p-2 text-center text-muted-foreground">No properties found</div>
+                    )}
+                  </SelectContent>
+                </Select>
+              )}
               {errors.property && <p className="text-sm text-destructive">{errors.property}</p>}
             </div>
 
@@ -323,7 +367,7 @@ export default function AddConnectionForm({ onConnectionAdded }: { onConnectionA
             <Button type="button" variant="outline" onClick={() => setIsOpen(false)} disabled={isLoading}>
               Cancel
             </Button>
-            <Button type="submit" disabled={isLoading}>
+            <Button type="submit" disabled={isLoading || isLoadingProperties || !!propertyError}>
               {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               Create Connection
             </Button>
