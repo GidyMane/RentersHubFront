@@ -546,7 +546,7 @@ export default function ConnectionsTable({ apiEndpoint }: ConnectionsTableProps)
                 <TableHead className="text-right font-medium bg-primary">Actions</TableHead>
               </TableRow>
             </TableHeader>
-            <TableCaption>
+            <TableCaption className="text-primary">
               {filteredConnections.length === connections.length
                 ? `A list of all property connections (${connections.length} total).`
                 : `Showing ${filteredConnections.length} of ${connections.length} connections.`}
@@ -574,7 +574,7 @@ export default function ConnectionsTable({ apiEndpoint }: ConnectionsTableProps)
                           Link
                         </Link>
                       ) : (
-                        <span className="text-muted-foreground">No link</span>
+                        <span className="text-primary">No link</span>
                       )}
                     </TableCell>
                     <TableCell>{connection.propertydata.owners_contact}</TableCell>
