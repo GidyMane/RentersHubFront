@@ -29,14 +29,14 @@ export const MaintenancePage: React.FC<MaintenancePageProps> = ({
         <div className="p-8">
           {/* Logo */}
           <div className="flex justify-center mb-6">
-            <div className="bg-green-600 text-white text-2xl font-bold py-2 px-4 rounded-lg">RentersHub</div>
-          </div>
+  <img src="/RH1.png" alt="Renters Hub Logo" className="h-12" />
+</div>
 
           {/* Main message */}
           <div className="text-center mb-8">
             <h2 className="text-2xl font-bold text-gray-800 mb-4">We're Currently Down for Maintenance</h2>
             <p className="text-gray-600 mb-4">
-              We apologize for the inconvenience. Our team is working hard to improve RentersHub and we'll be back
+              We apologize for the inconvenience. Our team is working hard to improve Renters Hub and we'll be back
               online shortly.
             </p>
 
@@ -112,7 +112,7 @@ export const MaintenancePage: React.FC<MaintenancePageProps> = ({
       </div>
 
       {/* Footer */}
-      <p className="mt-8 text-gray-500 text-sm">© {new Date().getFullYear()} RentersHub. All rights reserved.</p>
+      <p className="mt-8 text-gray-500 text-sm">© {new Date().getFullYear()} Renters Hub. All rights reserved.</p>
     </div>
   )
 }
