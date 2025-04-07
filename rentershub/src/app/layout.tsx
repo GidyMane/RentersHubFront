@@ -60,9 +60,9 @@ export default function RootLayout({
                       duration: 5000,
                     }}
                   />
-                  <div className="bg-white top-0">
+                  {/* <div className="bg-white top-0">
                     <Navbar />
-                  </div>
+                  </div> */}
                   <ReactReduxProvider>
 
                     {children}
@@ -71,9 +71,9 @@ export default function RootLayout({
 
 
                   {/* <FloatingNavDemo /> */}
-                  <div className="bottom-0 rounded-lg">
+                  {/* <div className="bottom-0 rounded-lg">
                     <Footer />
-                  </div>
+                  </div> */}
 
                 </div>
               </body>
